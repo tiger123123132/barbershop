@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="ar" dir="rtl" id="htmlRoot">
 <head>
 <meta charset="UTF-8">
@@ -6,80 +7,50 @@
 <title>لوحة التحكم — BarberStor</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 <style>
-:root{
-  --p:#C9A84C;--p2:#E8C97A;
-  --dark:#080808;--dark2:#0f0f0f;--dark3:#171717;--dark4:#222;--dark5:#2c2c2c;
-  --text:#f0ede8;--muted:#666;--green:#2ecc71;--red:#e74c3c;--blue:#3498db;
-}
+:root{--p:#C9A84C;--p2:#E8C97A;--dark:#080808;--dark2:#0f0f0f;--dark3:#171717;--dark4:#222;--dark5:#2c2c2c;--text:#f0ede8;--muted:#666;--green:#2ecc71;--red:#e74c3c;--blue:#3498db;}
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--dark);color:var(--text);font-family:'Cairo',sans-serif;min-height:100vh}
-
-/* LAYOUT */
 .layout{display:flex;min-height:100vh}
 .sidebar{width:240px;background:var(--dark2);border-left:1px solid var(--dark4);padding:1.5rem 1rem;position:fixed;top:0;right:0;bottom:0;overflow-y:auto;z-index:100;transition:.3s}
 .main{margin-right:240px;flex:1;padding:2rem;min-width:0}
-
-/* SIDEBAR */
 .sb-logo{font-size:1.1rem;font-weight:900;background:linear-gradient(135deg,var(--p2),var(--p));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.3rem}
 .sb-user{font-size:.78rem;color:var(--muted);margin-bottom:1.5rem;padding-bottom:1.5rem;border-bottom:1px solid var(--dark4)}
 .sb-user span{color:var(--p);font-weight:700}
 .nav-it{display:flex;align-items:center;gap:.65rem;padding:.65rem .85rem;border-radius:10px;cursor:pointer;color:var(--muted);margin-bottom:.2rem;transition:.2s;font-size:.88rem}
 .nav-it:hover{background:var(--dark3);color:var(--text)}
 .nav-it.on{background:rgba(201,168,76,.12);color:var(--p)}
-.nav-it .ico{font-size:1rem;width:20px;text-align:center}
-.sb-bottom{margin-top:auto;padding-top:1rem;border-top:1px solid var(--dark4)}
-
-/* INACTIVE BANNER */
+.sb-bottom{margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--dark4)}
 #inactiveBanner{background:rgba(231,76,60,.1);border:1px solid rgba(231,76,60,.3);border-radius:14px;padding:1.2rem 1.5rem;margin-bottom:1.5rem;display:none}
 #inactiveBanner h3{color:var(--red);font-size:1rem;margin-bottom:.3rem}
 #inactiveBanner p{color:var(--muted);font-size:.83rem;margin-bottom:.8rem}
-
-/* PAGES */
-.page{display:none;animation:fu .3s ease}
-.page.active{display:block}
+.page{display:none;animation:fu .3s ease}.page.active{display:block}
 @keyframes fu{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-
-/* PAGE HEADER */
 .pg-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.8rem;flex-wrap:wrap;gap:.8rem}
 .pg-hd h2{font-size:1.3rem;font-weight:800}
-
-/* STATS */
 .stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:1rem;margin-bottom:2rem}
 .stat{background:var(--dark3);border:1px solid var(--dark4);border-radius:14px;padding:1.3rem}
 .stat .lbl{color:var(--muted);font-size:.75rem;margin-bottom:.4rem}
 .stat .val{font-size:1.8rem;font-weight:900;color:var(--p)}
-.stat .sub{font-size:.72rem;color:var(--muted);margin-top:.2rem}
-
-/* CARDS */
 .card{background:var(--dark3);border:1px solid var(--dark4);border-radius:16px;padding:1.4rem;margin-bottom:1.3rem}
 .card-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;flex-wrap:wrap;gap:.6rem}
 .card-title{font-weight:700;font-size:.95rem}
-
-/* BUTTONS */
 .btn{padding:.6rem 1.2rem;border-radius:10px;cursor:pointer;font-family:'Cairo',sans-serif;font-weight:700;font-size:.83rem;border:none;transition:.2s;white-space:nowrap}
 .btn-gold{background:linear-gradient(135deg,var(--p),var(--p2));color:#000}
 .btn-gold:hover{transform:translateY(-1px);box-shadow:0 4px 18px rgba(201,168,76,.35)}
 .btn-ghost{background:transparent;border:1.5px solid var(--dark5);color:var(--muted)}
 .btn-ghost:hover{border-color:var(--muted);color:var(--text)}
 .btn-danger{background:rgba(231,76,60,.12);border:1px solid rgba(231,76,60,.3);color:var(--red)}
-.btn-danger:hover{background:rgba(231,76,60,.2)}
 .btn-blue{background:rgba(52,152,219,.15);border:1px solid rgba(52,152,219,.3);color:var(--blue)}
+.btn-green{background:rgba(46,204,113,.12);border:1px solid rgba(46,204,113,.3);color:var(--green)}
 .btn-sm{padding:.35rem .8rem;font-size:.78rem}
-.btn-full{width:100%;padding:.85rem;font-size:.93rem;justify-content:center}
-
-/* TABLE */
+.btn-full{width:100%;padding:.85rem;font-size:.93rem}
 .twrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:.82rem}
 th,td{padding:.7rem .85rem;text-align:right;border-bottom:1px solid var(--dark4);white-space:nowrap}
 th{color:var(--muted);font-weight:600;background:var(--dark2)}
 tr:hover td{background:rgba(255,255,255,.015)}
 .badge{display:inline-block;padding:.15rem .6rem;border-radius:20px;font-size:.72rem;font-weight:700}
-.bg{background:rgba(201,168,76,.18);color:var(--p)}
-.bb{background:rgba(52,152,219,.18);color:var(--blue)}
-.bgr{background:rgba(46,204,113,.18);color:var(--green)}
-.br{background:rgba(231,76,60,.18);color:var(--red)}
-
-/* FORM */
+.bg{background:rgba(201,168,76,.18);color:var(--p)}.bgr{background:rgba(46,204,113,.18);color:var(--green)}.br{background:rgba(231,76,60,.18);color:var(--red)}.bb{background:rgba(52,152,219,.18);color:var(--blue)}
 .fg{margin-bottom:1rem}
 .fg label{display:block;color:var(--muted);font-size:.78rem;margin-bottom:.35rem}
 .fi{width:100%;background:var(--dark2);border:1.5px solid var(--dark5);border-radius:10px;padding:.75rem 1rem;color:var(--text);font-family:'Cairo',sans-serif;font-size:.88rem;transition:.2s;direction:inherit}
@@ -87,589 +58,475 @@ tr:hover td{background:rgba(255,255,255,.015)}
 select.fi option{background:var(--dark2)}
 .fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.8rem}
 .fgrid .fg{margin-bottom:0}
-
-/* ITEM ROWS */
 .irow{display:flex;align-items:center;gap:.9rem;padding:.85rem 0;border-bottom:1px solid var(--dark4)}
 .irow:last-child{border-bottom:none}
-.iico{font-size:1.8rem;flex-shrink:0}
-.iinfo{flex:1;min-width:0}
-.iname{font-weight:700;font-size:.9rem}
-.imeta{color:var(--muted);font-size:.75rem;margin-top:.1rem}
-.iacts{display:flex;gap:.4rem;flex-shrink:0}
-
-/* EDIT ROW */
+.iico{font-size:1.8rem;flex-shrink:0}.iinfo{flex:1;min-width:0}.iname{font-weight:700;font-size:.9rem}.imeta{color:var(--muted);font-size:.75rem;margin-top:.1rem}.iacts{display:flex;gap:.4rem;flex-shrink:0}
 .editrow{background:var(--dark2);border:1px solid var(--p);border-radius:12px;padding:1rem;margin:.4rem 0;display:none}
 .editrow.on{display:block;animation:fu .2s ease}
-
-/* THEME EDITOR */
-.theme-colors{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:.8rem;margin-bottom:1.2rem}
+.theme-colors{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:.8rem;margin-bottom:1.2rem}
 .color-opt{border:2px solid var(--dark5);border-radius:12px;padding:.8rem;cursor:pointer;text-align:center;transition:.2s}
 .color-opt:hover,.color-opt.sel{border-color:var(--p)}
 .color-swatch{width:40px;height:40px;border-radius:50%;margin:0 auto .5rem}
 .color-name{font-size:.75rem;color:var(--muted)}
-
-/* LINK BOX */
-.link-box{background:var(--dark2);border:1px solid var(--dark5);border-radius:12px;padding:1rem 1.2rem;display:flex;align-items:center;justify-content:space-between;gap:.8rem;flex-wrap:wrap}
+.link-box{background:var(--dark2);border:1px solid var(--dark5);border-radius:12px;padding:1rem 1.2rem;display:flex;align-items:center;justify-content:space-between;gap:.8rem;flex-wrap:wrap;margin-bottom:1.5rem}
 .link-url{color:var(--p);font-size:.88rem;word-break:break-all}
-
-/* ACTIVATION */
-.act-box{background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.25);border-radius:14px;padding:1.5rem;text-align:center}
+.act-box{background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.25);border-radius:14px;padding:1.5rem;text-align:center;margin-bottom:1.3rem}
 .act-box h3{color:var(--p);margin-bottom:.5rem}
 .act-box p{color:var(--muted);font-size:.85rem;margin-bottom:1rem;line-height:1.7}
-
-/* TOAST / LOADER */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:500;display:none;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(6px)}
+.modal-overlay.open{display:flex}
+.modal{background:var(--dark3);border:1px solid var(--dark5);border-radius:20px;padding:2rem;width:100%;max-width:420px;animation:fu .3s ease;position:relative;max-height:90vh;overflow-y:auto}
+.modal-close{position:absolute;top:1rem;left:1rem;background:transparent;border:none;color:var(--muted);font-size:1.3rem;cursor:pointer}
+.modal-title{font-size:1.15rem;font-weight:800;color:var(--p);margin-bottom:.3rem}
+.modal-sub{color:var(--muted);font-size:.83rem;margin-bottom:1.3rem}
 #toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(80px);background:var(--dark3);border:1px solid var(--p);color:var(--text);padding:.8rem 1.8rem;border-radius:12px;font-size:.88rem;transition:.3s;z-index:9999;white-space:nowrap;pointer-events:none}
 #toast.show{transform:translateX(-50%) translateY(0)}
 #loader{position:fixed;inset:0;background:rgba(8,8,8,.85);z-index:9998;display:none;align-items:center;justify-content:center}
 #loader.on{display:flex}
 .spin{width:44px;height:44px;border-radius:50%;border:3px solid var(--dark5);border-top-color:var(--p);animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* MOBILE */
 .mob-toggle{display:none;position:fixed;top:1rem;left:1rem;z-index:200;background:var(--dark3);border:1px solid var(--dark5);border-radius:10px;padding:.5rem .8rem;cursor:pointer;font-size:1.1rem;color:var(--text)}
-@media(max-width:768px){
-  .sidebar{transform:translateX(100%);width:260px}
-  .sidebar.open{transform:translateX(0)}
-  .main{margin-right:0;padding:1rem}
-  .mob-toggle{display:block}
-  .overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99;display:none}
-  .overlay.on{display:block}
-}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99;display:none}
+.overlay.on{display:block}
+@media(max-width:768px){.sidebar{transform:translateX(100%);width:260px}.sidebar.open{transform:translateX(0)}.main{margin-right:0;padding:1rem}.mob-toggle{display:block}}
 </style>
 </head>
 <body>
-
 <button class="mob-toggle" onclick="toggleSidebar()">☰</button>
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 
 <div class="layout">
-  <!-- SIDEBAR -->
   <div class="sidebar" id="sidebar">
     <div class="sb-logo">BarberStor ✂️</div>
     <div class="sb-user">مرحباً، <span id="sbName">...</span><br><span style="font-size:.72rem" id="sbPlan"></span></div>
-
-    <div class="nav-it on" onclick="showPage('pgHome',this)"><span class="ico">🏠</span> <span data-ar="الرئيسية" data-en="Home">الرئيسية</span></div>
-    <div class="nav-it" onclick="showPage('pgBookings',this)"><span class="ico">📋</span> <span data-ar="الحجوزات" data-en="Bookings">الحجوزات</span></div>
-    <div class="nav-it" onclick="showPage('pgServices',this)"><span class="ico">💈</span> <span data-ar="الخدمات" data-en="Services">الخدمات</span></div>
-    <div class="nav-it" onclick="showPage('pgCoupons',this)"><span class="ico">🎁</span> <span data-ar="الكوبونات" data-en="Coupons">الكوبونات</span></div>
-    <div class="nav-it" onclick="showPage('pgTheme',this)"><span class="ico">🎨</span> <span data-ar="الثيم" data-en="Theme">الثيم</span></div>
-    <div class="nav-it" onclick="showPage('pgSettings',this)"><span class="ico">⚙️</span> <span data-ar="الإعدادات" data-en="Settings">الإعدادات</span></div>
-
+    <div class="nav-it on" onclick="showPage('pgHome',this)">🏠 الرئيسية</div>
+    <div class="nav-it" onclick="showPage('pgBookings',this)">📋 الحجوزات</div>
+    <div class="nav-it" onclick="showPage('pgServices',this)">💈 الخدمات</div>
+    <div class="nav-it" onclick="showPage('pgCoupons',this)">🎁 الكوبونات</div>
+    <div class="nav-it" id="navTheme" onclick="showPage('pgTheme',this)">🎨 الثيم</div>
+    <div class="nav-it" id="navAccounts" onclick="showPage('pgAccounts',this)">👥 الحسابات</div>
+    <div class="nav-it" id="navSettings" onclick="showPage('pgSettings',this)">⚙️ الإعدادات</div>
     <div class="sb-bottom">
-      <div class="nav-it" onclick="window.open('index.html')"><span class="ico">🌐</span> <span data-ar="الموقع الرئيسي" data-en="Main Site">الموقع الرئيسي</span></div>
-      <div class="nav-it" onclick="doLogout()"><span class="ico">🚪</span> <span data-ar="تسجيل خروج" data-en="Logout">تسجيل خروج</span></div>
+      <div class="nav-it" onclick="openSite()">🌐 موقع العملاء</div>
+      <div class="nav-it" onclick="doLogout()">🚪 تسجيل خروج</div>
     </div>
   </div>
 
-  <!-- MAIN -->
   <div class="main">
-
-    <!-- Inactive Banner -->
     <div id="inactiveBanner">
-      <h3 data-ar="⚠️ حسابك غير مفعّل" data-en="⚠️ Account Not Activated">⚠️ حسابك غير مفعّل</h3>
-      <p data-ar="فعّل حسابك برمز التفعيل للوصول لجميع الخصائص ونشر موقعك" data-en="Activate your account with the activation code to access all features and publish your site">فعّل حسابك برمز التفعيل للوصول لجميع الخصائص ونشر موقعك</p>
-      <button class="btn btn-gold" onclick="showPage('pgSettings',null)" data-ar="فعّل الآن" data-en="Activate Now">فعّل الآن</button>
+      <h3>⚠️ حسابك غير مفعّل</h3>
+      <p>فعّل حسابك برمز التفعيل للوصول لجميع الخصائص</p>
+      <button class="btn btn-gold" onclick="showPage('pgSettings',null)">فعّل الآن</button>
     </div>
 
-    <!-- ══ HOME ══ -->
-    <div class="page active" id="pgHome">
-      <div class="pg-hd">
-        <h2 data-ar="لوحة التحكم 📊" data-en="Dashboard 📊">لوحة التحكم 📊</h2>
-        <button class="btn btn-blue btn-sm" onclick="copyLink()" data-ar="📋 انسخ رابطك" data-en="📋 Copy Your Link">📋 انسخ رابطك</button>
-      </div>
-
-      <div class="link-box" style="margin-bottom:1.5rem">
-        <div>
-          <div style="font-size:.75rem;color:var(--muted);margin-bottom:.2rem" data-ar="رابط موقعك" data-en="Your Site Link">رابط موقعك</div>
-          <div class="link-url" id="myLink">—</div>
-        </div>
-        <div style="display:flex;gap:.5rem">
-          <button class="btn btn-sm btn-gold" onclick="copyLink()" data-ar="نسخ" data-en="Copy">نسخ</button>
-          <button class="btn btn-sm btn-ghost" onclick="openSite()" data-ar="فتح" data-en="Open">فتح</button>
-        </div>
-      </div>
-
-      <div class="stats" id="statsGrid"></div>
-
-      <div class="card">
-        <div class="card-hd"><span class="card-title" data-ar="آخر الحجوزات" data-en="Recent Bookings">آخر الحجوزات</span></div>
-        <div class="twrap">
-          <table>
-            <thead><tr><th data-ar="الاسم" data-en="Name">الاسم</th><th data-ar="الخدمة" data-en="Service">الخدمة</th><th data-ar="التاريخ" data-en="Date">التاريخ</th><th data-ar="الوقت" data-en="Time">الوقت</th><th data-ar="الإجمالي" data-en="Total">الإجمالي</th></tr></thead>
-            <tbody id="recentTbl"></tbody>
-          </table>
-        </div>
-      </div>
+```
+<!-- HOME -->
+<div class="page active" id="pgHome">
+  <div class="pg-hd">
+    <h2>لوحة التحكم 📊</h2>
+    <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+      <button class="btn btn-blue btn-sm" onclick="copyLink()">📋 انسخ رابطك</button>
+      <button class="btn btn-gold btn-sm" onclick="openModal('walkInModal')">➕ حجز بدون موعد</button>
     </div>
-
-    <!-- ══ BOOKINGS ══ -->
-    <div class="page" id="pgBookings">
-      <div class="pg-hd">
-        <h2 data-ar="الحجوزات 📋" data-en="Bookings 📋">الحجوزات 📋</h2>
-        <input type="date" class="fi" style="width:auto" id="filterDate" onchange="renderBookings()">
-      </div>
-      <div class="card">
-        <div class="twrap">
-          <table>
-            <thead><tr><th>#</th><th data-ar="الاسم" data-en="Name">الاسم</th><th data-ar="الجوال" data-en="Phone">الجوال</th><th data-ar="الخدمة" data-en="Service">الخدمة</th><th data-ar="التاريخ" data-en="Date">التاريخ</th><th data-ar="الوقت" data-en="Time">الوقت</th><th data-ar="الإجمالي" data-en="Total">الإجمالي</th><th data-ar="الكوبون" data-en="Coupon">الكوبون</th><th data-ar="حذف" data-en="Delete">حذف</th></tr></thead>
-            <tbody id="bookTbl"></tbody>
-          </table>
-        </div>
-      </div>
+  </div>
+  <div class="link-box">
+    <div><div style="font-size:.75rem;color:var(--muted);margin-bottom:.2rem">رابط موقع العملاء</div><div class="link-url" id="myLink">—</div></div>
+    <div style="display:flex;gap:.5rem">
+      <button class="btn btn-sm btn-gold" onclick="copyLink()">نسخ</button>
+      <button class="btn btn-sm btn-ghost" onclick="openSite()">فتح</button>
     </div>
+  </div>
+  <div class="stats" id="statsGrid"></div>
+  <div class="card">
+    <div class="card-hd"><span class="card-title">آخر الحجوزات</span></div>
+    <div class="twrap"><table><thead><tr><th>الاسم</th><th>الخدمة</th><th>التاريخ</th><th>الوقت</th><th>الإجمالي</th><th>نوع</th></tr></thead><tbody id="recentTbl"></tbody></table></div>
+  </div>
+</div>
 
-    <!-- ══ SERVICES ══ -->
-    <div class="page" id="pgServices">
-      <div class="pg-hd">
-        <h2 data-ar="الخدمات والأسعار 💈" data-en="Services & Prices 💈">الخدمات والأسعار 💈</h2>
-        <button class="btn btn-gold" onclick="toggleForm('addSvcForm')" data-ar="+ إضافة خدمة" data-en="+ Add Service">+ إضافة خدمة</button>
-      </div>
-      <div class="editrow" id="addSvcForm">
-        <div style="font-weight:700;color:var(--p);margin-bottom:.8rem" data-ar="خدمة جديدة" data-en="New Service">خدمة جديدة</div>
-        <div class="fgrid">
-          <div class="fg"><label data-ar="اسم الخدمة" data-en="Service Name">اسم الخدمة</label><input class="fi" id="ns_name" placeholder="قصة شعر"></div>
-          <div class="fg"><label data-ar="اسم بالإنجليزي" data-en="Name in English">اسم بالإنجليزي</label><input class="fi" id="ns_nameEn" placeholder="Haircut"></div>
-          <div class="fg"><label data-ar="السعر (ريال)" data-en="Price (SAR)">السعر (ريال)</label><input type="number" class="fi" id="ns_price" placeholder="50"></div>
-          <div class="fg"><label data-ar="المدة (دقيقة)" data-en="Duration (min)">المدة (دقيقة)</label><input type="number" class="fi" id="ns_dur" placeholder="30"></div>
-          <div class="fg"><label data-ar="أيقونة Emoji" data-en="Emoji Icon">أيقونة Emoji</label><input class="fi" id="ns_ico" placeholder="💈" maxlength="2"></div>
-        </div>
-        <div style="display:flex;gap:.6rem;margin-top:.8rem">
-          <button class="btn btn-gold" onclick="addService()" data-ar="حفظ" data-en="Save">حفظ</button>
-          <button class="btn btn-ghost" onclick="toggleForm('addSvcForm')" data-ar="إلغاء" data-en="Cancel">إلغاء</button>
-        </div>
-      </div>
-      <div class="card"><div id="svcList"></div></div>
+<!-- BOOKINGS -->
+<div class="page" id="pgBookings">
+  <div class="pg-hd">
+    <h2>الحجوزات 📋</h2>
+    <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+      <input type="date" class="fi" style="width:auto" id="filterDate" onchange="renderBookings()">
+      <button class="btn btn-gold btn-sm" onclick="openModal('walkInModal')">➕ حجز بدون موعد</button>
     </div>
+  </div>
+  <div class="card"><div class="twrap"><table><thead><tr><th>#</th><th>الاسم</th><th>الجوال</th><th>الخدمة</th><th>التاريخ</th><th>الوقت</th><th>الإجمالي</th><th>نوع</th><th>حذف</th></tr></thead><tbody id="bookTbl"></tbody></table></div></div>
+</div>
 
-    <!-- ══ COUPONS ══ -->
-    <div class="page" id="pgCoupons">
-      <div class="pg-hd">
-        <h2 data-ar="الكوبونات 🎁" data-en="Coupons 🎁">الكوبونات 🎁</h2>
-        <button class="btn btn-gold" onclick="toggleForm('addCpnForm')" data-ar="+ إضافة كوبون" data-en="+ Add Coupon">+ إضافة كوبون</button>
-      </div>
-      <div class="editrow" id="addCpnForm">
-        <div style="font-weight:700;color:var(--p);margin-bottom:.8rem" data-ar="كوبون جديد" data-en="New Coupon">كوبون جديد</div>
-        <div class="fgrid">
-          <div class="fg"><label data-ar="كود الكوبون" data-en="Coupon Code">كود الكوبون</label><input class="fi" id="nc_code" placeholder="SAVE20" style="text-transform:uppercase"></div>
-          <div class="fg"><label data-ar="نوع الخصم" data-en="Discount Type">نوع الخصم</label>
-            <select class="fi" id="nc_type">
-              <option value="percent" data-ar="نسبة %" data-en="Percentage %">نسبة %</option>
-              <option value="fixed" data-ar="مبلغ ثابت" data-en="Fixed Amount">مبلغ ثابت</option>
-            </select>
-          </div>
-          <div class="fg"><label data-ar="القيمة" data-en="Value">القيمة</label><input type="number" class="fi" id="nc_val" placeholder="10"></div>
-        </div>
-        <div style="display:flex;gap:.6rem;margin-top:.8rem">
-          <button class="btn btn-gold" onclick="addCoupon()" data-ar="حفظ" data-en="Save">حفظ</button>
-          <button class="btn btn-ghost" onclick="toggleForm('addCpnForm')" data-ar="إلغاء" data-en="Cancel">إلغاء</button>
-        </div>
-      </div>
-      <div class="card"><div id="cpnList"></div></div>
+<!-- SERVICES -->
+<div class="page" id="pgServices">
+  <div class="pg-hd"><h2>الخدمات 💈</h2><button class="btn btn-gold" onclick="toggleForm('addSvcForm')">+ إضافة</button></div>
+  <div class="editrow" id="addSvcForm">
+    <div style="font-weight:700;color:var(--p);margin-bottom:.8rem">خدمة جديدة</div>
+    <div class="fgrid">
+      <div class="fg"><label>الاسم (عربي)</label><input class="fi" id="ns_name" placeholder="قصة شعر"></div>
+      <div class="fg"><label>Name (English)</label><input class="fi" id="ns_nameEn" placeholder="Haircut"></div>
+      <div class="fg"><label>السعر (ريال)</label><input type="number" class="fi" id="ns_price" placeholder="50"></div>
+      <div class="fg"><label>المدة (دقيقة)</label><input type="number" class="fi" id="ns_dur" placeholder="30"></div>
+      <div class="fg"><label>Emoji</label><input class="fi" id="ns_ico" placeholder="💈" maxlength="2"></div>
     </div>
-
-    <!-- ══ THEME ══ -->
-    <div class="page" id="pgTheme">
-      <div class="pg-hd"><h2 data-ar="تخصيص الثيم 🎨" data-en="Theme Customization 🎨">تخصيص الثيم 🎨</h2></div>
-      <div class="card">
-        <div class="card-hd"><span class="card-title" data-ar="اختر لون الأساسي" data-en="Choose Primary Color">اختر لون الأساسي</span></div>
-        <div class="theme-colors" id="colorPicker">
-          <div class="color-opt sel" onclick="pickColor('#C9A84C','ذهبي','Gold',this)"><div class="color-swatch" style="background:#C9A84C"></div><div class="color-name">ذهبي</div></div>
-          <div class="color-opt" onclick="pickColor('#3498db','أزرق','Blue',this)"><div class="color-swatch" style="background:#3498db"></div><div class="color-name">أزرق</div></div>
-          <div class="color-opt" onclick="pickColor('#2ecc71','أخضر','Green',this)"><div class="color-swatch" style="background:#2ecc71"></div><div class="color-name">أخضر</div></div>
-          <div class="color-opt" onclick="pickColor('#e74c3c','أحمر','Red',this)"><div class="color-swatch" style="background:#e74c3c"></div><div class="color-name">أحمر</div></div>
-          <div class="color-opt" onclick="pickColor('#9b59b6','بنفسجي','Purple',this)"><div class="color-swatch" style="background:#9b59b6"></div><div class="color-name">بنفسجي</div></div>
-          <div class="color-opt" onclick="pickColor('#1abc9c','زمردي','Teal',this)"><div class="color-swatch" style="background:#1abc9c"></div><div class="color-name">زمردي</div></div>
-        </div>
-        <div class="fg" style="max-width:200px">
-          <label data-ar="أو أدخل لون مخصص" data-en="Or enter custom color">أو أدخل لون مخصص</label>
-          <input type="color" class="fi" id="customColor" style="height:44px;padding:.3rem" onchange="pickCustomColor(this.value)">
-        </div>
-        <button class="btn btn-gold" onclick="saveTheme()" data-ar="💾 حفظ الثيم" data-en="💾 Save Theme">💾 حفظ الثيم</button>
-      </div>
-
-      <div class="card">
-        <div class="card-hd"><span class="card-title" data-ar="معاينة" data-en="Preview">معاينة</span></div>
-        <div id="themePreview" style="background:#0f0f0f;border-radius:12px;padding:1.5rem;text-align:center">
-          <div style="font-size:1.5rem;font-weight:900;margin-bottom:.5rem" id="previewTitle">اسم محلك</div>
-          <div style="font-size:.85rem;color:#666;margin-bottom:1rem" id="previewSub">وصف محلك</div>
-          <div id="previewBtn" style="display:inline-block;padding:.7rem 2rem;border-radius:50px;font-weight:700;font-size:.9rem;background:#C9A84C;color:#000;cursor:pointer">احجز الآن</div>
-        </div>
-      </div>
+    <div style="display:flex;gap:.6rem;margin-top:.8rem">
+      <button class="btn btn-gold" onclick="addService()">حفظ</button>
+      <button class="btn btn-ghost" onclick="toggleForm('addSvcForm')">إلغاء</button>
     </div>
+  </div>
+  <div class="card"><div id="svcList"></div></div>
+</div>
 
-    <!-- ══ SETTINGS ══ -->
-    <div class="page" id="pgSettings">
-      <div class="pg-hd"><h2 data-ar="الإعدادات ⚙️" data-en="Settings ⚙️">الإعدادات ⚙️</h2></div>
-
-      <!-- Activation -->
-      <div class="act-box" id="actBox" style="margin-bottom:1.3rem">
-        <h3 data-ar="🔑 تفعيل الحساب" data-en="🔑 Account Activation">🔑 تفعيل الحساب</h3>
-        <p data-ar="أدخل رمز التفعيل الذي وصلك بعد الدفع لتفعيل حسابك ونشر موقعك" data-en="Enter your activation code received after payment to activate your account">أدخل رمز التفعيل الذي وصلك بعد الدفع لتفعيل حسابك ونشر موقعك</p>
-        <div style="display:flex;gap:.6rem;max-width:350px;margin:0 auto">
-          <input class="fi" id="actCode" placeholder="XXXX-XXXX-XXXX" style="text-align:center;letter-spacing:2px;text-transform:uppercase">
-          <button class="btn btn-gold" onclick="activateAccount()" data-ar="تفعيل" data-en="Activate">تفعيل</button>
-        </div>
-        <div style="margin-top:.6rem;font-size:.78rem;color:var(--muted)" data-ar="لم تدفع بعد؟" data-en="Haven't paid yet?">لم تدفع بعد؟ <a href="index.html#pricingSec" style="color:var(--p)" data-ar="اشترك الآن" data-en="Subscribe Now">اشترك الآن</a></div>
-      </div>
-
-      <div class="card">
-        <div class="card-hd"><span class="card-title" data-ar="بيانات المحل" data-en="Shop Info">بيانات المحل</span></div>
-        <div class="fgrid">
-          <div class="fg"><label data-ar="اسم المحل (عربي)" data-en="Shop Name (Arabic)">اسم المحل (عربي)</label><input class="fi" id="set_name"></div>
-          <div class="fg"><label data-ar="اسم المحل (إنجليزي)" data-en="Shop Name (English)">اسم المحل (إنجليزي)</label><input class="fi" id="set_nameEn"></div>
-          <div class="fg"><label data-ar="الوصف (عربي)" data-en="Description (Arabic)">الوصف (عربي)</label><input class="fi" id="set_sub"></div>
-          <div class="fg"><label data-ar="الوصف (إنجليزي)" data-en="Description (English)">الوصف (إنجليزي)</label><input class="fi" id="set_subEn"></div>
-          <div class="fg"><label data-ar="رقم الجوال (للتواصل)" data-en="Phone (for contact)">رقم الجوال</label><input class="fi" id="set_phone" placeholder="05xxxxxxxx"></div>
-          <div class="fg"><label data-ar="المدينة" data-en="City">المدينة</label><input class="fi" id="set_city" placeholder="الرياض"></div>
-        </div>
-        <button class="btn btn-gold" onclick="saveSettings()" data-ar="💾 حفظ التغييرات" data-en="💾 Save Changes">💾 حفظ التغييرات</button>
-      </div>
+<!-- COUPONS -->
+<div class="page" id="pgCoupons">
+  <div class="pg-hd"><h2>الكوبونات 🎁</h2><button class="btn btn-gold" onclick="toggleForm('addCpnForm')">+ إضافة</button></div>
+  <div class="editrow" id="addCpnForm">
+    <div style="font-weight:700;color:var(--p);margin-bottom:.8rem">كوبون جديد</div>
+    <div class="fgrid">
+      <div class="fg"><label>كود الكوبون</label><input class="fi" id="nc_code" placeholder="SAVE20" style="text-transform:uppercase"></div>
+      <div class="fg"><label>نوع الخصم</label><select class="fi" id="nc_type"><option value="percent">نسبة %</option><option value="fixed">مبلغ ثابت</option></select></div>
+      <div class="fg"><label>القيمة</label><input type="number" class="fi" id="nc_val" placeholder="10"></div>
     </div>
+    <div style="display:flex;gap:.6rem;margin-top:.8rem">
+      <button class="btn btn-gold" onclick="addCoupon()">حفظ</button>
+      <button class="btn btn-ghost" onclick="toggleForm('addCpnForm')">إلغاء</button>
+    </div>
+  </div>
+  <div class="card"><div id="cpnList"></div></div>
+</div>
 
+<!-- THEME -->
+<div class="page" id="pgTheme">
+  <div class="pg-hd"><h2>الثيم 🎨</h2></div>
+  <div class="card">
+    <div class="card-hd"><span class="card-title">اللون الأساسي</span></div>
+    <div class="theme-colors">
+      <div class="color-opt sel" onclick="pickColor('#C9A84C',this)"><div class="color-swatch" style="background:#C9A84C"></div><div class="color-name">ذهبي</div></div>
+      <div class="color-opt" onclick="pickColor('#3498db',this)"><div class="color-swatch" style="background:#3498db"></div><div class="color-name">أزرق</div></div>
+      <div class="color-opt" onclick="pickColor('#2ecc71',this)"><div class="color-swatch" style="background:#2ecc71"></div><div class="color-name">أخضر</div></div>
+      <div class="color-opt" onclick="pickColor('#e74c3c',this)"><div class="color-swatch" style="background:#e74c3c"></div><div class="color-name">أحمر</div></div>
+      <div class="color-opt" onclick="pickColor('#9b59b6',this)"><div class="color-swatch" style="background:#9b59b6"></div><div class="color-name">بنفسجي</div></div>
+      <div class="color-opt" onclick="pickColor('#1abc9c',this)"><div class="color-swatch" style="background:#1abc9c"></div><div class="color-name">زمردي</div></div>
+    </div>
+    <div class="fg" style="max-width:200px"><label>لون مخصص</label><input type="color" class="fi" id="customColor" style="height:44px;padding:.3rem" onchange="pickColor(this.value,null)"></div>
+    <button class="btn btn-gold" onclick="saveTheme()">💾 حفظ الثيم</button>
+  </div>
+  <div class="card">
+    <div class="card-hd"><span class="card-title">معاينة</span></div>
+    <div style="background:#0f0f0f;border-radius:12px;padding:1.5rem;text-align:center">
+      <div id="previewTitle" style="font-size:1.5rem;font-weight:900;margin-bottom:.5rem;color:#C9A84C">اسم محلك</div>
+      <div id="previewSub" style="font-size:.85rem;color:#666;margin-bottom:1rem">وصف محلك</div>
+      <div id="previewBtn" style="display:inline-block;padding:.7rem 2rem;border-radius:50px;font-weight:700;font-size:.9rem;background:#C9A84C;color:#000">احجز الآن</div>
+    </div>
+  </div>
+</div>
+
+<!-- ACCOUNTS -->
+<div class="page" id="pgAccounts">
+  <div class="pg-hd"><h2>الحسابات 👥</h2></div>
+  <div class="card">
+    <div class="card-hd"><span class="card-title">إضافة حساب موظف</span></div>
+    <p style="color:var(--muted);font-size:.83rem;margin-bottom:1rem">يقدر الموظف يدخل لوحة التحكم بصلاحيات محدودة</p>
+    <div class="fgrid" style="margin-bottom:.8rem">
+      <div class="fg"><label>الاسم</label><input class="fi" id="emp_name" placeholder="أحمد محمد"></div>
+      <div class="fg"><label>البريد الإلكتروني</label><input type="email" class="fi" id="emp_email"></div>
+      <div class="fg"><label>كلمة المرور</label><input type="password" class="fi" id="emp_pass"></div>
+      <div class="fg"><label>الصلاحيات</label><select class="fi" id="emp_role"><option value="staff">موظف (حجوزات فقط)</option><option value="manager">مدير (كل شيء)</option></select></div>
+    </div>
+    <button class="btn btn-gold" onclick="addEmployee()">➕ إضافة حساب</button>
+  </div>
+  <div class="card"><div class="card-hd"><span class="card-title">الحسابات الحالية</span></div><div id="empList"></div></div>
+</div>
+
+<!-- SETTINGS -->
+<div class="page" id="pgSettings">
+  <div class="pg-hd"><h2>الإعدادات ⚙️</h2></div>
+  <div class="act-box" id="actBox">
+    <h3>🔑 تفعيل الحساب</h3>
+    <p>أدخل رمز التفعيل الذي وصلك بعد الدفع</p>
+    <div style="display:flex;gap:.6rem;max-width:350px;margin:0 auto">
+      <input class="fi" id="actCode" placeholder="XXXX-XXXX-XXXX" style="text-align:center;letter-spacing:2px;text-transform:uppercase">
+      <button class="btn btn-gold" onclick="activateAccount()">تفعيل</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-hd"><span class="card-title">بيانات المحل</span></div>
+    <div class="fgrid">
+      <div class="fg"><label>اسم المحل (عربي)</label><input class="fi" id="set_name"></div>
+      <div class="fg"><label>Shop Name (English)</label><input class="fi" id="set_nameEn"></div>
+      <div class="fg"><label>الوصف (عربي)</label><input class="fi" id="set_sub"></div>
+      <div class="fg"><label>Description (English)</label><input class="fi" id="set_subEn"></div>
+      <div class="fg"><label>رقم الجوال</label><input class="fi" id="set_phone" placeholder="05xxxxxxxx"></div>
+      <div class="fg"><label>المدينة</label><input class="fi" id="set_city" placeholder="الرياض"></div>
+    </div>
+    <button class="btn btn-gold" onclick="saveSettings()">💾 حفظ التغييرات</button>
+  </div>
+</div>
+```
+
+  </div>
+</div>
+
+<!-- WALK-IN MODAL -->
+
+<div class="modal-overlay" id="walkInModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('walkInModal')">✕</button>
+    <div class="modal-title">➕ حجز بدون موعد</div>
+    <div class="modal-sub">أضف حجز لعميل حضر للمحل مباشرة</div>
+    <div class="fg"><label>اسم العميل</label><input class="fi" id="wi_name" placeholder="محمد أحمد"></div>
+    <div class="fg"><label>رقم الجوال (اختياري)</label><input class="fi" id="wi_phone" placeholder="05xxxxxxxx"></div>
+    <div class="fg"><label>الخدمة</label><select class="fi" id="wi_service"></select></div>
+    <div class="fgrid">
+      <div class="fg"><label>التاريخ</label><input type="date" class="fi" id="wi_date"></div>
+      <div class="fg"><label>الوقت</label><input type="time" class="fi" id="wi_time"></div>
+    </div>
+    <div class="fg"><label>ملاحظات (اختياري)</label><input class="fi" id="wi_note" placeholder="أي ملاحظات..."></div>
+    <button class="btn btn-gold btn-full" onclick="addWalkIn()" style="margin-top:.5rem">✅ إضافة الحجز</button>
   </div>
 </div>
 
 <div id="loader"><div class="spin"></div></div>
 <div id="toast"></div>
 
-<!-- FIREBASE -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, doc, getDoc, updateDoc, collection, query, where, getDocs, addDoc, deleteDoc, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getAuth, onAuthStateChanged, signOut, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, updateDoc, collection, query, where, getDocs, addDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAHSfjlmSyI8a5rJlR4Uep9Lc-HrHTEQAE",
-  authDomain: "barber-stor.firebaseapp.com",
-  projectId: "barber-stor",
-  storageBucket: "barber-stor.firebasestorage.app",
-  messagingSenderId: "219780488634",
-  appId: "1:219780488634:web:650eb88e5b452e9cb2d183"
-};
-
-const app  = initializeApp(firebaseConfig);
+const app  = initializeApp({apiKey:"AIzaSyAHSfjlmSyI8a5rJlR4Uep9Lc-HrHTEQAE",authDomain:"barber-stor.firebaseapp.com",projectId:"barber-stor",storageBucket:"barber-stor.firebasestorage.app",messagingSenderId:"219780488634",appId:"1:219780488634:web:650eb88e5b452e9cb2d183"});
 const auth = getAuth(app);
 const db   = getFirestore(app);
 
-let currentUser = null;
-let barberData  = null;
+let currentUser=null, barberData=null, mainBarberId=null;
 
-// ── AUTH STATE ──
 onAuthStateChanged(auth, async user => {
   if(!user){ window.location.href='index.html'; return; }
-  currentUser = user;
-  loader(true);
-  const snap = await getDoc(doc(db,'barbers',user.uid));
-  if(!snap.exists()){ window.location.href='index.html'; return; }
-  barberData = snap.data();
-  initDashboard();
+  currentUser=user; loader(true);
+  try{
+    let snap = await getDoc(doc(db,'barbers',user.uid));
+    if(snap.exists()){
+      barberData=snap.data(); mainBarberId=user.uid;
+    } else {
+      const sSnap = await getDocs(query(collection(db,'staff'),where('uid','==',user.uid)));
+      if(!sSnap.empty){
+        const sd=sSnap.docs[0].data(); mainBarberId=sd.barberId;
+        const bSnap=await getDoc(doc(db,'barbers',mainBarberId));
+        barberData={...bSnap.data(),_role:sd.role,_isStaff:true};
+      } else { window.location.href='index.html'; return; }
+    }
+    initDashboard();
+  }catch(e){ console.error(e); toast('❌ خطأ في التحميل'); }
   loader(false);
 });
 
 function initDashboard(){
-  const d = barberData;
-  document.getElementById('sbName').textContent = d.name || '';
-  document.getElementById('sbPlan').innerHTML = d.status==='active'
-    ? '<span style="color:var(--green)">✅ مفعّل</span>'
-    : '<span style="color:var(--red)">⛔ غير مفعّل</span>';
-
-  // Show inactive banner
-  if(d.status !== 'active'){
-    document.getElementById('inactiveBanner').style.display='block';
+  document.getElementById('sbName').textContent=barberData.name||'';
+  document.getElementById('sbPlan').innerHTML=barberData.status==='active'
+    ?'<span style="color:var(--green)">✅ مفعّل</span>':'<span style="color:var(--red)">⛔ غير مفعّل</span>';
+  if(barberData.status!=='active') document.getElementById('inactiveBanner').style.display='block';
+  if(barberData._isStaff && barberData._role==='staff'){
+    ['navTheme','navAccounts','navSettings'].forEach(id=>{ const el=document.getElementById(id); if(el) el.style.display='none'; });
   }
-
-  // My link
-  const link = `${location.origin}/booking.html?u=${d.username}`;
-  document.getElementById('myLink').textContent = link;
-
-  // Settings fields
-  document.getElementById('set_name').value   = d.settings?.shopName || d.name || '';
-  document.getElementById('set_nameEn').value = d.settings?.shopNameEn || '';
-  document.getElementById('set_sub').value    = d.settings?.sub || '';
-  document.getElementById('set_subEn').value  = d.settings?.subEn || '';
-  document.getElementById('set_phone').value  = d.settings?.phone || '';
-  document.getElementById('set_city').value   = d.settings?.city || '';
-
-  // Theme
-  if(d.theme?.primaryColor){
-    window.selectedColor = d.theme.primaryColor;
-    updatePreview(d.theme.primaryColor);
-  }
-
-  updatePreview(d.theme?.primaryColor || '#C9A84C');
-  loadStats();
-  renderSvcList();
-  renderCpnList();
-  loadBookings();
+  document.getElementById('myLink').textContent=`${location.origin}/booking.html?u=${barberData.username}`;
+  document.getElementById('set_name').value=barberData.settings?.shopName||barberData.name||'';
+  document.getElementById('set_nameEn').value=barberData.settings?.shopNameEn||'';
+  document.getElementById('set_sub').value=barberData.settings?.sub||'';
+  document.getElementById('set_subEn').value=barberData.settings?.subEn||'';
+  document.getElementById('set_phone').value=barberData.settings?.phone||'';
+  document.getElementById('set_city').value=barberData.settings?.city||'';
+  window.selectedColor=barberData.theme?.primaryColor||'#C9A84C';
+  updatePreview(window.selectedColor);
+  const today=new Date().toISOString().split('T')[0];
+  document.getElementById('wi_date').value=today;
+  document.getElementById('wi_time').value=new Date().toTimeString().slice(0,5);
+  if(barberData.status==='active') document.getElementById('actBox').innerHTML='<div style="color:var(--green);font-size:1rem;font-weight:700">✅ حسابك مفعّل</div>';
+  loadStats(); renderSvcList(); renderCpnList(); renderEmpList();
 }
 
-// ── STATS ──
 async function loadStats(){
-  const bSnap = await getDocs(query(collection(db,'bookings'),where('barberId','==',currentUser.uid)));
-  const bks = bSnap.docs.map(d=>d.data());
-  const today = new Date().toISOString().split('T')[0];
-  const todayBks = bks.filter(b=>b.date===today);
-  const revenue  = bks.reduce((s,b)=>s+(b.total||0),0);
-
-  document.getElementById('statsGrid').innerHTML = `
-    <div class="stat"><div class="lbl">إجمالي الحجوزات</div><div class="val">${bks.length}</div></div>
-    <div class="stat"><div class="lbl">حجوزات اليوم</div><div class="val">${todayBks.length}</div></div>
-    <div class="stat"><div class="lbl">الإيرادات (ريال)</div><div class="val">${revenue.toLocaleString()}</div></div>
-    <div class="stat"><div class="lbl">الخدمات</div><div class="val">${barberData.services?.length||0}</div></div>`;
-
-  // Recent bookings
-  const recent = bks.sort((a,b)=>b.ts>a.ts?1:-1).slice(0,5);
-  document.getElementById('recentTbl').innerHTML = recent.length
-    ? recent.map(b=>`<tr><td>${b.name}</td><td><span class="badge bg">${b.service}</span></td><td>${b.date}</td><td>${b.time}</td><td style="color:var(--p);font-weight:700">${b.total} ر</td></tr>`).join('')
-    : `<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:1.5rem">لا توجد حجوزات بعد</td></tr>`;
+  try{
+    const snap=await getDocs(query(collection(db,'bookings'),where('barberId','==',mainBarberId)));
+    const bks=snap.docs.map(d=>d.data());
+    const today=new Date().toISOString().split('T')[0];
+    document.getElementById('statsGrid').innerHTML=`
+      <div class="stat"><div class="lbl">إجمالي الحجوزات</div><div class="val">${bks.length}</div></div>
+      <div class="stat"><div class="lbl">حجوزات اليوم</div><div class="val">${bks.filter(b=>b.date===today).length}</div></div>
+      <div class="stat"><div class="lbl">الإيرادات (ريال)</div><div class="val">${bks.reduce((s,b)=>s+(b.total||0),0).toLocaleString()}</div></div>
+      <div class="stat"><div class="lbl">الخدمات</div><div class="val">${barberData.services?.length||0}</div></div>`;
+    const recent=[...bks].sort((a,b)=>b.ts>a.ts?1:-1).slice(0,5);
+    document.getElementById('recentTbl').innerHTML=recent.length
+      ?recent.map(b=>`<tr><td>${b.name}</td><td><span class="badge bg">${b.service}</span></td><td>${b.date}</td><td>${b.time}</td><td style="color:var(--p);font-weight:700">${b.total} ر</td><td><span class="badge ${b.walkin?'bb':'bgr'}">${b.walkin?'بدون موعد':'أونلاين'}</span></td></tr>`).join('')
+      :`<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:1.5rem">لا توجد حجوزات بعد</td></tr>`;
+  }catch(e){ console.error(e); }
 }
 
-// ── BOOKINGS ──
-async function loadBookings(){ window._allBookings = []; renderBookings(); }
-
-window.renderBookings = async () => {
-  const filter = document.getElementById('filterDate').value;
-  let q = query(collection(db,'bookings'), where('barberId','==',currentUser.uid));
-  const snap = await getDocs(q);
-  let bks = snap.docs.map(d=>({...d.data(), _id:d.id}));
-  if(filter) bks = bks.filter(b=>b.date===filter);
-  bks.sort((a,b)=>a.date>b.date?-1:1);
-
-  const tb = document.getElementById('bookTbl');
-  if(!bks.length){ tb.innerHTML=`<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:1.5rem">لا توجد حجوزات</td></tr>`; return; }
-  tb.innerHTML = bks.map((b,i)=>`
-    <tr>
-      <td>${i+1}</td><td>${b.name}</td><td>${b.phone}</td>
-      <td><span class="badge bg">${b.service}</span></td>
-      <td>${b.date}</td><td>${b.time}</td>
-      <td style="font-weight:700;color:var(--p)">${b.total} ر</td>
-      <td>${b.coupon?`<span class="badge bb">${b.coupon}</span>`:'-'}</td>
-      <td><button class="btn btn-danger btn-sm" onclick="deleteBooking('${b._id}')">🗑️</button></td>
-    </tr>`).join('');
+window.renderBookings=async()=>{
+  const filter=document.getElementById('filterDate').value;
+  try{
+    const snap=await getDocs(query(collection(db,'bookings'),where('barberId','==',mainBarberId)));
+    let bks=snap.docs.map(d=>({...d.data(),_id:d.id}));
+    if(filter) bks=bks.filter(b=>b.date===filter);
+    bks.sort((a,b)=>a.ts>b.ts?-1:1);
+    document.getElementById('bookTbl').innerHTML=bks.length
+      ?bks.map((b,i)=>`<tr><td>${i+1}</td><td>${b.name}</td><td>${b.phone||'-'}</td><td><span class="badge bg">${b.service}</span></td><td>${b.date}</td><td>${b.time}</td><td style="font-weight:700;color:var(--p)">${b.total} ر</td><td><span class="badge ${b.walkin?'bb':'bgr'}">${b.walkin?'بدون موعد':'أونلاين'}</span></td><td><button class="btn btn-danger btn-sm" onclick="deleteBooking('${b._id}')">🗑️</button></td></tr>`).join('')
+      :`<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:1.5rem">لا توجد حجوزات</td></tr>`;
+  }catch(e){ console.error(e); }
 };
 
-window.deleteBooking = async (id) => {
+window.deleteBooking=async id=>{
   if(!confirm('حذف هذا الحجز؟')) return;
   await deleteDoc(doc(db,'bookings',id));
-  renderBookings(); loadStats();
-  toast('🗑️ تم حذف الحجز');
+  renderBookings(); loadStats(); toast('🗑️ تم الحذف');
 };
 
-// ── SERVICES ──
-function renderSvcList(){
-  const svcs = barberData.services || [];
-  const el = document.getElementById('svcList');
-  if(!svcs.length){ el.innerHTML='<p style="color:var(--muted);text-align:center;padding:2rem">لا توجد خدمات</p>'; return; }
-  el.innerHTML = svcs.map((s,i)=>`
-    <div class="irow">
-      <div class="iico">${s.ico||'✂️'}</div>
-      <div class="iinfo"><div class="iname">${s.name}${s.nameEn?' / '+s.nameEn:''}</div><div class="imeta">${s.price} ريال · ${s.dur||30} دقيقة</div></div>
-      <div class="iacts">
-        <button class="btn btn-ghost btn-sm" onclick="openEditSvc(${i})">✏️</button>
-        <button class="btn btn-danger btn-sm" onclick="delSvc(${i})">🗑️</button>
-      </div>
-    </div>
-    <div class="editrow" id="esvc${i}">
-      <div class="fgrid">
-        <div class="fg"><label>الاسم (عربي)</label><input class="fi" id="esn_${i}" value="${s.name}"></div>
-        <div class="fg"><label>Name (English)</label><input class="fi" id="esne_${i}" value="${s.nameEn||''}"></div>
-        <div class="fg"><label>السعر</label><input type="number" class="fi" id="esp_${i}" value="${s.price}"></div>
-        <div class="fg"><label>المدة</label><input type="number" class="fi" id="esd_${i}" value="${s.dur||30}"></div>
-        <div class="fg"><label>أيقونة</label><input class="fi" id="esi_${i}" value="${s.ico||'✂️'}" maxlength="2"></div>
-      </div>
-      <div style="display:flex;gap:.6rem;margin-top:.7rem">
-        <button class="btn btn-gold" onclick="saveSvc(${i})">💾 حفظ</button>
-        <button class="btn btn-ghost" onclick="openEditSvc(${i})">إلغاء</button>
-      </div>
-    </div>`).join('');
-}
-
-window.openEditSvc = i => document.getElementById('esvc'+i).classList.toggle('on');
-
-window.saveSvc = async i => {
-  barberData.services[i] = {
-    ...barberData.services[i],
-    name:   document.getElementById('esn_'+i).value.trim(),
-    nameEn: document.getElementById('esne_'+i).value.trim(),
-    price:  parseFloat(document.getElementById('esp_'+i).value)||0,
-    dur:    parseInt(document.getElementById('esd_'+i).value)||30,
-    ico:    document.getElementById('esi_'+i).value||'✂️',
-  };
-  await updateDoc(doc(db,'barbers',currentUser.uid),{services:barberData.services});
-  renderSvcList(); toast('✅ تم حفظ الخدمة');
-};
-
-window.delSvc = async i => {
-  if(!confirm('حذف هذه الخدمة؟')) return;
-  barberData.services.splice(i,1);
-  await updateDoc(doc(db,'barbers',currentUser.uid),{services:barberData.services});
-  renderSvcList(); toast('🗑️ تم الحذف');
-};
-
-window.addService = async () => {
-  const name  = document.getElementById('ns_name').value.trim();
-  const nameEn= document.getElementById('ns_nameEn').value.trim();
-  const price = parseFloat(document.getElementById('ns_price').value)||0;
-  const dur   = parseInt(document.getElementById('ns_dur').value)||30;
-  const ico   = document.getElementById('ns_ico').value||'✂️';
-  if(!name||!price){ toast('⚠️ أدخل الاسم والسعر'); return; }
-  const svcs = barberData.services || [];
-  svcs.push({id:Date.now(),name,nameEn,price,dur,ico});
-  barberData.services = svcs;
-  await updateDoc(doc(db,'barbers',currentUser.uid),{services:svcs});
-  renderSvcList(); toggleForm('addSvcForm');
-  ['ns_name','ns_nameEn','ns_price','ns_dur','ns_ico'].forEach(id=>document.getElementById(id).value='');
-  toast('✅ تمت إضافة الخدمة');
-};
-
-// ── COUPONS ──
-function renderCpnList(){
-  const cpns = barberData.coupons || [];
-  const el = document.getElementById('cpnList');
-  if(!cpns.length){ el.innerHTML='<p style="color:var(--muted);text-align:center;padding:2rem">لا توجد كوبونات</p>'; return; }
-  el.innerHTML = cpns.map((c,i)=>`
-    <div class="irow">
-      <div class="iico">🎁</div>
-      <div class="iinfo"><div class="iname"><span class="badge bb">${c.code}</span></div><div class="imeta">${c.type==='percent'?c.val+'% خصم':c.val+' ريال خصم'}</div></div>
-      <div class="iacts"><button class="btn btn-danger btn-sm" onclick="delCpn(${i})">🗑️</button></div>
-    </div>`).join('');
-}
-
-window.addCoupon = async () => {
-  const code = document.getElementById('nc_code').value.trim().toUpperCase();
-  const type = document.getElementById('nc_type').value;
-  const val  = parseFloat(document.getElementById('nc_val').value)||0;
-  if(!code||!val){ toast('⚠️ أدخل الكود والقيمة'); return; }
-  const cpns = barberData.coupons || [];
-  if(cpns.find(c=>c.code===code)){ toast('⚠️ الكود موجود مسبقاً'); return; }
-  cpns.push({id:Date.now(),code,type,val});
-  barberData.coupons = cpns;
-  await updateDoc(doc(db,'barbers',currentUser.uid),{coupons:cpns});
-  renderCpnList(); toggleForm('addCpnForm');
-  ['nc_code','nc_val'].forEach(id=>document.getElementById(id).value='');
-  toast('✅ تمت إضافة الكوبون');
-};
-
-window.delCpn = async i => {
-  if(!confirm('حذف هذا الكوبون؟')) return;
-  barberData.coupons.splice(i,1);
-  await updateDoc(doc(db,'barbers',currentUser.uid),{coupons:barberData.coupons});
-  renderCpnList(); toast('🗑️ تم الحذف');
-};
-
-// ── THEME ──
-window.selectedColor = '#C9A84C';
-
-window.pickColor = (color, nameAr, nameEn, el) => {
-  window.selectedColor = color;
-  document.querySelectorAll('.color-opt').forEach(o=>o.classList.remove('sel'));
-  el.classList.add('sel');
-  updatePreview(color);
-};
-
-window.pickCustomColor = (color) => {
-  window.selectedColor = color;
-  document.querySelectorAll('.color-opt').forEach(o=>o.classList.remove('sel'));
-  updatePreview(color);
-};
-
-window.updatePreview = (color) => {
-  document.getElementById('previewBtn').style.background = color;
-  document.getElementById('previewTitle').style.color    = color;
-  const d = barberData?.settings;
-  document.getElementById('previewTitle').textContent = d?.shopName || 'اسم محلك';
-  document.getElementById('previewSub').textContent   = d?.sub || 'وصف محلك';
-};
-
-window.saveTheme = async () => {
-  barberData.theme = { primaryColor: window.selectedColor };
-  await updateDoc(doc(db,'barbers',currentUser.uid),{theme: barberData.theme});
-  toast('✅ تم حفظ الثيم — سيظهر على موقعك فوراً');
-};
-
-// ── SETTINGS ──
-window.saveSettings = async () => {
-  const settings = {
-    shopName:   document.getElementById('set_name').value.trim(),
-    shopNameEn: document.getElementById('set_nameEn').value.trim(),
-    sub:        document.getElementById('set_sub').value.trim(),
-    subEn:      document.getElementById('set_subEn').value.trim(),
-    phone:      document.getElementById('set_phone').value.trim(),
-    city:       document.getElementById('set_city').value.trim(),
-  };
-  barberData.settings = settings;
-  await updateDoc(doc(db,'barbers',currentUser.uid),{settings});
-  updatePreview(window.selectedColor);
-  toast('✅ تم حفظ الإعدادات');
-};
-
-// ── ACTIVATION ──
-window.activateAccount = async () => {
-  const code = document.getElementById('actCode').value.trim().toUpperCase();
-  if(!code){ toast('⚠️ أدخل رمز التفعيل'); return; }
+window.addWalkIn=async()=>{
+  const name=document.getElementById('wi_name').value.trim();
+  const phone=document.getElementById('wi_phone').value.trim();
+  const svcId=document.getElementById('wi_service').value;
+  const date=document.getElementById('wi_date').value;
+  const time=document.getElementById('wi_time').value;
+  const note=document.getElementById('wi_note').value.trim();
+  if(!name||!svcId||!date||!time){ toast('⚠️ أدخل الاسم والخدمة والوقت'); return; }
+  const svc=barberData.services?.find(s=>String(s.id)===String(svcId));
+  if(!svc){ toast('⚠️ اختر خدمة'); return; }
   loader(true);
-  try {
-    // Check activation code in Firestore
-    const snap = await getDocs(query(collection(db,'activationCodes'),where('code','==',code),where('used','==',false)));
-    if(snap.empty){ toast('❌ الرمز غير صحيح أو مستخدم مسبقاً'); loader(false); return; }
-    
-    const codeDoc = snap.docs[0];
-    // Mark code as used
-    await updateDoc(doc(db,'activationCodes',codeDoc.id),{used:true, usedBy:currentUser.uid, usedAt:new Date().toISOString()});
-    // Activate barber
-    await updateDoc(doc(db,'barbers',currentUser.uid),{status:'active'});
-    barberData.status = 'active';
-    document.getElementById('inactiveBanner').style.display='none';
-    document.getElementById('sbPlan').innerHTML='<span style="color:var(--green)">✅ مفعّل</span>';
-    document.getElementById('actBox').innerHTML='<div style="color:var(--green);font-size:1.1rem;font-weight:700">✅ تم تفعيل حسابك بنجاح!</div>';
-    toast('🎉 مرحباً! حسابك مفعّل الآن');
-  } catch(e){ toast('❌ حدث خطأ، حاول مرة ثانية'); }
+  try{
+    await addDoc(collection(db,'bookings'),{barberId:mainBarberId,name,phone,note,service:svc.name,serviceEn:svc.nameEn||'',date,time,price:svc.price,discount:0,total:svc.price,coupon:'',walkin:true,ts:new Date().toISOString()});
+    closeModal('walkInModal'); loadStats(); renderBookings(); toast('✅ تم إضافة الحجز');
+    ['wi_name','wi_phone','wi_note'].forEach(id=>document.getElementById(id).value='');
+  }catch(e){ toast('❌ حدث خطأ'); console.error(e); }
   loader(false);
 };
 
-// ── LOGOUT ──
-window.doLogout = async () => { await signOut(auth); window.location.href='index.html'; };
+function renderSvcList(){
+  const svcs=barberData.services||[];
+  document.getElementById('wi_service').innerHTML=svcs.map(s=>`<option value="${s.id}">${s.ico||'✂️'} ${s.name} — ${s.price} ريال</option>`).join('');
+  const el=document.getElementById('svcList');
+  if(!svcs.length){ el.innerHTML='<p style="color:var(--muted);text-align:center;padding:2rem">لا توجد خدمات</p>'; return; }
+  el.innerHTML=svcs.map((s,i)=>`
+    <div class="irow"><div class="iico">${s.ico||'✂️'}</div><div class="iinfo"><div class="iname">${s.name}${s.nameEn?' / '+s.nameEn:''}</div><div class="imeta">${s.price} ريال · ${s.dur||30} دقيقة</div></div><div class="iacts"><button class="btn btn-ghost btn-sm" onclick="openEditSvc(${i})">✏️</button><button class="btn btn-danger btn-sm" onclick="delSvc(${i})">🗑️</button></div></div>
+    <div class="editrow" id="esvc${i}"><div class="fgrid">
+      <div class="fg"><label>الاسم (عربي)</label><input class="fi" id="esn_${i}" value="${s.name}"></div>
+      <div class="fg"><label>Name (English)</label><input class="fi" id="esne_${i}" value="${s.nameEn||''}"></div>
+      <div class="fg"><label>السعر</label><input type="number" class="fi" id="esp_${i}" value="${s.price}"></div>
+      <div class="fg"><label>المدة</label><input type="number" class="fi" id="esd_${i}" value="${s.dur||30}"></div>
+      <div class="fg"><label>Emoji</label><input class="fi" id="esi_${i}" value="${s.ico||'✂️'}" maxlength="2"></div>
+    </div><div style="display:flex;gap:.6rem;margin-top:.7rem"><button class="btn btn-gold" onclick="saveSvc(${i})">💾 حفظ</button><button class="btn btn-ghost" onclick="openEditSvc(${i})">إلغاء</button></div></div>`).join('');
+}
 
-// ── HELPERS ──
-window.copyLink = () => {
-  const link = document.getElementById('myLink').textContent;
-  navigator.clipboard.writeText(link);
-  toast('✅ تم نسخ الرابط');
+window.openEditSvc=i=>document.getElementById('esvc'+i).classList.toggle('on');
+window.saveSvc=async i=>{
+  barberData.services[i]={...barberData.services[i],name:document.getElementById('esn_'+i).value.trim(),nameEn:document.getElementById('esne_'+i).value.trim(),price:parseFloat(document.getElementById('esp_'+i).value)||0,dur:parseInt(document.getElementById('esd_'+i).value)||30,ico:document.getElementById('esi_'+i).value||'✂️'};
+  await updateDoc(doc(db,'barbers',mainBarberId),{services:barberData.services});
+  renderSvcList(); toast('✅ تم حفظ الخدمة');
 };
-window.openSite = () => {
-  const link = document.getElementById('myLink').textContent;
-  window.open(link,'_blank');
+window.delSvc=async i=>{
+  if(!confirm('حذف؟')) return;
+  barberData.services.splice(i,1);
+  await updateDoc(doc(db,'barbers',mainBarberId),{services:barberData.services});
+  renderSvcList(); toast('🗑️ تم الحذف');
 };
+window.addService=async()=>{
+  const name=document.getElementById('ns_name').value.trim(),nameEn=document.getElementById('ns_nameEn').value.trim(),price=parseFloat(document.getElementById('ns_price').value)||0,dur=parseInt(document.getElementById('ns_dur').value)||30,ico=document.getElementById('ns_ico').value||'✂️';
+  if(!name||!price){ toast('⚠️ أدخل الاسم والسعر'); return; }
+  const svcs=barberData.services||[]; svcs.push({id:Date.now(),name,nameEn,price,dur,ico}); barberData.services=svcs;
+  await updateDoc(doc(db,'barbers',mainBarberId),{services:svcs});
+  renderSvcList(); toggleForm('addSvcForm');
+  ['ns_name','ns_nameEn','ns_price','ns_dur','ns_ico'].forEach(id=>document.getElementById(id).value='');
+  toast('✅ تمت الإضافة');
+};
+
+function renderCpnList(){
+  const cpns=barberData.coupons||[];
+  const el=document.getElementById('cpnList');
+  if(!cpns.length){ el.innerHTML='<p style="color:var(--muted);text-align:center;padding:2rem">لا توجد كوبونات</p>'; return; }
+  el.innerHTML=cpns.map((c,i)=>`<div class="irow"><div class="iico">🎁</div><div class="iinfo"><div class="iname"><span class="badge bb">${c.code}</span></div><div class="imeta">${c.type==='percent'?c.val+'% خصم':c.val+' ريال خصم'}</div></div><div class="iacts"><button class="btn btn-danger btn-sm" onclick="delCpn(${i})">🗑️</button></div></div>`).join('');
+}
+window.addCoupon=async()=>{
+  const code=document.getElementById('nc_code').value.trim().toUpperCase(),type=document.getElementById('nc_type').value,val=parseFloat(document.getElementById('nc_val').value)||0;
+  if(!code||!val){ toast('⚠️ أدخل الكود والقيمة'); return; }
+  const cpns=barberData.coupons||[];
+  if(cpns.find(c=>c.code===code)){ toast('⚠️ الكود موجود'); return; }
+  cpns.push({id:Date.now(),code,type,val}); barberData.coupons=cpns;
+  await updateDoc(doc(db,'barbers',mainBarberId),{coupons:cpns});
+  renderCpnList(); toggleForm('addCpnForm');
+  ['nc_code','nc_val'].forEach(id=>document.getElementById(id).value='');
+  toast('✅ تمت الإضافة');
+};
+window.delCpn=async i=>{
+  if(!confirm('حذف؟')) return;
+  barberData.coupons.splice(i,1);
+  await updateDoc(doc(db,'barbers',mainBarberId),{coupons:barberData.coupons});
+  renderCpnList(); toast('🗑️ تم الحذف');
+};
+
+window.selectedColor='#C9A84C';
+window.pickColor=(color,el)=>{ window.selectedColor=color; document.querySelectorAll('.color-opt').forEach(o=>o.classList.remove('sel')); if(el) el.classList.add('sel'); updatePreview(color); };
+window.updatePreview=color=>{ document.getElementById('previewBtn').style.background=color; document.getElementById('previewTitle').style.color=color; document.getElementById('previewTitle').textContent=barberData?.settings?.shopName||'اسم محلك'; document.getElementById('previewSub').textContent=barberData?.settings?.sub||'وصف محلك'; };
+window.saveTheme=async()=>{ barberData.theme={primaryColor:window.selectedColor}; await updateDoc(doc(db,'barbers',mainBarberId),{theme:barberData.theme}); toast('✅ تم حفظ الثيم'); };
+
+window.saveSettings=async()=>{
+  const settings={shopName:document.getElementById('set_name').value.trim(),shopNameEn:document.getElementById('set_nameEn').value.trim(),sub:document.getElementById('set_sub').value.trim(),subEn:document.getElementById('set_subEn').value.trim(),phone:document.getElementById('set_phone').value.trim(),city:document.getElementById('set_city').value.trim()};
+  barberData.settings=settings; await updateDoc(doc(db,'barbers',mainBarberId),{settings}); updatePreview(window.selectedColor); toast('✅ تم الحفظ');
+};
+
+window.activateAccount=async()=>{
+  const code=document.getElementById('actCode').value.trim().toUpperCase();
+  if(!code){ toast('⚠️ أدخل الرمز'); return; }
+  loader(true);
+  try{
+    const snap=await getDocs(query(collection(db,'activationCodes'),where('code','==',code),where('used','==',false)));
+    if(snap.empty){ toast('❌ الرمز غير صحيح أو مستخدم'); loader(false); return; }
+    await updateDoc(doc(db,'activationCodes',snap.docs[0].id),{used:true,usedBy:currentUser.uid,usedAt:new Date().toISOString()});
+    await updateDoc(doc(db,'barbers',mainBarberId),{status:'active'});
+    barberData.status='active';
+    document.getElementById('inactiveBanner').style.display='none';
+    document.getElementById('sbPlan').innerHTML='<span style="color:var(--green)">✅ مفعّل</span>';
+    document.getElementById('actBox').innerHTML='<div style="color:var(--green);font-size:1rem;font-weight:700">✅ حسابك مفعّل</div>';
+    toast('🎉 تم التفعيل!');
+  }catch(e){ toast('❌ حدث خطأ'); }
+  loader(false);
+};
+
+async function renderEmpList(){
+  try{
+    const snap=await getDocs(query(collection(db,'staff'),where('barberId','==',mainBarberId)));
+    const emps=snap.docs.map(d=>({...d.data(),_id:d.id}));
+    const el=document.getElementById('empList');
+    if(!emps.length){ el.innerHTML='<p style="color:var(--muted);text-align:center;padding:1.5rem">لا توجد حسابات إضافية</p>'; return; }
+    el.innerHTML=emps.map(e=>`<div class="irow"><div class="iico">👤</div><div class="iinfo"><div class="iname">${e.name}</div><div class="imeta">${e.email} · <span class="badge ${e.role==='manager'?'bg':'bb'}">${e.role==='manager'?'مدير':'موظف'}</span></div></div><div class="iacts"><button class="btn btn-danger btn-sm" onclick="deleteEmp('${e._id}')">🗑️</button></div></div>`).join('');
+  }catch(e){ console.error(e); }
+}
+
+window.addEmployee=async()=>{
+  const name=document.getElementById('emp_name').value.trim(),email=document.getElementById('emp_email').value.trim(),pass=document.getElementById('emp_pass').value,role=document.getElementById('emp_role').value;
+  if(!name||!email||!pass){ toast('⚠️ أدخل جميع البيانات'); return; }
+  if(pass.length<6){ toast('⚠️ كلمة المرور ٦ أحرف على الأقل'); return; }
+  loader(true);
+  try{
+    const cred=await createUserWithEmailAndPassword(auth,email,pass);
+    await addDoc(collection(db,'staff'),{uid:cred.user.uid,barberId:mainBarberId,name,email,role,createdAt:new Date().toISOString()});
+    ['emp_name','emp_email','emp_pass'].forEach(id=>document.getElementById(id).value='');
+    await renderEmpList(); toast('✅ تم إضافة الحساب');
+  }catch(e){ toast(e.code==='auth/email-already-in-use'?'❌ البريد مستخدم مسبقاً':'❌ حدث خطأ'); }
+  loader(false);
+};
+window.deleteEmp=async id=>{ if(!confirm('حذف؟')) return; await deleteDoc(doc(db,'staff',id)); renderEmpList(); toast('🗑️ تم الحذف'); };
+window.doLogout=async()=>{ await signOut(auth); window.location.href='index.html'; };
+window.copyLink=()=>{ navigator.clipboard.writeText(document.getElementById('myLink').textContent); toast('✅ تم نسخ الرابط'); };
+window.openSite=()=>window.open(document.getElementById('myLink').textContent,'_blank');
 </script>
 
 <script>
-function showPage(id, el){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-it').forEach(n=>n.classList.remove('on'));
-  document.getElementById(id).classList.add('active');
-  if(el) el.classList.add('on');
-  if(window.innerWidth<=768) toggleSidebar();
-}
-
+function showPage(id,el){ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); document.querySelectorAll('.nav-it').forEach(n=>n.classList.remove('on')); document.getElementById(id).classList.add('active'); if(el) el.classList.add('on'); if(id==='pgBookings') window.renderBookings?.(); if(window.innerWidth<=768) toggleSidebar(); }
 function toggleForm(id){ document.getElementById(id).classList.toggle('on'); }
-
-function toggleSidebar(){
-  document.getElementById('sidebar').classList.toggle('open');
-  document.getElementById('overlay').classList.toggle('on');
-}
-
+function openModal(id){ document.getElementById(id).classList.add('open'); document.body.style.overflow='hidden'; }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); document.body.style.overflow=''; }
+function toggleSidebar(){ document.getElementById('sidebar').classList.toggle('open'); document.getElementById('overlay').classList.toggle('on'); }
 function loader(on){ document.getElementById('loader').style.display=on?'flex':'none'; }
-
-function toast(msg){
-  const el=document.getElementById('toast');
-  el.textContent=msg; el.classList.add('show');
-  setTimeout(()=>el.classList.remove('show'),2800);
-}
-
-window.showPage=showPage;
-window.toggleForm=toggleForm;
-window.loader=loader;
-window.toast=toast;
+function toast(msg){ const el=document.getElementById('toast'); el.textContent=msg; el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),2800); }
+document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{ if(e.target===o) closeModal(o.id); }));
+window.showPage=showPage; window.toggleForm=toggleForm; window.openModal=openModal; window.closeModal=closeModal; window.loader=loader; window.toast=toast;
 </script>
+
 </body>
 </html>
