@@ -48,14 +48,14 @@ html,body{min-height:100vh;background:var(--dark);color:var(--text);font-family:
 
 /* SERVICE CARDS */
 .svc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.7rem;margin-bottom:1.5rem}
-.svc-card{background:var(–dark3);border:2px solid var(–dark5);border-radius:16px;padding:1.2rem .8rem;cursor:pointer;text-align:center;transition:all .2s;position:relative;overflow:hidden;user-select:none}
-.svc-card:active{transform:scale(.97)}
+.svc-card{background:var(–dark3);border:2px solid var(–dark5);border-radius:16px;padding:1.2rem .8rem;cursor:pointer;text-align:center;transition:border-color .2s,background .2s,box-shadow .2s;position:relative;user-select:none;-webkit-user-select:none;touch-action:manipulation;-webkit-tap-highlight-color:rgba(0,0,0,0)}
+.svc-card:active{opacity:.8}
 .svc-card.sel{border-color:var(–p);background:var(–p-light);box-shadow:0 0 24px var(–p-glow)}
 .svc-card .ico{font-size:1.9rem;display:block;margin-bottom:.5rem}
 .svc-card .sname{font-weight:700;font-size:.88rem;margin-bottom:.25rem;color:var(–text)}
 .svc-card .sprice{font-size:.95rem;font-weight:900;color:var(–p)}
 .svc-card .sdur{color:var(–muted);font-size:.7rem;margin-top:.15rem}
-.check-mark{position:absolute;top:.5rem;left:.5rem;width:20px;height:20px;border-radius:50%;background:var(–p);color:#000;font-size:.7rem;display:none;align-items:center;justify-content:center;font-weight:900}
+.check-mark{position:absolute;top:.5rem;left:.5rem;width:22px;height:22px;border-radius:50%;background:var(–p);color:#000;font-size:.75rem;align-items:center;justify-content:center;font-weight:900;display:none;z-index:2}
 .svc-card.sel .check-mark{display:flex}
 
 /* DATE PICKER */
@@ -253,6 +253,14 @@ select.fi option{background:var(–dark3)}
   <p data-ar="تأكد من صحة الرابط أو تواصل مع الحلاق" data-en="Check the link or contact your barber">تأكد من صحة الرابط أو تواصل مع الحلاق</p>
 </div>
 
+<!-- CLOSED -->
+
+<div id="closedMsg" style="display:none;text-align:center;padding:4rem 2rem">
+  <div style="font-size:4rem;margin-bottom:1rem">🔒</div>
+  <h2 style="font-size:1.4rem;font-weight:900;margin-bottom:.6rem" data-ar="الحجز مغلق مؤقتاً" data-en="Booking Temporarily Closed">الحجز مغلق مؤقتاً</h2>
+  <p style="color:var(--muted);font-size:.88rem;line-height:1.8" data-ar="نعتذر، الحجز غير متاح الآن. يرجى المحاولة لاحقاً أو التواصل مع المحل مباشرة." data-en="Sorry, booking is not available right now. Please try again later or contact us directly.">نعتذر، الحجز غير متاح الآن. يرجى المحاولة لاحقاً أو التواصل مع المحل مباشرة.</p>
+</div>
+
 <div id="toast"></div>
 
 <script type="module">
@@ -308,6 +316,14 @@ async function init(){
     const color = barberData.theme?.primaryColor || '#C9A84C';
     applyTheme(color);
     applyShopInfo();
+
+    // Check if booking is closed
+    if(barberData.bookingEnabled === false){
+      document.getElementById('heroSec').style.display = 'flex';
+      document.getElementById('closedMsg').style.display = 'block';
+      return;
+    }
+
     buildDatePicker();
     renderServices();
 
@@ -321,20 +337,42 @@ async function init(){
 }
 
 function applyTheme(color){
-  document.documentElement.style.setProperty('--p', color);
-  // Convert hex to rgba for glow effects
+  // Validate color format
+  if(!color || !color.startsWith('#') || color.length < 7) color = '#C9A84C';
   const r=parseInt(color.slice(1,3),16), g=parseInt(color.slice(3,5),16), b=parseInt(color.slice(5,7),16);
+  const light = lightenHex(color,40);
+  const grad  = `linear-gradient(135deg,${color},${light})`;
+
+  // Apply CSS variables — this covers EVERYTHING
+  document.documentElement.style.setProperty('--p',       color);
   document.documentElement.style.setProperty('--p-light', `rgba(${r},${g},${b},0.12)`);
   document.documentElement.style.setProperty('--p-glow',  `rgba(${r},${g},${b},0.22)`);
-  // Hero glow
-  document.querySelector('.hero-glow').style.background = `radial-gradient(ellipse,rgba(${r},${g},${b},.2),transparent 70%)`;
-  // Update next buttons
-  document.querySelectorAll('.btn-next').forEach(btn=>{
-    btn.style.background = `linear-gradient(135deg,${color},${lightenHex(color,40)})`;
-  });
-  document.querySelector('.new-book-btn').style.background = `linear-gradient(135deg,${color},${lightenHex(color,40)})`;
-  document.querySelector('.btn-apply').style.borderColor = color;
-  document.querySelector('.btn-apply').style.color = color;
+
+  // Store for dynamic elements added later
+  window._themeColor = color;
+  window._themeGrad  = grad;
+
+  // Apply to existing elements safely
+  const heroGlow = document.querySelector('.hero-glow');
+  if(heroGlow) heroGlow.style.background = `radial-gradient(ellipse,rgba(${r},${g},${b},.2),transparent 70%)`;
+
+  // Inject a style tag so ALL dynamic elements get the color automatically
+  let styleTag = document.getElementById('dynamicTheme');
+  if(!styleTag){ styleTag=document.createElement('style'); styleTag.id='dynamicTheme'; document.head.appendChild(styleTag); }
+  styleTag.textContent = `
+    .btn-next:not(:disabled){ background: ${grad} !important; color:#000 !important; }
+    .new-book-btn{ background: ${grad} !important; color:#000 !important; }
+    .btn-apply{ border-color:${color} !important; color:${color} !important; }
+    .svc-card.sel{ border-color:${color} !important; background:rgba(${r},${g},${b},0.1) !important; box-shadow:0 0 20px rgba(${r},${g},${b},0.2) !important; }
+    .slot.sel{ background:${color} !important; border-color:${color} !important; color:#000 !important; }
+    .date-btn.sel{ border-color:${color} !important; color:${color} !important; background:rgba(${r},${g},${b},0.1) !important; }
+    .pdot.active{ background:${color} !important; }
+    #shopName{ color:${color} !important; }
+    .check-mark{ background:${color} !important; }
+    .shop-badge{ color:${color} !important; border-color:rgba(${r},${g},${b},0.3) !important; }
+    .fi:focus{ border-color:${color} !important; }
+    .srow.total .sval{ color:${color} !important; }
+  `;
 }
 
 function lightenHex(hex, amt){
@@ -435,12 +473,14 @@ function renderServices(){
       <div class="sname">${isAr?s.name:(s.nameEn||s.name)}</div>
       <div class="sprice">${s.price} ${isAr?'ريال':'SAR'}</div>
       <div class="sdur">${s.dur||30} ${isAr?'دقيقة':'min'}</div>`;
-    div.onclick = () => {
+    const selectSvc = () => {
       B.service = s;
       document.querySelectorAll('.svc-card').forEach(c=>c.classList.remove('sel'));
       div.classList.add('sel');
       document.getElementById('n1').disabled = false;
     };
+    div.onclick = selectSvc;
+    div.addEventListener('touchend', (e)=>{ e.preventDefault(); selectSvc(); }, {passive:false});
     grid.appendChild(div);
   });
 }
