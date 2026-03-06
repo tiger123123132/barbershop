@@ -339,6 +339,7 @@ function initDashboard(){
   document.getElementById('wi_date').value=today;
   document.getElementById('wi_time').value=new Date().toTimeString().slice(0,5);
   if(barberData.status==='active') document.getElementById('actBox').innerHTML='<div style="color:var(--green);font-size:1rem;font-weight:700">✅ حسابك مفعّل</div>';
+  updateBookingBtn();
   loadStats(); renderSvcList(); renderCpnList(); renderEmpList();
 }
 
@@ -511,6 +512,29 @@ window.addEmployee=async()=>{
   loader(false);
 };
 window.deleteEmp=async id=>{ if(!confirm('حذف؟')) return; await deleteDoc(doc(db,'staff',id)); renderEmpList(); toast('🗑️ تم الحذف'); };
+window.toggleBooking = async () => {
+  const current = barberData.bookingEnabled !== false; // default true
+  const newVal  = !current;
+  loader(true);
+  try {
+    await updateDoc(doc(db,'barbers',mainBarberId),{bookingEnabled: newVal});
+    barberData.bookingEnabled = newVal;
+    updateBookingBtn();
+    toast(newVal ? '✅ تم فتح استقبال الحجوزات' : '🔒 تم إيقاف استقبال الحجوزات');
+  } catch(e){ toast('❌ حدث خطأ'); }
+  loader(false);
+};
+
+function updateBookingBtn(){
+  const btn = document.getElementById('bookingToggleBtn');
+  if(!btn) return;
+  const isOpen = barberData.bookingEnabled !== false;
+  btn.textContent = isOpen ? '🟢 الحجوزات مفتوحة' : '🔴 الحجوزات مغلقة';
+  btn.style.background = isOpen ? 'rgba(46,204,113,.15)' : 'rgba(231,76,60,.15)';
+  btn.style.border = isOpen ? '1px solid rgba(46,204,113,.4)' : '1px solid rgba(231,76,60,.4)';
+  btn.style.color  = isOpen ? 'var(--green)' : 'var(--red)';
+}
+
 window.doLogout=async()=>{ await signOut(auth); window.location.href='index.html'; };
 window.copyLink=()=>{ navigator.clipboard.writeText(document.getElementById('myLink').textContent); toast('✅ تم نسخ الرابط'); };
 window.openSite=()=>window.open(document.getElementById('myLink').textContent,'_blank');
