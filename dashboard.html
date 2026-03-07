@@ -85,7 +85,7 @@ select.fi option{background:var(--dark2)}
 #loader.on{display:flex}
 .spin{width:44px;height:44px;border-radius:50%;border:3px solid var(--dark5);border-top-color:var(--p);animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.mob-toggle{display:none;position:fixed;top:.75rem;right:1rem;z-index:200;background:var(--dark3);border:1px solid rgba(201,168,76,.4);border-radius:12px;padding:.55rem .9rem;cursor:pointer;font-size:1.3rem;color:var(--p);box-shadow:0 2px 12px rgba(0,0,0,.4)}
+.mob-toggle{display:none;position:fixed;top:.75rem;left:1rem;z-index:200;background:var(--dark3);border:1px solid rgba(201,168,76,.4);border-radius:12px;padding:.55rem .9rem;cursor:pointer;font-size:1.3rem;color:var(--p);box-shadow:0 2px 12px rgba(0,0,0,.4)}
 .logo-upload-wrap{display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap;margin-bottom:1.2rem}
 .logo-preview{width:80px;height:80px;border-radius:14px;border:2px dashed var(--dark5);display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--dark2);cursor:pointer;transition:.2s;flex-shrink:0}
 .logo-preview:hover{border-color:var(--p)}
@@ -638,7 +638,13 @@ function showPage(id,el){ document.querySelectorAll('.page').forEach(p=>p.classL
 function toggleForm(id){ document.getElementById(id).classList.toggle('on'); }
 function openModal(id){ document.getElementById(id).classList.add('open'); document.body.style.overflow='hidden'; }
 function closeModal(id){ document.getElementById(id).classList.remove('open'); document.body.style.overflow=''; }
-function toggleSidebar(){ document.getElementById('sidebar').classList.toggle('open'); document.getElementById('overlay').classList.toggle('on'); }
+function toggleSidebar(){
+  const sb = document.getElementById('sidebar');
+  const ov = document.getElementById('overlay');
+  sb.classList.toggle('open');
+  ov.classList.toggle('on');
+  document.body.style.overflow = sb.classList.contains('open') ? 'hidden' : '';
+}
 function loader(on){ document.getElementById('loader').style.display=on?'flex':'none'; }
 function toast(msg){ const el=document.getElementById('toast'); el.textContent=msg; el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),2800); }
 document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{ if(e.target===o) closeModal(o.id); }));
