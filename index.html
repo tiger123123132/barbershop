@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="ar" dir="rtl" id="htmlRoot">
 <head>
 <meta charset="UTF-8">
@@ -22,6 +23,7 @@
         <div class="user-avatar" id="userAvatar" onclick="toggleDropdown()">U</div>
         <div class="user-dropdown" id="userDropdown">
           <div class="ud-item" onclick="window.location.href='dashboard.html'"data-ar="&#128202; لوحة التحكم" data-en="&#128202; Dashboard">&#128202; لوحة التحكم</div>
+          <div class="ud-item" onclick="window.location.href='account.html'">&#9881;&#65039; إعدادات الحساب</div>
           <div class="ud-sep"></div>
           <div class="ud-item danger" onclick="doLogout()"data-ar="&#128682; تسجيل خروج" data-en="&#128682; Logout">&#128682; تسجيل خروج</div>
         </div>
@@ -96,8 +98,8 @@
   </div>
 </footer>
 
-
 <!-- LOGIN MODAL -->
+
 <div class="modal-overlay" id="loginModal">
   <div class="modal">
     <button class="modal-close" onclick="closeModal('loginModal')">&#10005;</button>
@@ -105,7 +107,7 @@
     <div class="modal-sub">أدخل بياناتك للدخول</div>
     <div class="tab-bar">
       <button id="tabEmail" class="tab-btn tab-active" onclick="switchTab('email')">بريد إلكتروني</button>
-      <button id="tabPhone" class="tab-btn tab-inactive" onclick="switchTab('phone')">رقم الجوال</button>
+      <button id="tabPhone" class="tab-btn tab-inactive" onclick="switchTab('phone')" style="opacity:.4;cursor:not-allowed" title="قريباً">رقم الجوال 🔒</button>
     </div>
     <div id="emailForm">
       <div class="fg">
@@ -124,26 +126,10 @@
       <button class="btn btn-gold btn-full" onclick="doLogin()">دخول</button>
     </div>
     <div id="phoneForm" style="display:none">
-      <div id="phoneStep1">
-        <div class="fg">
-          <label>رقم الجوال</label>
-          <div class="phone-wrap">
-            <div class="phone-prefix">+966</div>
-            <input type="tel" class="fi" id="loginPhone" placeholder="05xxxxxxxx" inputmode="numeric" maxlength="10">
-          </div>
-        </div>
-        <div class="err-msg" id="phoneErr"></div>
-        <button class="btn btn-gold btn-full" onclick="sendOTP()">إرسال رمز التحقق</button>
-        <div id="recaptcha-container" style="margin-top:.8rem"></div>
-      </div>
-      <div id="phoneStep2" style="display:none">
-        <div class="fg">
-          <label>رمز التحقق (6 أرقام)</label>
-          <input type="tel" class="fi" id="otpCode" placeholder="123456" inputmode="numeric" maxlength="6">
-        </div>
-        <div class="err-msg" id="otpErr"></div>
-        <button class="btn btn-gold btn-full" onclick="verifyOTP()">تأكيد</button>
-        <button class="btn btn-ghost btn-full" style="margin-top:.4rem;font-size:.8rem" onclick="backToPhone()">تغيير الرقم</button>
+      <div style="text-align:center;padding:2rem 1rem">
+        <div style="font-size:2.5rem;margin-bottom:.8rem">🔒</div>
+        <div style="font-weight:700;margin-bottom:.4rem">قريباً</div>
+        <div style="color:var(--muted);font-size:.83rem;line-height:1.7">ميزة الدخول برقم الجوال ستكون متاحة قريباً.<br>استخدم البريد الإلكتروني أو Google للدخول الآن.</div>
       </div>
     </div>
     <div class="divider">أو</div>
@@ -156,6 +142,7 @@
 </div>
 
 <!-- REGISTER MODAL -->
+
 <div class="modal-overlay" id="registerModal">
   <div class="modal">
     <button class="modal-close" onclick="closeModal('registerModal')">&#10005;</button>
@@ -169,14 +156,6 @@
       <label>اسم المستخدم (رابطك)</label>
       <input type="text" class="fi" id="regUsername" placeholder="mohammed" oninput="this.value=this.value.toLowerCase().replace(/[^a-z0-9]/g,'');document.getElementById('uPrev').textContent=this.value||'اسمك'">
       <div style="font-size:.75rem;color:#666;margin-top:.3rem">barberstor.com/booking.html?u=<span id="uPrev" style="color:#C9A84C">اسمك</span></div>
-    </div>
-    <div class="fg">
-      <label>رقم الجوال (مطلوب)</label>
-      <div class="phone-wrap">
-        <div class="phone-prefix">+966</div>
-        <input type="tel" class="fi" id="regPhone" placeholder="05xxxxxxxx" inputmode="numeric" maxlength="10">
-      </div>
-      <div style="font-size:.74rem;color:#666;margin-top:.3rem">سيُستخدم لتسجيل الدخول برقم الجوال لاحقاً</div>
     </div>
     <div class="fg">
       <label>البريد الإلكتروني</label>
@@ -277,10 +256,10 @@ window.doRegister = async () => {
       coupons:[]
     });
     await sendEmailVerification(cred.user, {url:'https://barberstor.com/dashboard.html',handleCodeInApp:false});
-    await signOut(auth); // sign out حتى يضطر يتحقق من الإيميل أولاً
     okEl.style.color = '#2ecc71';
-    okEl.textContent = '✓ تم إنشاء الحساب! راجع إيميلك وافتح رابط التأكيد، ثم سجّل دخولك';
-    toast('أُرسل إيميل التأكيد لـ ' + email);
+    okEl.textContent = '✓ تم إنشاء الحساب بنجاح!';
+    toast('مرحباً ' + name + '!');
+    setTimeout(()=>{ closeModal('registerModal'); window.location.href='dashboard.html'; }, 1500);
   } catch(e) { errEl.textContent = firebaseErr(e.code); }
   finally { loader(false); }
 };
@@ -296,11 +275,7 @@ window.doLogin = async () => {
   try {
     await setPersistence(auth, remember ? browserLocalPersistence : browserSessionPersistence);
     const cred = await signInWithEmailAndPassword(auth, email, pass);
-    if(!cred.user.emailVerified) {
-      await signOut(auth);
-      errEl.textContent = 'يرجى تأكيد بريدك الإلكتروني أولاً — تحقق من صندوق الوارد';
-      loader(false); return;
-    }
+
     closeModal('loginModal');
     window.location.href = 'dashboard.html';
   } catch(e) { errEl.textContent = firebaseErr(e.code); }
@@ -432,5 +407,6 @@ window.toggleLang = () => {
   });
 };
 </script>
+
 </body>
 </html>
