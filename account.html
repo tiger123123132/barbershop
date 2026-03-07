@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" id="htmlRoot">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>إعدادات الحساب — باربرستور</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--p:#C9A84C;--p2:#E8C97A;--dark:#080808;--dark2:#0f0f0f;--dark3:#171717;--dark4:#222;--dark5:#2c2c2c;--text:#f0ede8;--muted:#666;--green:#2ecc71;--red:#e74c3c;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--dark);color:var(--text);font-family:'Cairo',sans-serif;min-height:100vh}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:.85rem 2rem;display:flex;align-items:center;justify-content:space-between;background:rgba(8,8,8,.95);border-bottom:1px solid rgba(201,168,76,.1);backdrop-filter:blur(18px)}
+.logo{font-size:1.15rem;font-weight:900;background:linear-gradient(135deg,var(--p2),var(--p));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;cursor:pointer}
+.page-wrap{max-width:560px;margin:0 auto;padding:6rem 1.5rem 4rem}
+.back-btn{display:inline-flex;align-items:center;gap:.5rem;color:var(--p);font-size:.85rem;font-weight:700;text-decoration:none;margin-bottom:1.8rem;border:1.5px solid rgba(201,168,76,.25);padding:.45rem 1rem;border-radius:8px;cursor:pointer;background:none;font-family:'Cairo',sans-serif;transition:.2s}
+.back-btn:hover{background:rgba(201,168,76,.08)}
+.pg-title{font-size:1.5rem;font-weight:900;margin-bottom:.3rem}
+.pg-sub{color:var(--muted);font-size:.85rem;margin-bottom:2rem}
+.card{background:var(--dark3);border:1px solid var(--dark5);border-radius:18px;padding:1.5rem;margin-bottom:1.2rem}
+.card-title{font-weight:700;font-size:.95rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:.5rem}
+.fg{margin-bottom:1rem}
+.fg label{display:block;color:var(--muted);font-size:.78rem;margin-bottom:.35rem}
+.fi{width:100%;background:var(--dark2);border:1.5px solid var(--dark5);border-radius:10px;padding:.75rem 1rem;color:var(--text);font-family:'Cairo',sans-serif;font-size:.88rem;transition:.2s;direction:inherit}
+.fi:focus{outline:none;border-color:var(--p);box-shadow:0 0 10px rgba(201,168,76,.1)}
+.fi:disabled{opacity:.4;cursor:not-allowed}
+.btn{padding:.65rem 1.3rem;border-radius:10px;cursor:pointer;font-family:'Cairo',sans-serif;font-weight:700;font-size:.85rem;border:none;transition:.2s}
+.btn-gold{background:linear-gradient(135deg,var(--p),var(--p2));color:#000}
+.btn-gold:hover{transform:translateY(-1px);box-shadow:0 4px 18px rgba(201,168,76,.35)}
+.btn-ghost{background:transparent;border:1.5px solid var(--dark5);color:var(--muted)}
+.btn-full{width:100%;padding:.85rem;font-size:.92rem}
+.phone-wrap{display:flex;gap:.4rem}
+.phone-prefix{background:var(--dark4);border:1.5px solid var(--dark5);border-radius:10px;padding:.75rem .9rem;color:var(--p);font-family:'Cairo',sans-serif;font-size:.9rem;font-weight:700;white-space:nowrap}
+.err-msg{color:var(--red);font-size:.8rem;margin:.5rem 0;min-height:1rem}
+.ok-msg{color:var(--green);font-size:.8rem;margin:.5rem 0;min-height:1rem}
+.info-row{display:flex;align-items:center;justify-content:space-between;padding:.65rem 0;border-bottom:1px solid var(--dark5);font-size:.85rem}
+.info-row:last-child{border-bottom:none}
+.info-label{color:var(--muted)}
+.info-val{font-weight:600;color:var(--text)}
+.coming-soon-badge{display:inline-flex;align-items:center;gap:.3rem;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.2);color:var(--p);font-size:.72rem;font-weight:700;padding:.2rem .65rem;border-radius:50px}
+#loader{position:fixed;inset:0;background:rgba(8,8,8,.85);z-index:9998;display:none;align-items:center;justify-content:center}
+#loader.on{display:flex}
+.spin{width:44px;height:44px;border-radius:50%;border:3px solid var(--dark5);border-top-color:var(--p);animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+#toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(80px);background:var(--dark3);border:1px solid var(--p);color:var(--text);padding:.8rem 1.8rem;border-radius:12px;font-size:.88rem;transition:.3s;z-index:9999;white-space:nowrap;pointer-events:none}
+#toast.show{transform:translateX(-50%) translateY(0)}
+@keyframes fu{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.page-wrap{animation:fu .35s ease}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo" onclick="window.location.href='index.html'">BarberStor ✂</div>
+  <button onclick="window.location.href='dashboard.html'" style="background:transparent;border:1px solid var(--dark5);color:var(--muted);padding:.4rem .9rem;border-radius:8px;cursor:pointer;font-family:'Cairo',sans-serif;font-size:.8rem">&#128202; لوحة التحكم</button>
+</nav>
+
+<div class="page-wrap">
+  <button class="back-btn" onclick="history.back()">&#8592; رجوع</button>
+  <div class="pg-title">إعدادات الحساب &#9881;&#65039;</div>
+  <div class="pg-sub">إدارة بيانات حسابك وأمانه</div>
+
+  <!-- Account Info -->
+  <div class="card">
+    <div class="card-title">&#128100; معلومات الحساب</div>
+    <div class="info-row"><span class="info-label">البريد الإلكتروني</span><span class="info-val" id="dispEmail">—</span></div>
+    <div class="info-row"><span class="info-label">اسم المستخدم</span><span class="info-val" id="dispUsername">—</span></div>
+    <div class="info-row"><span class="info-label">رقم الجوال</span><span class="info-val" id="dispPhone">—</span></div>
+    <div class="info-row"><span class="info-label">حالة الحساب</span><span class="info-val" id="dispStatus">—</span></div>
+  </div>
+
+  <!-- Change Email -->
+  <div class="card">
+    <div class="card-title">&#9993;&#65039; تغيير البريد الإلكتروني</div>
+    <div class="fg">
+      <label>البريد الإلكتروني الجديد</label>
+      <input type="email" class="fi" id="newEmail" placeholder="new@example.com">
+    </div>
+    <div class="fg">
+      <label>كلمة المرور الحالية (للتأكيد)</label>
+      <input type="password" class="fi" id="emailConfirmPass" placeholder="••••••••">
+    </div>
+    <div class="err-msg" id="emailErr"></div>
+    <div class="ok-msg" id="emailOk"></div>
+    <button class="btn btn-gold btn-full" onclick="changeEmail()">تحديث البريد الإلكتروني</button>
+  </div>
+
+  <!-- Change Password -->
+  <div class="card">
+    <div class="card-title">&#128274; تغيير كلمة المرور</div>
+    <div class="fg">
+      <label>كلمة المرور الحالية</label>
+      <input type="password" class="fi" id="currentPass" placeholder="••••••••">
+    </div>
+    <div class="fg">
+      <label>كلمة المرور الجديدة</label>
+      <input type="password" class="fi" id="newPass" placeholder="••••••••">
+    </div>
+    <div class="fg">
+      <label>تأكيد كلمة المرور الجديدة</label>
+      <input type="password" class="fi" id="confirmPass" placeholder="••••••••">
+    </div>
+    <div class="err-msg" id="passErr"></div>
+    <div class="ok-msg" id="passOk"></div>
+    <button class="btn btn-gold btn-full" onclick="changePassword()">تحديث كلمة المرور</button>
+  </div>
+
+  <!-- Add Phone -->
+  <div class="card">
+    <div class="card-title">&#128241; رقم الجوال <span class="coming-soon-badge">&#128274; قريباً</span></div>
+    <div style="color:var(--muted);font-size:.83rem;line-height:1.8;margin-bottom:1rem">
+      ميزة إضافة رقم الجوال ستكون متاحة قريباً بعد اعتماد المنصة من Google.<br>
+      ستتمكن بعدها من تسجيل الدخول مباشرة برقم جوالك.
+    </div>
+    <div class="fg">
+      <label style="opacity:.4">رقم الجوال</label>
+      <div class="phone-wrap">
+        <div class="phone-prefix" style="opacity:.4">+966</div>
+        <input type="tel" class="fi" placeholder="05xxxxxxxx" disabled>
+      </div>
+    </div>
+    <button class="btn btn-ghost btn-full" disabled style="opacity:.4;cursor:not-allowed">&#128274; غير متاح حالياً</button>
+  </div>
+
+  <!-- Danger Zone -->
+  <div class="card" style="border-color:rgba(231,76,60,.2)">
+    <div class="card-title" style="color:var(--red)">&#9888;&#65039; منطقة الخطر</div>
+    <div style="color:var(--muted);font-size:.83rem;margin-bottom:1rem">تسجيل الخروج من جميع الأجهزة أو حذف الحساب.</div>
+    <div style="display:flex;gap:.6rem;flex-wrap:wrap">
+      <button class="btn btn-ghost" onclick="doLogout()" style="color:var(--red);border-color:rgba(231,76,60,.3)">&#128682; تسجيل الخروج</button>
+    </div>
+  </div>
+</div>
+
+<div id="loader"><div class="spin"></div></div>
+<div id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut, updateEmail, updatePassword, reauthenticateWithCredential, EmailAuthProvider } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const app  = initializeApp({apiKey:"AIzaSyAHSfjlmSyI8a5rJlR4Uep9Lc-HrHTEQAE",authDomain:"barber-stor.firebaseapp.com",projectId:"barber-stor",storageBucket:"barber-stor.firebasestorage.app",messagingSenderId:"219780488634",appId:"1:219780488634:web:650eb88e5b452e9cb2d183"});
+const auth = getAuth(app);
+const db   = getFirestore(app);
+
+let currentUser = null;
+
+onAuthStateChanged(auth, async user => {
+  if(!user){ window.location.href='index.html'; return; }
+  currentUser = user;
+  const snap = await getDoc(doc(db,'barbers',user.uid));
+  const data = snap.exists() ? snap.data() : {};
+  document.getElementById('dispEmail').textContent    = user.email || '—';
+  document.getElementById('dispUsername').textContent = data.username || '—';
+  document.getElementById('dispPhone').textContent    = data.phone || 'لم يُضف بعد';
+  document.getElementById('dispStatus').innerHTML     = data.status === 'active'
+    ? '<span style="color:var(--green)">✅ مفعّل</span>'
+    : '<span style="color:var(--red)">⏳ غير مفعّل</span>';
+});
+
+// ── Change Email ──
+window.changeEmail = async () => {
+  const newEmail = document.getElementById('newEmail').value.trim();
+  const pass     = document.getElementById('emailConfirmPass').value;
+  const errEl    = document.getElementById('emailErr');
+  const okEl     = document.getElementById('emailOk');
+  errEl.textContent = ''; okEl.textContent = '';
+  if(!newEmail || !pass){ errEl.textContent = 'يرجى ملء جميع الحقول'; return; }
+  loader(true);
+  try {
+    const cred = EmailAuthProvider.credential(currentUser.email, pass);
+    await reauthenticateWithCredential(currentUser, cred);
+    await updateEmail(currentUser, newEmail);
+    await updateDoc(doc(db,'barbers',currentUser.uid), {email: newEmail});
+    document.getElementById('dispEmail').textContent = newEmail;
+    okEl.textContent = '✅ تم تحديث البريد الإلكتروني';
+    document.getElementById('newEmail').value = '';
+    document.getElementById('emailConfirmPass').value = '';
+  } catch(e) {
+    errEl.textContent = firebaseErr(e.code);
+  } finally { loader(false); }
+};
+
+// ── Change Password ──
+window.changePassword = async () => {
+  const current = document.getElementById('currentPass').value;
+  const next    = document.getElementById('newPass').value;
+  const confirm = document.getElementById('confirmPass').value;
+  const errEl   = document.getElementById('passErr');
+  const okEl    = document.getElementById('passOk');
+  errEl.textContent = ''; okEl.textContent = '';
+  if(!current || !next || !confirm){ errEl.textContent = 'يرجى ملء جميع الحقول'; return; }
+  if(next !== confirm){ errEl.textContent = 'كلمتا المرور غير متطابقتين'; return; }
+  if(next.length < 6){ errEl.textContent = 'كلمة المرور ٦ أحرف على الأقل'; return; }
+  loader(true);
+  try {
+    const cred = EmailAuthProvider.credential(currentUser.email, current);
+    await reauthenticateWithCredential(currentUser, cred);
+    await updatePassword(currentUser, next);
+    okEl.textContent = '✅ تم تحديث كلمة المرور';
+    document.getElementById('currentPass').value = '';
+    document.getElementById('newPass').value = '';
+    document.getElementById('confirmPass').value = '';
+  } catch(e) {
+    errEl.textContent = firebaseErr(e.code);
+  } finally { loader(false); }
+};
+
+// ── Logout ──
+window.doLogout = async () => {
+  await signOut(auth);
+  window.location.href = 'index.html';
+};
+
+function firebaseErr(code){
+  const m = {
+    'auth/wrong-password':'كلمة المرور غير صحيحة',
+    'auth/invalid-credential':'كلمة المرور غير صحيحة',
+    'auth/email-already-in-use':'البريد مستخدم مسبقاً',
+    'auth/invalid-email':'بريد إلكتروني غير صالح',
+    'auth/requires-recent-login':'يرجى تسجيل الخروج والدخول مرة أخرى ثم المحاولة',
+    'auth/weak-password':'كلمة المرور ضعيفة جداً',
+  };
+  return m[code] || 'حدث خطأ، حاول مرة ثانية';
+}
+
+function loader(on){ document.getElementById('loader').style.display = on?'flex':'none'; }
+function toast(msg){ const el=document.getElementById('toast'); el.textContent=msg; el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),2800); }
+</script>
+</body>
+</html>
