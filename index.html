@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" id="htmlRoot">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BarberStor</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <div class="logo" onclick="scrollTo({top:0,behavior:'smooth'})">BarberStor &#9986;</div>
+  <div class="nav-right">
+    <button class="btn-lang" onclick="toggleLang()" id="langBtn">EN</button>
+    <div id="guestNav" style="display:flex;gap:.6rem">
+      <button class="btn btn-ghost btn-sm" onclick="openModal('loginModal')">دخول</button>
+      <button class="btn btn-gold btn-sm" onclick="openModal('registerModal')">ابدأ مجاناً</button>
+    </div>
+    <div id="userNav" style="display:none">
+      <div class="user-menu">
+        <div class="user-avatar" id="userAvatar" onclick="toggleDropdown()">U</div>
+        <div class="user-dropdown" id="userDropdown">
+          <div class="ud-item" onclick="window.location.href='dashboard.html'">&#128202; لوحة التحكم</div>
+          <div class="ud-sep"></div>
+          <div class="ud-item danger" onclick="doLogout()">&#128682; تسجيل خروج</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<section id="heroSec">
+  <div class="gridbg"></div>
+  <div class="hero-badge"><div class="dot-pulse"></div><span>منصة حجوزات الحلاقة رقم ١</span></div>
+  <h1 class="hero-title">موقع حجوزات احترافي لكل حلاق</h1>
+  <p class="hero-sub">سجّل، خصّص موقعك، وابدأ استقبال الحجوزات خلال دقائق</p>
+  <div class="hero-btns">
+    <button class="btn btn-gold" style="font-size:1rem;padding:.85rem 2.5rem" onclick="openModal('registerModal')">ابدأ الآن مجاناً</button>
+    <button class="btn btn-outline" onclick="document.getElementById('howSec').scrollIntoView({behavior:'smooth'})">كيف يعمل؟</button>
+  </div>
+</section>
+
+<section id="featuresSec">
+  <h2 class="sec-title"><span>كل شيء تحتاجه</span></h2>
+  <p class="sec-sub">من الحجز إلى الدفع — كل شيء في مكان واحد</p>
+  <div class="features-grid">
+    <div class="feat-card"><span class="feat-ico">&#128279;</span><div class="feat-title">رابط خاص بك</div><div class="feat-desc">احصل على رابط حجز خاص وشاركه مع عملائك</div></div>
+    <div class="feat-card"><span class="feat-ico">&#127912;</span><div class="feat-title">ثيم قابل للتخصيص</div><div class="feat-desc">غيّر ألوان موقعك ليعكس هويتك التجارية</div></div>
+    <div class="feat-card"><span class="feat-ico">&#128136;</span><div class="feat-title">إدارة الخدمات</div><div class="feat-desc">أضف خدماتك وأسعارها ومدتها بسهولة</div></div>
+    <div class="feat-card"><span class="feat-ico">&#127873;</span><div class="feat-title">كوبونات الخصم</div><div class="feat-desc">أنشئ كوبونات خصم لعملائك بنسبة أو مبلغ ثابت</div></div>
+    <div class="feat-card"><span class="feat-ico">&#128202;</span><div class="feat-title">إحصائيات وتقارير</div><div class="feat-desc">تابع حجوزاتك وإيراداتك من لوحة واحدة</div></div>
+    <div class="feat-card"><span class="feat-ico">&#127760;</span><div class="feat-title">عربي وإنجليزي</div><div class="feat-desc">موقعك يدعم اللغتين لاستقبال عملاء من كل مكان</div></div>
+  </div>
+</section>
+
+<section id="pricingSec">
+  <div style="max-width:1100px;margin:0 auto">
+    <h2 class="sec-title"><span>سعر واضح وبسيط</span></h2>
+    <p class="sec-sub">باقة واحدة تشمل كل شيء</p>
+    <div class="pricing-wrap">
+      <div class="pricing-card">
+        <div class="pricing-badge">الباقة الاحترافية</div>
+        <div class="pricing-price">99 <span>ريال / شهر</span></div>
+        <ul class="pricing-features">
+          <li>موقع حجز خاص برابطك</li>
+          <li>إدارة الخدمات والأسعار</li>
+          <li>كوبونات خصم غير محدودة</li>
+          <li>إحصائيات وتقارير</li>
+          <li>ثيم قابل للتخصيص</li>
+          <li>دعم عربي وإنجليزي</li>
+        </ul>
+        <button class="btn btn-gold btn-full" onclick="openModal('registerModal')">اشترك الآن</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="howSec">
+  <h2 class="sec-title"><span>كيف يعمل؟</span></h2>
+  <p class="sec-sub">أربع خطوات وموقعك جاهز</p>
+  <div class="steps">
+    <div class="step-card"><div class="step-num">١</div><div class="step-title">سجّل حسابك</div><div class="step-desc">أنشئ حساب مجاني بإيميلك أو Google</div></div>
+    <div class="step-card"><div class="step-num">٢</div><div class="step-title">فعّل الباقة</div><div class="step-desc">ادفع الاشتراك واحصل على رمز التفعيل</div></div>
+    <div class="step-card"><div class="step-num">٣</div><div class="step-title">خصّص موقعك</div><div class="step-desc">أضف خدماتك وغيّر الثيم كما تريد</div></div>
+    <div class="step-card"><div class="step-num">٤</div><div class="step-title">شارك رابطك</div><div class="step-desc">شارك رابطك وابدأ استقبال الحجوزات</div></div>
+  </div>
+</section>
+
+<footer>
+  <div style="margin-bottom:.5rem;font-size:1rem;font-weight:700;color:#C9A84C">BarberStor &#9986;</div>
+  <div style="margin-bottom:.8rem">© 2026 BarberStor — جميع الحقوق محفوظة</div>
+  <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+    <a href="privacy.html" style="color:#666;font-size:.82rem;text-decoration:underline;text-underline-offset:3px">Privacy Policy</a>
+    <a href="terms.html" style="color:#666;font-size:.82rem;text-decoration:underline;text-underline-offset:3px">Terms of Service</a>
+  </div>
+</footer>
+
+
+<!-- LOGIN MODAL -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('loginModal')">&#10005;</button>
+    <div class="modal-title">مرحباً بعودتك</div>
+    <div class="modal-sub">أدخل بياناتك للدخول</div>
+    <div class="tab-bar">
+      <button id="tabEmail" class="tab-btn tab-active" onclick="switchTab('email')">بريد إلكتروني</button>
+      <button id="tabPhone" class="tab-btn tab-inactive" onclick="switchTab('phone')">رقم الجوال</button>
+    </div>
+    <div id="emailForm">
+      <div class="fg">
+        <label>البريد الإلكتروني</label>
+        <input type="email" class="fi" id="loginEmail" placeholder="you@example.com">
+      </div>
+      <div class="fg">
+        <label>كلمة المرور</label>
+        <input type="password" class="fi" id="loginPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+      </div>
+      <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:1rem">
+        <input type="checkbox" id="rememberMe" style="width:16px;height:16px;accent-color:#C9A84C;cursor:pointer">
+        <label for="rememberMe" style="font-size:.82rem;color:#666;cursor:pointer">تذكّرني</label>
+      </div>
+      <div class="err-msg" id="loginErr"></div>
+      <button class="btn btn-gold btn-full" onclick="doLogin()">دخول</button>
+    </div>
+    <div id="phoneForm" style="display:none">
+      <div id="phoneStep1">
+        <div class="fg">
+          <label>رقم الجوال</label>
+          <div class="phone-wrap">
+            <div class="phone-prefix">+966</div>
+            <input type="tel" class="fi" id="loginPhone" placeholder="05xxxxxxxx" inputmode="numeric" maxlength="10">
+          </div>
+        </div>
+        <div class="err-msg" id="phoneErr"></div>
+        <button class="btn btn-gold btn-full" onclick="sendOTP()">إرسال رمز التحقق</button>
+        <div id="recaptcha-container" style="margin-top:.8rem"></div>
+      </div>
+      <div id="phoneStep2" style="display:none">
+        <div class="fg">
+          <label>رمز التحقق (6 أرقام)</label>
+          <input type="tel" class="fi" id="otpCode" placeholder="123456" inputmode="numeric" maxlength="6">
+        </div>
+        <div class="err-msg" id="otpErr"></div>
+        <button class="btn btn-gold btn-full" onclick="verifyOTP()">تأكيد</button>
+        <button class="btn btn-ghost btn-full" style="margin-top:.4rem;font-size:.8rem" onclick="backToPhone()">تغيير الرقم</button>
+      </div>
+    </div>
+    <div class="divider">أو</div>
+    <button class="google-btn" onclick="doGoogleLogin()">
+      <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.2l6.8-6.8C35.8 2.5 30.2 0 24 0 14.6 0 6.5 5.4 2.5 13.3l7.9 6.1C12.3 13.1 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17z"/><path fill="#FBBC05" d="M10.4 28.6A14.5 14.5 0 0 1 9.5 24c0-1.6.3-3.1.8-4.6l-7.9-6.1A24 24 0 0 0 0 24c0 3.9.9 7.5 2.5 10.8l7.9-6.2z"/><path fill="#34A853" d="M24 48c6.2 0 11.4-2 15.2-5.5l-7.5-5.8c-2 1.4-4.6 2.2-7.7 2.2-6.3 0-11.6-4.2-13.5-10l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>
+      الدخول بـ Google
+    </button>
+    <button class="btn btn-ghost btn-full" onclick="switchModal('loginModal','registerModal')">ليس لديك حساب؟ سجّل الآن</button>
+  </div>
+</div>
+
+<!-- REGISTER MODAL -->
+<div class="modal-overlay" id="registerModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('registerModal')">&#10005;</button>
+    <div class="modal-title">إنشاء حساب جديد</div>
+    <div class="modal-sub">سجّل وابدأ موقعك خلال دقائق</div>
+    <div class="fg">
+      <label>الاسم</label>
+      <input type="text" class="fi" id="regName" placeholder="محمد أحمد">
+    </div>
+    <div class="fg">
+      <label>اسم المستخدم (رابطك)</label>
+      <input type="text" class="fi" id="regUsername" placeholder="mohammed" oninput="this.value=this.value.toLowerCase().replace(/[^a-z0-9]/g,'');document.getElementById('uPrev').textContent=this.value||'اسمك'">
+      <div style="font-size:.75rem;color:#666;margin-top:.3rem">barberstor.com/booking.html?u=<span id="uPrev" style="color:#C9A84C">اسمك</span></div>
+    </div>
+    <div class="fg">
+      <label>رقم الجوال (مطلوب)</label>
+      <div class="phone-wrap">
+        <div class="phone-prefix">+966</div>
+        <input type="tel" class="fi" id="regPhone" placeholder="05xxxxxxxx" inputmode="numeric" maxlength="10">
+      </div>
+      <div style="font-size:.74rem;color:#666;margin-top:.3rem">سيُستخدم لتسجيل الدخول برقم الجوال لاحقاً</div>
+    </div>
+    <div class="fg">
+      <label>البريد الإلكتروني</label>
+      <input type="email" class="fi" id="regEmail" placeholder="you@example.com">
+    </div>
+    <div class="fg">
+      <label>كلمة المرور</label>
+      <input type="password" class="fi" id="regPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doRegister()">
+    </div>
+    <div class="err-msg" id="regErr"></div>
+    <div class="ok-msg" id="regOk"></div>
+    <button class="btn btn-gold btn-full" onclick="doRegister()">إنشاء الحساب</button>
+    <div class="divider">أو</div>
+    <button class="google-btn" onclick="doGoogleLogin()">
+      <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.2l6.8-6.8C35.8 2.5 30.2 0 24 0 14.6 0 6.5 5.4 2.5 13.3l7.9 6.1C12.3 13.1 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17z"/><path fill="#FBBC05" d="M10.4 28.6A14.5 14.5 0 0 1 9.5 24c0-1.6.3-3.1.8-4.6l-7.9-6.1A24 24 0 0 0 0 24c0 3.9.9 7.5 2.5 10.8l7.9-6.2z"/><path fill="#34A853" d="M24 48c6.2 0 11.4-2 15.2-5.5l-7.5-5.8c-2 1.4-4.6 2.2-7.7 2.2-6.3 0-11.6-4.2-13.5-10l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>
+      التسجيل بـ Google
+    </button>
+    <button class="btn btn-ghost btn-full" onclick="switchModal('registerModal','loginModal')">لديك حساب؟ ادخل</button>
+  </div>
+</div>
+
+<div id="loader"><div class="spin"></div></div>
+<div id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, setPersistence, browserLocalPersistence, browserSessionPersistence, RecaptchaVerifier, signInWithPhoneNumber, sendEmailVerification } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc, query, collection, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const app = initializeApp({
+  apiKey: "AIzaSyAHSfjlmSyI8a5rJlR4Uep9Lc-HrHTEQAE",
+  authDomain: "barber-stor.firebaseapp.com",
+  projectId: "barber-stor",
+  storageBucket: "barber-stor.firebasestorage.app",
+  messagingSenderId: "219780488634",
+  appId: "1:219780488634:web:650eb88e5b452e9cb2d183"
+});
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+onAuthStateChanged(auth, async user => {
+  if(user) {
+    document.getElementById('guestNav').style.display = 'none';
+    document.getElementById('userNav').style.display = 'block';
+    const snap = await getDoc(doc(db,'barbers',user.uid));
+    if(snap.exists()) document.getElementById('userAvatar').textContent = (snap.data().name||'U')[0].toUpperCase();
+  } else {
+    document.getElementById('guestNav').style.display = 'flex';
+    document.getElementById('userNav').style.display = 'none';
+  }
+});
+
+getRedirectResult(auth).then(async result => {
+  if(result && result.user) { loader(true); await handleGoogleUser(result.user); loader(false); }
+}).catch(e => { console.error(e); loader(false); });
+
+async function handleGoogleUser(user) {
+  const snap = await getDoc(doc(db,'barbers',user.uid));
+  if(!snap.exists()) {
+    const name = user.displayName || 'حلاق';
+    await setDoc(doc(db,'barbers',user.uid), {
+      name, username: 'user'+Date.now().toString().slice(-6),
+      email: user.email||'', phone: '',
+      status:'inactive', plan:'pro', createdAt: new Date().toISOString(),
+      theme:{primaryColor:'#C9A84C'}, settings:{shopName:name,sub:'',lang:'ar'},
+      services:[{id:1,name:'قصة شعر',price:50,dur:30,ico:'💈'},{id:2,name:'حلاقة دقن',price:40,dur:20,ico:'🪒'}],
+      coupons:[]
+    });
+  }
+  window.location.href = 'dashboard.html';
+}
+
+window.doRegister = async () => {
+  const name     = document.getElementById('regName').value.trim();
+  const username = document.getElementById('regUsername').value.trim().toLowerCase();
+  const phone    = document.getElementById('regPhone').value.trim().replace(/\s/g,'');
+  const email    = document.getElementById('regEmail').value.trim();
+  const pass     = document.getElementById('regPass').value;
+  const errEl    = document.getElementById('regErr');
+  const okEl     = document.getElementById('regOk');
+  errEl.textContent = ''; okEl.textContent = '';
+  if(!name||!username||!phone||!email||!pass) { errEl.textContent='يرجى ملء جميع الحقول'; return; }
+  if(username.length<3) { errEl.textContent='اسم المستخدم ٣ أحرف على الأقل'; return; }
+  if(pass.length<6) { errEl.textContent='كلمة المرور ٦ أحرف على الأقل'; return; }
+  let phoneF = phone.startsWith('0') ? phone.slice(1) : phone;
+  phoneF = '+966' + phoneF;
+  if(phoneF.length < 12) { errEl.textContent='رقم الجوال غير صحيح'; return; }
+  loader(true);
+  try {
+    const q = query(collection(db,'barbers'), where('username','==',username));
+    if(!(await getDocs(q)).empty) { errEl.textContent='اسم المستخدم محجوز، جرب آخر'; loader(false); return; }
+    const cred = await createUserWithEmailAndPassword(auth, email, pass);
+    await setDoc(doc(db,'barbers',cred.user.uid), {
+      name, username, email, phone: phoneF,
+      status:'inactive', plan:'pro', createdAt: new Date().toISOString(),
+      theme:{primaryColor:'#C9A84C',darkMode:true}, settings:{shopName:name,sub:'',lang:'ar'},
+      services:[{id:1,name:'قصة شعر',price:50,dur:30,ico:'💈'},{id:2,name:'حلاقة دقن',price:40,dur:20,ico:'🪒'}],
+      coupons:[]
+    });
+    await sendEmailVerification(cred.user, {url:'https://barberstor.com/dashboard.html',handleCodeInApp:false});
+    await signOut(auth); // sign out حتى يضطر يتحقق من الإيميل أولاً
+    okEl.style.color = '#2ecc71';
+    okEl.textContent = '✓ تم إنشاء الحساب! راجع إيميلك وافتح رابط التأكيد، ثم سجّل دخولك';
+    toast('أُرسل إيميل التأكيد لـ ' + email);
+  } catch(e) { errEl.textContent = firebaseErr(e.code); }
+  finally { loader(false); }
+};
+
+window.doLogin = async () => {
+  const email   = document.getElementById('loginEmail').value.trim();
+  const pass    = document.getElementById('loginPass').value;
+  const remember = document.getElementById('rememberMe').checked;
+  const errEl   = document.getElementById('loginErr');
+  errEl.textContent = '';
+  if(!email||!pass) { errEl.textContent='يرجى ملء جميع الحقول'; return; }
+  loader(true);
+  try {
+    await setPersistence(auth, remember ? browserLocalPersistence : browserSessionPersistence);
+    const cred = await signInWithEmailAndPassword(auth, email, pass);
+    if(!cred.user.emailVerified) {
+      await signOut(auth);
+      errEl.textContent = 'يرجى تأكيد بريدك الإلكتروني أولاً — تحقق من صندوق الوارد';
+      loader(false); return;
+    }
+    closeModal('loginModal');
+    window.location.href = 'dashboard.html';
+  } catch(e) { errEl.textContent = firebaseErr(e.code); }
+  finally { loader(false); }
+};
+
+window.doGoogleLogin = async () => {
+  loader(true);
+  try {
+    await setPersistence(auth, browserLocalPersistence);
+    const provider = new GoogleAuthProvider();
+    if(/iPhone|iPad|Android/i.test(navigator.userAgent)) {
+      await signInWithRedirect(auth, provider);
+    } else {
+      const result = await signInWithPopup(auth, provider);
+      await handleGoogleUser(result.user);
+    }
+  } catch(e) {
+    console.error(e);
+    toast('فشل الدخول بـ Google');
+    loader(false);
+  }
+};
+
+let confirmResult = null;
+let otpPhone = '';
+window.sendOTP = () => {
+  const raw = document.getElementById('loginPhone').value.trim().replace(/\s/g,'');
+  const errEl = document.getElementById('phoneErr');
+  errEl.textContent = '';
+  if(!raw) { errEl.textContent='أدخل رقم الجوال'; return; }
+  let phone = raw.startsWith('0') ? raw.slice(1) : raw;
+  otpPhone = '+966' + phone;
+  if(otpPhone.length < 12) { errEl.textContent='رقم الجوال غير صحيح'; return; }
+  // أظهر reCAPTCHA بدون loader حتى يتفاعل المستخدم
+  if(window.rcv) { try{ window.rcv.clear(); }catch(e){} window.rcv=null; }
+  window.rcv = new RecaptchaVerifier(auth, 'recaptcha-container', {
+    size: 'normal',
+    callback: () => {
+      loader(true);
+      signInWithPhoneNumber(auth, otpPhone, window.rcv)
+        .then(result => {
+          confirmResult = result;
+          loader(false);
+          document.getElementById('phoneStep1').style.display = 'none';
+          document.getElementById('phoneStep2').style.display = 'block';
+          toast('تم إرسال رمز التحقق ✓');
+        })
+        .catch(e => {
+          loader(false);
+          errEl.textContent = 'تعذّر إرسال الرمز، تأكد من الرقم';
+          try{ window.rcv.clear(); }catch(_){} window.rcv=null;
+          console.error(e);
+        });
+    },
+    'expired-callback': () => {
+      errEl.textContent = 'انتهت صلاحية reCAPTCHA، حاول مرة ثانية';
+      try{ window.rcv.clear(); }catch(_){} window.rcv=null;
+    }
+  });
+  window.rcv.render().catch(e => {
+    errEl.textContent = 'خطأ في تحميل reCAPTCHA';
+    console.error(e);
+  });
+};
+
+window.verifyOTP = async () => {
+  const code = document.getElementById('otpCode').value.trim();
+  const errEl = document.getElementById('otpErr');
+  errEl.textContent = '';
+  if(code.length<6) { errEl.textContent='أدخل الرمز كاملاً'; return; }
+  loader(true);
+  try {
+    await setPersistence(auth, browserLocalPersistence);
+    const result = await confirmResult.confirm(code);
+    const user = result.user;
+    const snap = await getDoc(doc(db,'barbers',user.uid));
+    if(!snap.exists()) {
+      const name = 'حلاق '+user.phoneNumber.slice(-4);
+      await setDoc(doc(db,'barbers',user.uid), {
+        name, username:'user'+Date.now().toString().slice(-6),
+        phone:user.phoneNumber, email:'',
+        status:'inactive', plan:'pro', createdAt:new Date().toISOString(),
+        theme:{primaryColor:'#C9A84C'}, settings:{shopName:name,sub:'',lang:'ar'},
+        services:[{id:1,name:'قصة شعر',price:50,dur:30,ico:'💈'},{id:2,name:'حلاقة دقن',price:40,dur:20,ico:'🪒'}],
+        coupons:[]
+      });
+    }
+    closeModal('loginModal');
+    window.location.href = 'dashboard.html';
+  } catch(e) { errEl.textContent='الرمز خاطئ أو منتهي الصلاحية'; console.error(e); }
+  finally { loader(false); }
+};
+
+window.doLogout = async () => { await signOut(auth); toast('تم تسجيل الخروج'); };
+
+function firebaseErr(code) {
+  const m = {'auth/email-already-in-use':'البريد مستخدم مسبقاً','auth/invalid-email':'بريد غير صالح','auth/weak-password':'كلمة المرور ضعيفة','auth/user-not-found':'حساب غير موجود','auth/wrong-password':'كلمة المرور خاطئة','auth/invalid-credential':'بيانات خاطئة'};
+  return m[code] || 'حدث خطأ، حاول مرة ثانية';
+}
+</script>
+
+<script>
+window.openModal  = id => { document.getElementById(id).classList.add('open'); document.body.style.overflow='hidden'; };
+window.closeModal = id => { document.getElementById(id).classList.remove('open'); document.body.style.overflow=''; };
+window.switchModal = (a,b) => { closeModal(a); openModal(b); };
+document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', e => { if(e.target===o) closeModal(o.id); }));
+window.toggleDropdown = () => document.getElementById('userDropdown').classList.toggle('open');
+document.addEventListener('click', e => { if(!e.target.closest('.user-menu')) { const d=document.getElementById('userDropdown'); if(d) d.classList.remove('open'); } });
+window.switchTab = tab => {
+  const e = tab==='email';
+  document.getElementById('emailForm').style.display = e?'block':'none';
+  document.getElementById('phoneForm').style.display = e?'none':'block';
+  document.getElementById('tabEmail').className = 'tab-btn '+(e?'tab-active':'tab-inactive');
+  document.getElementById('tabPhone').className = 'tab-btn '+(e?'tab-inactive':'tab-active');
+};
+window.backToPhone = () => { document.getElementById('phoneStep1').style.display='block'; document.getElementById('phoneStep2').style.display='none'; document.getElementById('otpCode').value=''; };
+window.toast = msg => { const el=document.getElementById('toast'); el.textContent=msg; el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),2800); };
+window.loader = on => { document.getElementById('loader').style.display=on?'flex':'none'; };
+window.toggleLang = () => { const h=document.getElementById('htmlRoot'); const toEn=h.lang==='ar'; h.lang=toEn?'en':'ar'; h.dir=toEn?'ltr':'rtl'; document.getElementById('langBtn').textContent=toEn?'ع':'EN'; };
+</script>
+</body>
+</html>
