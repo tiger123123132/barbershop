@@ -86,6 +86,13 @@ select.fi option{background:var(--dark2)}
 .spin{width:44px;height:44px;border-radius:50%;border:3px solid var(--dark5);border-top-color:var(--p);animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .mob-toggle{display:none;position:fixed;top:1rem;left:1rem;z-index:200;background:var(--dark3);border:1px solid var(--dark5);border-radius:10px;padding:.5rem .8rem;cursor:pointer;font-size:1.1rem;color:var(--text)}
+.logo-upload-wrap{display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap;margin-bottom:1.2rem}
+.logo-preview{width:80px;height:80px;border-radius:14px;border:2px dashed var(--dark5);display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--dark2);cursor:pointer;transition:.2s;flex-shrink:0}
+.logo-preview:hover{border-color:var(--p)}
+.logo-preview img{width:100%;height:100%;object-fit:contain}
+.logo-preview .plus{font-size:1.8rem;color:var(--muted)}
+.logo-info{flex:1}
+.logo-info p{color:var(--muted);font-size:.78rem;line-height:1.7;margin-top:.3rem}
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99;display:none}
 .overlay.on{display:block}
 @media(max-width:768px){.sidebar{transform:translateX(100%);width:260px}.sidebar.open{transform:translateX(0)}.main{margin-right:0;padding:1rem}.mob-toggle{display:block}}
@@ -250,6 +257,25 @@ select.fi option{background:var(--dark2)}
   </div>
   <div class="card">
     <div class="card-hd"><span class="card-title">بيانات المحل</span></div>
+
+    <!-- Logo Upload -->
+    <div class="fg">
+      <label>شعار المحل (لوغو)</label>
+      <div class="logo-upload-wrap">
+        <div class="logo-preview" id="logoPreview" onclick="document.getElementById('logoInput').click()">
+          <img id="logoImg" src="" style="display:none">
+          <span class="plus" id="logoPlus">🖼️</span>
+        </div>
+        <div class="logo-info">
+          <strong style="font-size:.85rem">اضغط لرفع الشعار</strong>
+          <p>PNG أو JPG — الحجم الأمثل ٢٠٠×٢٠٠<br>سيظهر في صفحة الحجز الخاصة بك</p>
+          <button class="btn btn-ghost btn-sm" onclick="document.getElementById('logoInput').click()" style="margin-top:.4rem">📁 اختر صورة</button>
+          <button class="btn btn-danger btn-sm" id="logoDelBtn" onclick="deleteLogo()" style="margin-top:.4rem;display:none">🗑️ حذف</button>
+        </div>
+      </div>
+      <input type="file" id="logoInput" accept="image/*" style="display:none" onchange="handleLogoUpload(event)">
+    </div>
+
     <div class="fgrid">
       <div class="fg"><label>اسم المحل (عربي)</label><input class="fi" id="set_name"></div>
       <div class="fg"><label>Shop Name (English)</label><input class="fi" id="set_nameEn"></div>
@@ -258,6 +284,14 @@ select.fi option{background:var(--dark2)}
       <div class="fg"><label>رقم الجوال</label><input class="fi" id="set_phone" placeholder="05xxxxxxxx"></div>
       <div class="fg"><label>المدينة</label><input class="fi" id="set_city" placeholder="الرياض"></div>
     </div>
+
+    <!-- Location -->
+    <div class="fg" style="margin-top:.5rem">
+      <label>📍 موقع المحل على خرائط Google</label>
+      <input class="fi" id="set_location" placeholder="https://maps.google.com/..." dir="ltr">
+      <div style="font-size:.74rem;color:var(--muted);margin-top:.3rem">افتح Google Maps ← شارك ← انسخ الرابط والصقه هنا</div>
+    </div>
+
     <button class="btn btn-gold" onclick="saveSettings()">💾 حفظ التغييرات</button>
   </div>
 </div>
@@ -334,6 +368,14 @@ function initDashboard(){
   document.getElementById('set_subEn').value=barberData.settings?.subEn||'';
   document.getElementById('set_phone').value=barberData.settings?.phone||'';
   document.getElementById('set_city').value=barberData.settings?.city||'';
+  document.getElementById('set_location').value=barberData.settings?.location||'';
+  // Load logo if exists
+  if(barberData.logoBase64){
+    document.getElementById('logoImg').src=barberData.logoBase64;
+    document.getElementById('logoImg').style.display='block';
+    document.getElementById('logoPlus').style.display='none';
+    document.getElementById('logoDelBtn').style.display='inline-block';
+  }
   window.selectedColor=barberData.theme?.primaryColor||'#C9A84C';
   updatePreview(window.selectedColor);
   const today=new Date().toISOString().split('T')[0];
@@ -467,8 +509,58 @@ window.updatePreview=color=>{ document.getElementById('previewBtn').style.backgr
 window.saveTheme=async()=>{ barberData.theme={primaryColor:window.selectedColor}; await updateDoc(doc(db,'barbers',mainBarberId),{theme:barberData.theme}); toast('✅ تم حفظ الثيم'); };
 
 window.saveSettings=async()=>{
-  const settings={shopName:document.getElementById('set_name').value.trim(),shopNameEn:document.getElementById('set_nameEn').value.trim(),sub:document.getElementById('set_sub').value.trim(),subEn:document.getElementById('set_subEn').value.trim(),phone:document.getElementById('set_phone').value.trim(),city:document.getElementById('set_city').value.trim()};
-  barberData.settings=settings; await updateDoc(doc(db,'barbers',mainBarberId),{settings}); updatePreview(window.selectedColor); toast('✅ تم الحفظ');
+  const settings={
+    shopName:document.getElementById('set_name').value.trim(),
+    shopNameEn:document.getElementById('set_nameEn').value.trim(),
+    sub:document.getElementById('set_sub').value.trim(),
+    subEn:document.getElementById('set_subEn').value.trim(),
+    phone:document.getElementById('set_phone').value.trim(),
+    city:document.getElementById('set_city').value.trim(),
+    location:document.getElementById('set_location').value.trim()
+  };
+  barberData.settings=settings;
+  await updateDoc(doc(db,'barbers',mainBarberId),{settings});
+  updatePreview(window.selectedColor);
+  toast('✅ تم الحفظ');
+};
+
+window.handleLogoUpload = (e) => {
+  const file = e.target.files[0];
+  if(!file) return;
+  if(file.size > 500*1024){ toast('⚠️ الصورة كبيرة، الحد الأقصى 500KB'); return; }
+  const reader = new FileReader();
+  reader.onload = async (ev) => {
+    const base64 = ev.target.result;
+    // Show preview
+    document.getElementById('logoImg').src = base64;
+    document.getElementById('logoImg').style.display = 'block';
+    document.getElementById('logoPlus').style.display = 'none';
+    document.getElementById('logoDelBtn').style.display = 'inline-block';
+    // Save to Firestore
+    loader(true);
+    try {
+      await updateDoc(doc(db,'barbers',mainBarberId),{logoBase64: base64});
+      barberData.logoBase64 = base64;
+      toast('✅ تم رفع الشعار');
+    } catch(err){ toast('❌ فشل الرفع'); console.error(err); }
+    finally{ loader(false); }
+  };
+  reader.readAsDataURL(file);
+};
+
+window.deleteLogo = async () => {
+  if(!confirm('حذف الشعار؟')) return;
+  loader(true);
+  try{
+    await updateDoc(doc(db,'barbers',mainBarberId),{logoBase64:''});
+    barberData.logoBase64 = '';
+    document.getElementById('logoImg').src='';
+    document.getElementById('logoImg').style.display='none';
+    document.getElementById('logoPlus').style.display='block';
+    document.getElementById('logoDelBtn').style.display='none';
+    toast('🗑️ تم حذف الشعار');
+  }catch(err){toast('❌ خطأ'); console.error(err);}
+  finally{loader(false);}
 };
 
 window.activateAccount=async()=>{
