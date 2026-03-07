@@ -176,7 +176,7 @@ import { getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 // ── Firebase ──
-const app  = initializeApp({apiKey:"AIzaSyAHSfjlmSyI8a5rJlR4Uep9Lc-HrHTEQAE",authDomain:"barber-stor.firebaseapp.com",projectId:"barber-stor",storageBucket:"barber-stor.firebasestorage.app",messagingSenderId:"219780488634",appId:"1:219780488634:web:650eb88e5b452e9cb2d183"});
+const app  = initializeApp({apiKey:"AIzaSyAHSfjlmSyI8a5rJlR4Uep9Lc-HrHTEQAE",authDomain:"barberstor.com",projectId:"barber-stor",storageBucket:"barber-stor.firebasestorage.app",messagingSenderId:"219780488634",appId:"1:219780488634:web:650eb88e5b452e9cb2d183"});
 const auth = getAuth(app);
 const db   = getFirestore(app);
 
@@ -320,15 +320,26 @@ async function createBarberDoc(uid, data) {
 }
 
 async function handleGoogleUser(user) {
-  const snap = await getDoc(doc(db,'barbers',user.uid));
-  if(!snap.exists()) {
-    await createBarberDoc(user.uid, {
-      name: user.displayName||'حلاق',
-      username: 'user'+Date.now().toString().slice(-6),
-      email: user.email||'', phone:''
-    });
+  console.log('handleGoogleUser called', user.uid, user.email);
+  try {
+    const snap = await getDoc(doc(db,'barbers',user.uid));
+    console.log('doc exists:', snap.exists());
+    if(!snap.exists()) {
+      console.log('creating doc...');
+      await createBarberDoc(user.uid, {
+        name: user.displayName||'حلاق',
+        username: 'user'+Date.now().toString().slice(-6),
+        email: user.email||'', phone:''
+      });
+      console.log('doc created');
+    }
+    console.log('redirecting to dashboard...');
+    window.location.href = 'dashboard.html';
+  } catch(e) {
+    console.error('handleGoogleUser error:', e.code, e.message);
+    loader(false);
+    toast('خطأ: ' + e.message);
   }
-  window.location.href = 'dashboard.html';
 }
 
 // ── Auth Init ──
@@ -403,24 +414,27 @@ window.doRegister = async () => {
 };
 
 window.doGoogleLogin = async () => {
+  console.log('doGoogleLogin called');
   loader(true);
   try {
     await setPersistence(auth, browserLocalPersistence);
     const provider = new GoogleAuthProvider();
     provider.setCustomParameters({prompt:'select_account'});
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    console.log('isMobile:', isMobile);
     if(isMobile) {
       await signInWithRedirect(auth, provider);
-      // page will reload — handled by initAuth → getRedirectResult
     } else {
+      console.log('opening popup...');
       const result = await signInWithPopup(auth, provider);
+      console.log('popup result:', result.user.email);
       await handleGoogleUser(result.user);
     }
   } catch(e) {
     loader(false);
+    console.error('doGoogleLogin error:', e.code, e.message);
     if(e.code !== 'auth/popup-closed-by-user') {
-      console.error(e);
-      toast('فشل الدخول بـ Google');
+      toast('خطأ: ' + e.code);
     }
   }
 };
