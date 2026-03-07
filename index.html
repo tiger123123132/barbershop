@@ -182,7 +182,7 @@
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup, setPersistence, browserLocalPersistence, browserSessionPersistence, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, setPersistence, browserLocalPersistence, browserSessionPersistence, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getFirestore, doc, setDoc, getDoc, query, collection, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 
@@ -244,6 +244,15 @@ const app = initializeApp({
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+// ── Handle Google Redirect Result (mobile) ──
+try {
+  const redirectResult = await getRedirectResult(auth);
+  if(redirectResult && redirectResult.user) {
+    loader(true);
+    await handleGoogleUser(redirectResult.user);
+  }
+}
+
 onAuthStateChanged(auth, async user => {
   if(user) {
     document.getElementById('guestNav').style.display = 'none';
@@ -256,7 +265,10 @@ onAuthStateChanged(auth, async user => {
   }
 });
 
-// popup only - no redirect needed
+ catch(e) {
+  console.error('redirect error:', e);
+  loader(false);
+}
 
 async function handleGoogleUser(user) {
   const snap = await getDoc(doc(db,'barbers',user.uid));
@@ -329,15 +341,17 @@ window.doGoogleLogin = async () => {
     await setPersistence(auth, browserLocalPersistence);
     const provider = new GoogleAuthProvider();
     provider.setCustomParameters({ prompt: 'select_account' });
-    const result = await signInWithPopup(auth, provider);
-    await handleGoogleUser(result.user);
+    if(/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+      // mobile: redirect (popup doesn't work on Safari)
+      await signInWithRedirect(auth, provider);
+    } else {
+      // desktop: popup
+      const result = await signInWithPopup(auth, provider);
+      await handleGoogleUser(result.user);
+    }
   } catch(e) {
     loader(false);
-    if(e.code === 'auth/popup-blocked') {
-      toast('⚠️ افتح النوافذ المنبثقة في المتصفح وحاول مرة ثانية');
-    } else if(e.code === 'auth/popup-closed-by-user') {
-      // user closed - do nothing
-    } else {
+    if(e.code !== 'auth/popup-closed-by-user') {
       console.error(e);
       toast('فشل الدخول بـ Google');
     }
