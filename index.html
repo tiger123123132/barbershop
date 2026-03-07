@@ -275,10 +275,10 @@ window.doRegister = async () => {
       coupons:[]
     });
     await sendEmailVerification(cred.user, {url:'https://barberstor.com/dashboard.html',handleCodeInApp:false});
+    await signOut(auth); // sign out حتى يضطر يتحقق من الإيميل أولاً
     okEl.style.color = '#2ecc71';
-    okEl.textContent = 'تم إنشاء الحساب! تحقق من إيميلك';
-    toast('مرحباً '+name+'! تحقق من إيميلك');
-    setTimeout(()=>{ closeModal('registerModal'); window.location.href='dashboard.html'; }, 2500);
+    okEl.textContent = '✓ تم إنشاء الحساب! راجع إيميلك وافتح رابط التأكيد، ثم سجّل دخولك';
+    toast('أُرسل إيميل التأكيد لـ ' + email);
   } catch(e) { errEl.textContent = firebaseErr(e.code); }
   finally { loader(false); }
 };
@@ -293,7 +293,12 @@ window.doLogin = async () => {
   loader(true);
   try {
     await setPersistence(auth, remember ? browserLocalPersistence : browserSessionPersistence);
-    await signInWithEmailAndPassword(auth, email, pass);
+    const cred = await signInWithEmailAndPassword(auth, email, pass);
+    if(!cred.user.emailVerified) {
+      await signOut(auth);
+      errEl.textContent = 'يرجى تأكيد بريدك الإلكتروني أولاً — تحقق من صندوق الوارد';
+      loader(false); return;
+    }
     closeModal('loginModal');
     window.location.href = 'dashboard.html';
   } catch(e) { errEl.textContent = firebaseErr(e.code); }
@@ -319,26 +324,45 @@ window.doGoogleLogin = async () => {
 };
 
 let confirmResult = null;
-window.sendOTP = async () => {
+let otpPhone = '';
+window.sendOTP = () => {
   const raw = document.getElementById('loginPhone').value.trim().replace(/\s/g,'');
   const errEl = document.getElementById('phoneErr');
   errEl.textContent = '';
   if(!raw) { errEl.textContent='أدخل رقم الجوال'; return; }
-  let phone = (raw.startsWith('0') ? raw.slice(1) : raw);
-  phone = '+966' + phone;
-  if(phone.length < 12) { errEl.textContent='رقم الجوال غير صحيح'; return; }
-  loader(true);
-  try {
-    if(!window.rcv) window.rcv = new RecaptchaVerifier(auth,'recaptcha-container',{size:'normal'});
-    confirmResult = await signInWithPhoneNumber(auth, phone, window.rcv);
-    document.getElementById('phoneStep1').style.display = 'none';
-    document.getElementById('phoneStep2').style.display = 'block';
-    toast('تم إرسال رمز التحقق');
-  } catch(e) {
-    errEl.textContent = 'تعذّر إرسال الرمز، تأكد من الرقم';
-    if(window.rcv) { window.rcv.clear(); window.rcv=null; }
+  let phone = raw.startsWith('0') ? raw.slice(1) : raw;
+  otpPhone = '+966' + phone;
+  if(otpPhone.length < 12) { errEl.textContent='رقم الجوال غير صحيح'; return; }
+  // أظهر reCAPTCHA بدون loader حتى يتفاعل المستخدم
+  if(window.rcv) { try{ window.rcv.clear(); }catch(e){} window.rcv=null; }
+  window.rcv = new RecaptchaVerifier(auth, 'recaptcha-container', {
+    size: 'normal',
+    callback: () => {
+      loader(true);
+      signInWithPhoneNumber(auth, otpPhone, window.rcv)
+        .then(result => {
+          confirmResult = result;
+          loader(false);
+          document.getElementById('phoneStep1').style.display = 'none';
+          document.getElementById('phoneStep2').style.display = 'block';
+          toast('تم إرسال رمز التحقق ✓');
+        })
+        .catch(e => {
+          loader(false);
+          errEl.textContent = 'تعذّر إرسال الرمز، تأكد من الرقم';
+          try{ window.rcv.clear(); }catch(_){} window.rcv=null;
+          console.error(e);
+        });
+    },
+    'expired-callback': () => {
+      errEl.textContent = 'انتهت صلاحية reCAPTCHA، حاول مرة ثانية';
+      try{ window.rcv.clear(); }catch(_){} window.rcv=null;
+    }
+  });
+  window.rcv.render().catch(e => {
+    errEl.textContent = 'خطأ في تحميل reCAPTCHA';
     console.error(e);
-  } finally { loader(false); }
+  });
 };
 
 window.verifyOTP = async () => {
