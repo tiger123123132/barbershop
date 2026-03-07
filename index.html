@@ -244,29 +244,35 @@ const app = initializeApp({
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// ── Handle Google Redirect Result (mobile) ──
-try {
-  const redirectResult = await getRedirectResult(auth);
-  if(redirectResult && redirectResult.user) {
-    loader(true);
-    await handleGoogleUser(redirectResult.user);
+// ── Init: handle redirect first, then auth state ──
+async function initAuth() {
+  // 1. Check for Google redirect result first
+  try {
+    const redirectResult = await getRedirectResult(auth);
+    if(redirectResult && redirectResult.user) {
+      loader(true);
+      await handleGoogleUser(redirectResult.user);
+      return; // handleGoogleUser will redirect to dashboard
+    }
+  } catch(e) {
+    console.error('redirect error:', e);
+    loader(false);
   }
-} catch(e) {
-  console.error('redirect error:', e);
-  loader(false);
-}
 
-onAuthStateChanged(auth, async user => {
-  if(user) {
-    document.getElementById('guestNav').style.display = 'none';
-    document.getElementById('userNav').style.display = 'block';
-    const snap = await getDoc(doc(db,'barbers',user.uid));
-    if(snap.exists()) document.getElementById('userAvatar').textContent = (snap.data().name||'U')[0].toUpperCase();
-  } else {
-    document.getElementById('guestNav').style.display = 'flex';
-    document.getElementById('userNav').style.display = 'none';
-  }
-});
+  // 2. Normal auth state listener
+  onAuthStateChanged(auth, async user => {
+    if(user) {
+      document.getElementById('guestNav').style.display = 'none';
+      document.getElementById('userNav').style.display = 'block';
+      const snap = await getDoc(doc(db,'barbers',user.uid));
+      if(snap.exists()) document.getElementById('userAvatar').textContent = (snap.data().name||'U')[0].toUpperCase();
+    } else {
+      document.getElementById('guestNav').style.display = 'flex';
+      document.getElementById('userNav').style.display = 'none';
+    }
+  });
+}
+initAuth();
 
 async function handleGoogleUser(user) {
   const snap = await getDoc(doc(db,'barbers',user.uid));
