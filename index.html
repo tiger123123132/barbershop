@@ -8,134 +8,117 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 <style>
 :root{
-  --p:#C9A84C;--p2:#E8C97A;
-  --dark:#080808;--dark2:#0f0f0f;--dark3:#171717;--dark4:#222;--dark5:#2c2c2c;
-  --text:#f0ede8;--muted:#666;--green:#2ecc71;--red:#e74c3c;
+  --p:#C9A84C;
+  --p2:#E8C97A;
+  --dark:#080808;
+  --dark2:#0f0f0f;
+  --dark3:#171717;
+  --dark4:#222;
+  --dark5:#2c2c2c;
+  --text:#f0ede8;
+  --muted:#666;
+  --green:#2ecc71;
+  --red:#e74c3c;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{background:var(--dark);color:var(--text);font-family:'Cairo',sans-serif;overflow-x:hidden}
-
-/* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:.85rem 2rem;display:flex;align-items:center;justify-content:space-between;background:rgba(8,8,8,.92);backdrop-filter:blur(18px);border-bottom:1px solid rgba(201,168,76,.1)}
-.logo{font-size:1.3rem;font-weight:900;background:linear-gradient(135deg,var(–p2),var(–p));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;cursor:pointer}
+.logo{font-size:1.3rem;font-weight:900;background:linear-gradient(135deg,var(--p2),var(--p));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;cursor:pointer}
 .nav-right{display:flex;align-items:center;gap:.6rem}
-
-/* BUTTONS */
-.btn{padding:.6rem 1.3rem;border-radius:10px;cursor:pointer;font-family:‘Cairo’,sans-serif;font-weight:700;font-size:.85rem;border:none;transition:all .2s;white-space:nowrap}
-.btn-gold{background:linear-gradient(135deg,var(–p),var(–p2));color:#000}
+.btn{padding:.6rem 1.3rem;border-radius:10px;cursor:pointer;font-family:'Cairo',sans-serif;font-weight:700;font-size:.85rem;border:none;transition:all .2s;white-space:nowrap}
+.btn-gold{background:linear-gradient(135deg,var(--p),var(--p2));color:#000}
 .btn-gold:hover{transform:translateY(-1px);box-shadow:0 5px 24px rgba(201,168,76,.4)}
-.btn-outline{background:transparent;border:1.5px solid var(–p);color:var(–p)}
-.btn-outline:hover{background:rgba(201,168,76,.08)}
-.btn-ghost{background:transparent;border:1.5px solid var(–dark5);color:var(–muted)}
-.btn-ghost:hover{border-color:var(–muted);color:var(–text)}
+.btn-outline{background:transparent;border:1.5px solid var(--p);color:var(--p)}
+.btn-ghost{background:transparent;border:1.5px solid var(--dark5);color:var(--muted)}
+.btn-ghost:hover{border-color:var(--muted);color:var(--text)}
 .btn-full{width:100%;padding:.85rem;font-size:.95rem}
-.btn-lang{background:var(–dark4);border:1px solid var(–dark5);color:var(–muted);padding:.4rem .85rem;border-radius:8px;cursor:pointer;font-family:‘Cairo’,sans-serif;font-size:.78rem;transition:.2s}
-.btn-lang:hover{border-color:var(–p);color:var(–p)}
-
-/* HERO */
+.btn-sm{padding:.4rem .9rem;font-size:.8rem}
+.btn-lang{background:var(--dark4);border:1px solid var(--dark5);color:var(--muted);padding:.4rem .85rem;border-radius:8px;cursor:pointer;font-family:'Cairo',sans-serif;font-size:.78rem;transition:.2s}
+.btn-lang:hover{border-color:var(--p);color:var(--p)}
 #heroSec{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:7rem 1.5rem 5rem;position:relative;overflow:hidden}
 .gridbg{position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(201,168,76,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,.03) 1px,transparent 1px);background-size:54px 54px}
-#heroSec::before{content:’’;position:absolute;inset:0;background:radial-gradient(ellipse 80% 50% at 50% 0%,rgba(201,168,76,.13),transparent 65%)}
-.hero-badge{position:relative;display:inline-flex;align-items:center;gap:.5rem;border:1px solid rgba(201,168,76,.3);padding:.35rem 1.1rem;border-radius:50px;font-size:.78rem;color:var(–p);margin-bottom:1.5rem;animation:fu .6s ease both}
-.dot-pulse{width:6px;height:6px;border-radius:50%;background:var(–p);animation:dpulse 2s infinite}
+#heroSec::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 50% at 50% 0%,rgba(201,168,76,.13),transparent 65%)}
+.hero-badge{position:relative;display:inline-flex;align-items:center;gap:.5rem;border:1px solid rgba(201,168,76,.3);padding:.35rem 1.1rem;border-radius:50px;font-size:.78rem;color:var(--p);margin-bottom:1.5rem;animation:fu .6s ease both}
+.dot-pulse{width:6px;height:6px;border-radius:50%;background:var(--p);animation:dpulse 2s infinite}
 @keyframes dpulse{0%,100%{opacity:1}50%{opacity:.3}}
 @keyframes fu{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.hero-title{font-size:clamp(2.5rem,7vw,5rem);font-weight:900;line-height:1.05;background:linear-gradient(135deg,var(–p2),var(–p),#8a6010);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.6rem;animation:fu .6s .1s ease both;opacity:0}
-.hero-sub{color:var(–muted);font-size:1rem;margin-bottom:2.5rem;animation:fu .6s .2s ease both;opacity:0;max-width:500px}
+.hero-title{font-size:clamp(2.5rem,7vw,5rem);font-weight:900;line-height:1.05;background:linear-gradient(135deg,var(--p2),var(--p),#8a6010);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.6rem;animation:fu .6s .1s ease both;opacity:0}
+.hero-sub{color:var(--muted);font-size:1rem;margin-bottom:2.5rem;animation:fu .6s .2s ease both;opacity:0;max-width:500px}
 .hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fu .6s .3s ease both;opacity:0}
-
-/* FEATURES */
 #featuresSec{padding:5rem 1.5rem;max-width:1100px;margin:0 auto}
 .sec-title{text-align:center;font-size:1.8rem;font-weight:900;margin-bottom:.5rem}
-.sec-title span{background:linear-gradient(135deg,var(–p2),var(–p));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.sec-sub{text-align:center;color:var(–muted);margin-bottom:3rem;font-size:.95rem}
+.sec-title span{background:linear-gradient(135deg,var(--p2),var(--p));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-sub{text-align:center;color:var(--muted);margin-bottom:3rem;font-size:.95rem}
 .features-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1.2rem}
-.feat-card{background:var(–dark3);border:1px solid var(–dark5);border-radius:18px;padding:1.8rem;transition:.3s;position:relative;overflow:hidden}
-.feat-card::before{content:’’;position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,168,76,.06),transparent);opacity:0;transition:.3s}
-.feat-card:hover::before{opacity:1}
+.feat-card{background:var(--dark3);border:1px solid var(--dark5);border-radius:18px;padding:1.8rem;transition:.3s;position:relative;overflow:hidden}
 .feat-card:hover{border-color:rgba(201,168,76,.3);transform:translateY(-3px)}
 .feat-ico{font-size:2.2rem;margin-bottom:1rem;display:block}
 .feat-title{font-weight:700;font-size:1rem;margin-bottom:.4rem}
-.feat-desc{color:var(–muted);font-size:.85rem;line-height:1.7}
-
-/* PRICING */
-#pricingSec{padding:5rem 1.5rem;background:var(–dark2)}
+.feat-desc{color:var(--muted);font-size:.85rem;line-height:1.7}
+#pricingSec{padding:5rem 1.5rem;background:var(--dark2)}
 .pricing-wrap{max-width:440px;margin:0 auto}
-.pricing-card{background:var(–dark3);border:2px solid var(–p);border-radius:24px;padding:2.5rem;text-align:center;position:relative;overflow:hidden;box-shadow:0 0 60px rgba(201,168,76,.12)}
-.pricing-card::before{content:’’;position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(201,168,76,.08),transparent 70%)}
-.pricing-badge{display:inline-block;background:linear-gradient(135deg,var(–p),var(–p2));color:#000;font-size:.75rem;font-weight:900;padding:.3rem 1rem;border-radius:50px;margin-bottom:1.5rem;position:relative}
-.pricing-price{font-size:3.5rem;font-weight:900;color:var(–p);line-height:1;position:relative}
-.pricing-price span{font-size:1rem;color:var(–muted);font-weight:400}
-.pricing-features{list-style:none;margin:1.5rem 0;text-align:right;position:relative}
-.pricing-features li{padding:.5rem 0;border-bottom:1px solid var(–dark5);font-size:.9rem;display:flex;align-items:center;gap:.6rem}
+.pricing-card{background:var(--dark3);border:2px solid var(--p);border-radius:24px;padding:2.5rem;text-align:center;position:relative;overflow:hidden;box-shadow:0 0 60px rgba(201,168,76,.12)}
+.pricing-badge{display:inline-block;background:linear-gradient(135deg,var(--p),var(--p2));color:#000;font-size:.75rem;font-weight:900;padding:.3rem 1rem;border-radius:50px;margin-bottom:1.5rem}
+.pricing-price{font-size:3.5rem;font-weight:900;color:var(--p);line-height:1}
+.pricing-price span{font-size:1rem;color:var(--muted);font-weight:400}
+.pricing-features{list-style:none;margin:1.5rem 0;text-align:right}
+.pricing-features li{padding:.5rem 0;border-bottom:1px solid var(--dark5);font-size:.9rem;display:flex;align-items:center;gap:.6rem}
 .pricing-features li:last-child{border-bottom:none}
-.pricing-features li::before{content:‘✓’;color:var(–green);font-weight:900;flex-shrink:0}
-
-/* HOW */
+.pricing-features li::before{content:'checkmark';color:var(--green);font-weight:900;flex-shrink:0}
 #howSec{padding:5rem 1.5rem;max-width:900px;margin:0 auto}
 .steps{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1.5rem;margin-top:3rem}
 .step-card{text-align:center;padding:1.5rem}
-.step-num{width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,var(–p),var(–p2));color:#000;font-weight:900;font-size:1.2rem;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem}
+.step-num{width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--p2));color:#000;font-weight:900;font-size:1.2rem;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem}
 .step-title{font-weight:700;margin-bottom:.4rem}
-.step-desc{color:var(–muted);font-size:.85rem;line-height:1.7}
-
-/* FOOTER */
-footer{background:var(–dark2);border-top:1px solid var(–dark5);padding:2rem;text-align:center;color:var(–muted);font-size:.83rem}
-
-/* MODAL */
+.step-desc{color:var(--muted);font-size:.85rem;line-height:1.7}
+footer{background:var(--dark2);border-top:1px solid var(--dark5);padding:2rem;text-align:center;color:var(--muted);font-size:.83rem}
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:500;display:none;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(6px)}
 .modal-overlay.open{display:flex}
-.modal{background:var(–dark3);border:1px solid var(–dark5);border-radius:20px;padding:2rem;width:100%;max-width:400px;animation:fu .3s ease;position:relative}
-.modal-close{position:absolute;top:1rem;left:1rem;background:transparent;border:none;color:var(–muted);font-size:1.3rem;cursor:pointer;transition:.2s}
-.modal-close:hover{color:var(–text)}
-.modal-title{font-size:1.2rem;font-weight:800;margin-bottom:.3rem;color:var(–p)}
-.modal-sub{color:var(–muted);font-size:.83rem;margin-bottom:1.5rem}
+.modal{background:var(--dark3);border:1px solid var(--dark5);border-radius:20px;padding:2rem;width:100%;max-width:420px;animation:fu .3s ease;position:relative;max-height:90vh;overflow-y:auto}
+.modal-close{position:absolute;top:1rem;left:1rem;background:transparent;border:none;color:var(--muted);font-size:1.3rem;cursor:pointer}
+.modal-title{font-size:1.2rem;font-weight:800;margin-bottom:.3rem;color:var(--p)}
+.modal-sub{color:var(--muted);font-size:.83rem;margin-bottom:1.5rem}
 .fg{margin-bottom:1rem}
-.fg label{display:block;color:var(–muted);font-size:.8rem;margin-bottom:.35rem}
-.fi{width:100%;background:var(–dark2);border:1.5px solid var(–dark5);border-radius:10px;padding:.75rem 1rem;color:var(–text);font-family:‘Cairo’,sans-serif;font-size:.9rem;transition:.2s;direction:inherit}
-.fi:focus{outline:none;border-color:var(–p);box-shadow:0 0 10px rgba(201,168,76,.1)}
-.err-msg{color:var(–red);font-size:.8rem;margin-bottom:.8rem;min-height:1rem;text-align:center}
-.ok-msg{color:var(–green);font-size:.8rem;margin-bottom:.8rem;min-height:1rem;text-align:center}
-.divider{text-align:center;color:var(–muted);font-size:.8rem;margin:.8rem 0;position:relative}
-.divider::before,.divider::after{content:’’;position:absolute;top:50%;width:38%;height:1px;background:var(–dark5)}
+.fg label{display:block;color:var(--muted);font-size:.8rem;margin-bottom:.35rem}
+.fi{width:100%;background:var(--dark2);border:1.5px solid var(--dark5);border-radius:10px;padding:.75rem 1rem;color:var(--text);font-family:'Cairo',sans-serif;font-size:.9rem;transition:.2s;direction:inherit}
+.fi:focus{outline:none;border-color:var(--p);box-shadow:0 0 10px rgba(201,168,76,.1)}
+.err-msg{color:var(--red);font-size:.8rem;margin-bottom:.8rem;min-height:1rem;text-align:center}
+.ok-msg{font-size:.8rem;margin-bottom:.8rem;min-height:1rem;text-align:center}
+.divider{text-align:center;color:var(--muted);font-size:.8rem;margin:.8rem 0;position:relative}
+.divider::before,.divider::after{content:'';position:absolute;top:50%;width:38%;height:1px;background:var(--dark5)}
 .divider::before{right:0}.divider::after{left:0}
-
-/* TOAST */
-#toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(80px);background:var(–dark3);border:1px solid var(–p);color:var(–text);padding:.8rem 1.8rem;border-radius:12px;font-size:.88rem;transition:.3s;z-index:9999;white-space:nowrap;pointer-events:none}
+.tab-bar{display:flex;gap:.4rem;margin-bottom:1.2rem;background:var(--dark2);border-radius:10px;padding:.3rem}
+.tab-btn{flex:1;padding:.45rem;border:none;border-radius:8px;font-family:'Cairo',sans-serif;font-weight:700;font-size:.82rem;cursor:pointer;transition:.2s}
+.tab-btn.active{background:var(--p);color:#000}
+.tab-btn.inactive{background:transparent;color:var(--muted)}
+.google-btn{width:100%;padding:.75rem;border-radius:10px;border:1.5px solid var(--dark5);background:var(--dark2);color:var(--text);font-family:'Cairo',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.6rem;margin-bottom:.6rem;transition:.2s}
+.google-btn:hover{border-color:var(--muted)}
+#toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(80px);background:var(--dark3);border:1px solid var(--p);color:var(--text);padding:.8rem 1.8rem;border-radius:12px;font-size:.88rem;transition:.3s;z-index:9999;white-space:nowrap;pointer-events:none}
 #toast.show{transform:translateX(-50%) translateY(0)}
-
-/* LOADER */
-#loader{position:fixed;inset:0;background:rgba(8,8,8,.9);z-index:9998;display:none;align-items:center;justify-content:center;flex-direction:column;gap:1rem}
+#loader{position:fixed;inset:0;background:rgba(8,8,8,.9);z-index:9998;display:none;align-items:center;justify-content:center}
 #loader.on{display:flex}
-.spin{width:44px;height:44px;border-radius:50%;border:3px solid var(–dark5);border-top-color:var(–p);animation:spin .7s linear infinite}
+.spin{width:44px;height:44px;border-radius:50%;border:3px solid var(--dark5);border-top-color:var(--p);animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* USER MENU */
 .user-menu{position:relative}
-.user-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(–p),var(–p2));color:#000;font-weight:900;font-size:.85rem;display:flex;align-items:center;justify-content:center;cursor:pointer;border:2px solid transparent;transition:.2s}
-.user-avatar:hover{border-color:var(–p)}
-.user-dropdown{position:absolute;top:calc(100% + .5rem);left:0;background:var(–dark3);border:1px solid var(–dark5);border-radius:14px;padding:.5rem;min-width:180px;display:none;animation:fu .2s ease;z-index:300}
+.user-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--p2));color:#000;font-weight:900;font-size:.85rem;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.user-dropdown{position:absolute;top:calc(100% + .5rem);left:0;background:var(--dark3);border:1px solid var(--dark5);border-radius:14px;padding:.5rem;min-width:180px;display:none;z-index:300}
 .user-dropdown.open{display:block}
-.ud-item{display:flex;align-items:center;gap:.6rem;padding:.65rem .85rem;border-radius:9px;cursor:pointer;font-size:.85rem;color:var(–text);transition:.2s;white-space:nowrap}
-.ud-item:hover{background:var(–dark4)}
-.ud-item.danger{color:var(–red)}
-.ud-sep{height:1px;background:var(–dark5);margin:.3rem 0}
-
+.ud-item{display:flex;align-items:center;gap:.6rem;padding:.65rem .85rem;border-radius:9px;cursor:pointer;font-size:.85rem;color:var(--text);transition:.2s}
+.ud-item:hover{background:var(--dark4)}
+.ud-item.danger{color:var(--red)}
+.ud-sep{height:1px;background:var(--dark5);margin:.3rem 0}
 @media(max-width:600px){
-nav{padding:.75rem 1rem}
-.hero-title{font-size:2.2rem}
-.hero-btns{flex-direction:column;align-items:center}
+  nav{padding:.75rem 1rem}
+  .hero-title{font-size:2.2rem}
+  .hero-btns{flex-direction:column;align-items:center}
 }
 </style>
-
 </head>
 <body>
 
-<!-- NAV -->
-
 <nav>
-  <div class="logo" onclick="scrollTo({top:0,behavior:'smooth'})">BarberStor ✂️</div>
+  <div class="logo" onclick="scrollTo({top:0,behavior:'smooth'})">BarberStor &#9986;</div>
   <div class="nav-right">
     <button class="btn-lang" onclick="toggleLang()" id="langBtn">EN</button>
     <div id="guestNav" style="display:flex;gap:.6rem">
@@ -144,164 +127,171 @@ nav{padding:.75rem 1rem}
     </div>
     <div id="userNav" style="display:none">
       <div class="user-menu">
-        <div class="user-avatar" id="userAvatar" onclick="toggleDropdown()">س</div>
+        <div class="user-avatar" id="userAvatar" onclick="toggleDropdown()">U</div>
         <div class="user-dropdown" id="userDropdown">
-          <div class="ud-item" onclick="gotoDashboard()">📊 <span data-ar="لوحة التحكم" data-en="Dashboard">لوحة التحكم</span></div>
+          <div class="ud-item" onclick="window.location.href='dashboard.html'">&#128202; <span data-ar="لوحة التحكم" data-en="Dashboard">لوحة التحكم</span></div>
           <div class="ud-sep"></div>
-          <div class="ud-item danger" onclick="logout()">🚪 <span data-ar="تسجيل خروج" data-en="Logout">تسجيل خروج</span></div>
+          <div class="ud-item danger" onclick="doLogout()">&#128682; <span data-ar="تسجيل خروج" data-en="Logout">تسجيل خروج</span></div>
         </div>
       </div>
     </div>
   </div>
 </nav>
 
-<!-- HERO -->
-
 <section id="heroSec">
   <div class="gridbg"></div>
-  <div class="hero-badge"><div class="dot-pulse"></div><span data-ar="منصة حجوزات الحلاقة #١" data-en="The #1 Barbershop Booking Platform">منصة حجوزات الحلاقة #١</span></div>
-  <h1 class="hero-title" data-ar="موقع حجوزات احترافي<br>لكل حلاق" data-en="Professional Booking Website<br>For Every Barber">موقع حجوزات احترافي<br>لكل حلاق</h1>
+  <div class="hero-badge"><div class="dot-pulse"></div><span data-ar="منصة حجوزات الحلاقة رقم ١" data-en="The #1 Barbershop Booking Platform">منصة حجوزات الحلاقة رقم ١</span></div>
+  <h1 class="hero-title" id="heroTitle">موقع حجوزات احترافي لكل حلاق</h1>
   <p class="hero-sub" data-ar="سجّل، خصّص موقعك، وابدأ استقبال الحجوزات خلال دقائق" data-en="Sign up, customize your site, and start receiving bookings in minutes">سجّل، خصّص موقعك، وابدأ استقبال الحجوزات خلال دقائق</p>
   <div class="hero-btns">
-    <button class="btn btn-gold" style="font-size:1rem;padding:.85rem 2.5rem" onclick="openModal('registerModal')" data-ar="ابدأ الآن مجاناً ✦" data-en="Start Free Now ✦">ابدأ الآن مجاناً ✦</button>
+    <button class="btn btn-gold" style="font-size:1rem;padding:.85rem 2.5rem" onclick="openModal('registerModal')" data-ar="ابدأ الآن مجاناً" data-en="Start Free Now">ابدأ الآن مجاناً</button>
     <button class="btn btn-outline" onclick="document.getElementById('howSec').scrollIntoView({behavior:'smooth'})" data-ar="كيف يعمل؟" data-en="How it works?">كيف يعمل؟</button>
   </div>
 </section>
-
-<!-- FEATURES -->
 
 <section id="featuresSec">
   <h2 class="sec-title"><span data-ar="كل شيء تحتاجه" data-en="Everything You Need">كل شيء تحتاجه</span></h2>
   <p class="sec-sub" data-ar="من الحجز إلى الدفع — كل شيء في مكان واحد" data-en="From booking to payment — everything in one place">من الحجز إلى الدفع — كل شيء في مكان واحد</p>
   <div class="features-grid">
-    <div class="feat-card">
-      <span class="feat-ico">🔗</span>
-      <div class="feat-title" data-ar="رابط خاص بك" data-en="Your Own Link">رابط خاص بك</div>
-      <div class="feat-desc" data-ar="احصل على رابط حجز خاص مثل barberstor.com/book/اسمك وشاركه مع عملائك" data-en="Get your own booking link like barberstor.com/book/yourname">احصل على رابط حجز خاص مثل barberstor.com/book/اسمك وشاركه مع عملائك</div>
-    </div>
-    <div class="feat-card">
-      <span class="feat-ico">🎨</span>
-      <div class="feat-title" data-ar="ثيم قابل للتخصيص" data-en="Customizable Theme">ثيم قابل للتخصيص</div>
-      <div class="feat-desc" data-ar="غيّر ألوان موقعك وشكله ليعكس هويتك التجارية" data-en="Change your site colors and style to reflect your brand">غيّر ألوان موقعك وشكله ليعكس هويتك التجارية</div>
-    </div>
-    <div class="feat-card">
-      <span class="feat-ico">💈</span>
-      <div class="feat-title" data-ar="إدارة الخدمات" data-en="Services Management">إدارة الخدمات</div>
-      <div class="feat-desc" data-ar="أضف خدماتك وأسعارها ومدتها بكل سهولة من لوحة التحكم" data-en="Add your services, prices, and durations easily from your dashboard">أضف خدماتك وأسعارها ومدتها بكل سهولة من لوحة التحكم</div>
-    </div>
-    <div class="feat-card">
-      <span class="feat-ico">🎁</span>
-      <div class="feat-title" data-ar="كوبونات الخصم" data-en="Discount Coupons">كوبونات الخصم</div>
-      <div class="feat-desc" data-ar="أنشئ كوبونات خصم لعملائك بنسبة مئوية أو مبلغ ثابت" data-en="Create discount coupons for your clients with percentage or fixed amount">أنشئ كوبونات خصم لعملائك بنسبة مئوية أو مبلغ ثابت</div>
-    </div>
-    <div class="feat-card">
-      <span class="feat-ico">📊</span>
-      <div class="feat-title" data-ar="إحصائيات وتقارير" data-en="Analytics & Reports">إحصائيات وتقارير</div>
-      <div class="feat-desc" data-ar="تابع حجوزاتك وإيراداتك وعدد عملائك من لوحة واحدة" data-en="Track your bookings, revenue, and clients from one dashboard">تابع حجوزاتك وإيراداتك وعدد عملائك من لوحة واحدة</div>
-    </div>
-    <div class="feat-card">
-      <span class="feat-ico">🌐</span>
-      <div class="feat-title" data-ar="عربي وإنجليزي" data-en="Arabic & English">عربي وإنجليزي</div>
-      <div class="feat-desc" data-ar="موقعك يدعم اللغتين العربية والإنجليزية لاستقبال عملاء من كل مكان" data-en="Your site supports both Arabic and English to reach clients everywhere">موقعك يدعم اللغتين العربية والإنجليزية لاستقبال عملاء من كل مكان</div>
-    </div>
+    <div class="feat-card"><span class="feat-ico">&#128279;</span><div class="feat-title" data-ar="رابط خاص بك" data-en="Your Own Link">رابط خاص بك</div><div class="feat-desc" data-ar="احصل على رابط حجز خاص وشاركه مع عملائك" data-en="Get your own booking link and share it with clients">احصل على رابط حجز خاص وشاركه مع عملائك</div></div>
+    <div class="feat-card"><span class="feat-ico">&#127912;</span><div class="feat-title" data-ar="ثيم قابل للتخصيص" data-en="Customizable Theme">ثيم قابل للتخصيص</div><div class="feat-desc" data-ar="غيّر ألوان موقعك ليعكس هويتك التجارية" data-en="Change your site colors to reflect your brand">غيّر ألوان موقعك ليعكس هويتك التجارية</div></div>
+    <div class="feat-card"><span class="feat-ico">&#128136;</span><div class="feat-title" data-ar="إدارة الخدمات" data-en="Services Management">إدارة الخدمات</div><div class="feat-desc" data-ar="أضف خدماتك وأسعارها ومدتها بسهولة" data-en="Add your services, prices, and durations easily">أضف خدماتك وأسعارها ومدتها بسهولة</div></div>
+    <div class="feat-card"><span class="feat-ico">&#127873;</span><div class="feat-title" data-ar="كوبونات الخصم" data-en="Discount Coupons">كوبونات الخصم</div><div class="feat-desc" data-ar="أنشئ كوبونات خصم لعملائك بنسبة أو مبلغ ثابت" data-en="Create discount coupons for your clients">أنشئ كوبونات خصم لعملائك بنسبة أو مبلغ ثابت</div></div>
+    <div class="feat-card"><span class="feat-ico">&#128202;</span><div class="feat-title" data-ar="إحصائيات وتقارير" data-en="Analytics">إحصائيات وتقارير</div><div class="feat-desc" data-ar="تابع حجوزاتك وإيراداتك من لوحة واحدة" data-en="Track bookings and revenue from one dashboard">تابع حجوزاتك وإيراداتك من لوحة واحدة</div></div>
+    <div class="feat-card"><span class="feat-ico">&#127760;</span><div class="feat-title" data-ar="عربي وإنجليزي" data-en="Arabic and English">عربي وإنجليزي</div><div class="feat-desc" data-ar="موقعك يدعم اللغتين لاستقبال عملاء من كل مكان" data-en="Your site supports both languages">موقعك يدعم اللغتين لاستقبال عملاء من كل مكان</div></div>
   </div>
 </section>
 
-<!-- PRICING -->
-
 <section id="pricingSec">
   <div style="max-width:1100px;margin:0 auto">
-    <h2 class="sec-title"><span data-ar="سعر واضح وبسيط" data-en="Clear & Simple Pricing">سعر واضح وبسيط</span></h2>
+    <h2 class="sec-title"><span data-ar="سعر واضح وبسيط" data-en="Clear Pricing">سعر واضح وبسيط</span></h2>
     <p class="sec-sub" data-ar="باقة واحدة تشمل كل شيء" data-en="One plan that includes everything">باقة واحدة تشمل كل شيء</p>
     <div class="pricing-wrap">
       <div class="pricing-card">
         <div class="pricing-badge" data-ar="الباقة الاحترافية" data-en="Pro Plan">الباقة الاحترافية</div>
-        <div class="pricing-price" id="priceDisplay">99 <span data-ar="ريال / شهر" data-en="SAR / month">ريال / شهر</span></div>
-        <ul class="pricing-features" id="planFeatures">
-          <li data-ar="موقع حجز خاص برابطك" data-en="Personal booking site with your link">موقع حجز خاص برابطك</li>
-          <li data-ar="إدارة الخدمات والأسعار" data-en="Services & prices management">إدارة الخدمات والأسعار</li>
-          <li data-ar="كوبونات خصم غير محدودة" data-en="Unlimited discount coupons">كوبونات خصم غير محدودة</li>
-          <li data-ar="إحصائيات وتقارير" data-en="Analytics & reports">إحصائيات وتقارير</li>
-          <li data-ar="ثيم قابل للتخصيص" data-en="Customizable theme">ثيم قابل للتخصيص</li>
-          <li data-ar="دعم عربي وإنجليزي" data-en="Arabic & English support">دعم عربي وإنجليزي</li>
+        <div class="pricing-price">99 <span data-ar="ريال / شهر" data-en="SAR / month">ريال / شهر</span></div>
+        <ul class="pricing-features">
+          <li data-ar="موقع حجز خاص برابطك" data-en="Personal booking site">موقع حجز خاص برابطك</li>
+          <li data-ar="إدارة الخدمات والأسعار" data-en="Services management">إدارة الخدمات والأسعار</li>
+          <li data-ar="كوبونات خصم غير محدودة" data-en="Unlimited coupons">كوبونات خصم غير محدودة</li>
+          <li data-ar="إحصائيات وتقارير" data-en="Analytics">إحصائيات وتقارير</li>
+          <li data-ar="ثيم قابل للتخصيص" data-en="Custom theme">ثيم قابل للتخصيص</li>
+          <li data-ar="دعم عربي وإنجليزي" data-en="Arabic and English">دعم عربي وإنجليزي</li>
         </ul>
-        <button class="btn btn-gold btn-full" onclick="openModal('registerModal')" data-ar="اشترك الآن ✦" data-en="Subscribe Now ✦">اشترك الآن ✦</button>
+        <button class="btn btn-gold btn-full" onclick="openModal('registerModal')" data-ar="اشترك الآن" data-en="Subscribe Now">اشترك الآن</button>
       </div>
     </div>
   </div>
 </section>
 
-<!-- HOW IT WORKS -->
-
 <section id="howSec">
   <h2 class="sec-title"><span data-ar="كيف يعمل؟" data-en="How It Works?">كيف يعمل؟</span></h2>
   <p class="sec-sub" data-ar="أربع خطوات وموقعك جاهز" data-en="Four steps and your site is ready">أربع خطوات وموقعك جاهز</p>
   <div class="steps">
-    <div class="step-card">
-      <div class="step-num">١</div>
-      <div class="step-title" data-ar="سجّل حسابك" data-en="Create Account">سجّل حسابك</div>
-      <div class="step-desc" data-ar="أنشئ حساب مجاني بإيميلك وكلمة مرور" data-en="Create a free account with your email and password">أنشئ حساب مجاني بإيميلك وكلمة مرور</div>
-    </div>
-    <div class="step-card">
-      <div class="step-num">٢</div>
-      <div class="step-title" data-ar="فعّل الباقة" data-en="Activate Plan">فعّل الباقة</div>
-      <div class="step-desc" data-ar="ادفع الاشتراك واحصل على رمز التفعيل تلقائياً" data-en="Pay the subscription and get your activation code automatically">ادفع الاشتراك واحصل على رمز التفعيل تلقائياً</div>
-    </div>
-    <div class="step-card">
-      <div class="step-num">٣</div>
-      <div class="step-title" data-ar="خصّص موقعك" data-en="Customize Site">خصّص موقعك</div>
-      <div class="step-desc" data-ar="أضف خدماتك وأسعارك وغيّر الثيم كما تريد" data-en="Add your services, prices, and change the theme as you like">أضف خدماتك وأسعارك وغيّر الثيم كما تريد</div>
-    </div>
-    <div class="step-card">
-      <div class="step-num">٤</div>
-      <div class="step-title" data-ar="شارك رابطك" data-en="Share Your Link">شارك رابطك</div>
-      <div class="step-desc" data-ar="شارك رابطك مع عملائك وابدأ استقبال الحجوزات" data-en="Share your link with clients and start receiving bookings">شارك رابطك مع عملائك وابدأ استقبال الحجوزات</div>
-    </div>
+    <div class="step-card"><div class="step-num">١</div><div class="step-title" data-ar="سجّل حسابك" data-en="Create Account">سجّل حسابك</div><div class="step-desc" data-ar="أنشئ حساب مجاني بإيميلك أو Google" data-en="Create a free account with email or Google">أنشئ حساب مجاني بإيميلك أو Google</div></div>
+    <div class="step-card"><div class="step-num">٢</div><div class="step-title" data-ar="فعّل الباقة" data-en="Activate Plan">فعّل الباقة</div><div class="step-desc" data-ar="ادفع الاشتراك واحصل على رمز التفعيل" data-en="Pay and get your activation code">ادفع الاشتراك واحصل على رمز التفعيل</div></div>
+    <div class="step-card"><div class="step-num">٣</div><div class="step-title" data-ar="خصّص موقعك" data-en="Customize">خصّص موقعك</div><div class="step-desc" data-ar="أضف خدماتك وغيّر الثيم كما تريد" data-en="Add services and change the theme">أضف خدماتك وغيّر الثيم كما تريد</div></div>
+    <div class="step-card"><div class="step-num">٤</div><div class="step-title" data-ar="شارك رابطك" data-en="Share Link">شارك رابطك</div><div class="step-desc" data-ar="شارك رابطك وابدأ استقبال الحجوزات" data-en="Share your link and start receiving bookings">شارك رابطك وابدأ استقبال الحجوزات</div></div>
   </div>
 </section>
 
-<!-- FOOTER -->
-
 <footer>
-  <div style="margin-bottom:.5rem;font-size:1rem;font-weight:700;color:var(--p)">BarberStor ✂️</div>
-  <div data-ar="© 2025 جميع الحقوق محفوظة" data-en="© 2025 All rights reserved">© 2025 جميع الحقوق محفوظة</div>
+  <div style="margin-bottom:.5rem;font-size:1rem;font-weight:700;color:var(--p)">BarberStor &#9986;</div>
+  <div data-ar="2025 جميع الحقوق محفوظة" data-en="2025 All rights reserved">2025 جميع الحقوق محفوظة</div>
 </footer>
 
-<!-- ══ LOGIN MODAL ══ -->
+<!-- LOGIN MODAL -->
 
 <div class="modal-overlay" id="loginModal">
   <div class="modal">
-    <button class="modal-close" onclick="closeModal('loginModal')">✕</button>
-    <div class="modal-title" data-ar="مرحباً بعودتك 👋" data-en="Welcome Back 👋">مرحباً بعودتك 👋</div>
+    <button class="modal-close" onclick="closeModal('loginModal')">&#10005;</button>
+    <div class="modal-title" data-ar="مرحباً بعودتك" data-en="Welcome Back">مرحباً بعودتك</div>
     <div class="modal-sub" data-ar="أدخل بياناتك للدخول" data-en="Enter your details to login">أدخل بياناتك للدخول</div>
-    <div class="fg"><label data-ar="البريد الإلكتروني" data-en="Email">البريد الإلكتروني</label><input type="email" class="fi" id="loginEmail" placeholder="you@example.com"></div>
-    <div class="fg"><label data-ar="كلمة المرور" data-en="Password">كلمة المرور</label><input type="password" class="fi" id="loginPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
-    <div class="err-msg" id="loginErr"></div>
-    <button class="btn btn-gold btn-full" onclick="doLogin()" data-ar="دخول" data-en="Login">دخول</button>
-    <div class="divider" data-ar="أو" data-en="or">أو</div>
-    <button class="btn btn-ghost btn-full" onclick="switchModal('loginModal','registerModal')" data-ar="ليس لديك حساب؟ سجّل الآن" data-en="Don't have an account? Register">ليس لديك حساب؟ سجّل الآن</button>
+
+```
+<div class="tab-bar">
+  <button id="tabEmail" class="tab-btn active" onclick="switchTab('email')" data-ar="بريد إلكتروني" data-en="Email">بريد إلكتروني</button>
+  <button id="tabPhone" class="tab-btn inactive" onclick="switchTab('phone')" data-ar="رقم الجوال" data-en="Phone">رقم الجوال</button>
+</div>
+
+<div id="emailForm">
+  <div class="fg">
+    <label data-ar="البريد الإلكتروني" data-en="Email">البريد الإلكتروني</label>
+    <input type="email" class="fi" id="loginEmail" placeholder="you@example.com">
+  </div>
+  <div class="fg">
+    <label data-ar="كلمة المرور" data-en="Password">كلمة المرور</label>
+    <input type="password" class="fi" id="loginPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+  </div>
+  <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:1rem">
+    <input type="checkbox" id="rememberMe" style="width:16px;height:16px;accent-color:var(--p);cursor:pointer">
+    <label for="rememberMe" style="font-size:.82rem;color:var(--muted);cursor:pointer" data-ar="تذكّرني" data-en="Remember me">تذكّرني</label>
+  </div>
+  <div class="err-msg" id="loginErr"></div>
+  <button class="btn btn-gold btn-full" onclick="doLogin()" data-ar="دخول" data-en="Login">دخول</button>
+</div>
+
+<div id="phoneForm" style="display:none">
+  <div id="phoneStep1">
+    <div class="fg">
+      <label data-ar="رقم الجوال" data-en="Phone">رقم الجوال</label>
+      <input type="tel" class="fi" id="loginPhone" placeholder="+966512345678" inputmode="numeric">
+    </div>
+    <div class="err-msg" id="phoneErr"></div>
+    <button class="btn btn-gold btn-full" onclick="sendOTP()" data-ar="إرسال رمز التحقق" data-en="Send OTP">إرسال رمز التحقق</button>
+    <div id="recaptcha-container" style="margin-top:.8rem"></div>
+  </div>
+  <div id="phoneStep2" style="display:none">
+    <div class="fg">
+      <label data-ar="رمز التحقق" data-en="OTP Code">رمز التحقق</label>
+      <input type="tel" class="fi" id="otpCode" placeholder="123456" inputmode="numeric" maxlength="6">
+    </div>
+    <div class="err-msg" id="otpErr"></div>
+    <button class="btn btn-gold btn-full" onclick="verifyOTP()" data-ar="تأكيد" data-en="Verify">تأكيد</button>
+    <button class="btn btn-ghost btn-full" style="margin-top:.4rem;font-size:.8rem" onclick="backToPhone()" data-ar="تغيير الرقم" data-en="Change number">تغيير الرقم</button>
   </div>
 </div>
 
-<!-- ══ REGISTER MODAL ══ -->
+<div class="divider" data-ar="أو" data-en="or">أو</div>
+<button class="google-btn" onclick="doGoogleLogin()">
+  <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.2l6.8-6.8C35.8 2.5 30.2 0 24 0 14.6 0 6.5 5.4 2.5 13.3l7.9 6.1C12.3 13.1 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17z"/><path fill="#FBBC05" d="M10.4 28.6A14.5 14.5 0 0 1 9.5 24c0-1.6.3-3.1.8-4.6l-7.9-6.1A24 24 0 0 0 0 24c0 3.9.9 7.5 2.5 10.8l7.9-6.2z"/><path fill="#34A853" d="M24 48c6.2 0 11.4-2 15.2-5.5l-7.5-5.8c-2 1.4-4.6 2.2-7.7 2.2-6.3 0-11.6-4.2-13.5-10l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>
+  <span data-ar="الدخول بـ Google" data-en="Login with Google">الدخول بـ Google</span>
+</button>
+<button class="btn btn-ghost btn-full" onclick="switchModal('loginModal','registerModal')" data-ar="ليس لديك حساب؟ سجّل الآن" data-en="Don't have an account? Register">ليس لديك حساب؟ سجّل الآن</button>
+```
+
+  </div>
+</div>
+
+<!-- REGISTER MODAL -->
 
 <div class="modal-overlay" id="registerModal">
   <div class="modal">
-    <button class="modal-close" onclick="closeModal('registerModal')">✕</button>
-    <div class="modal-title" data-ar="إنشاء حساب جديد ✦" data-en="Create New Account ✦">إنشاء حساب جديد ✦</div>
+    <button class="modal-close" onclick="closeModal('registerModal')">&#10005;</button>
+    <div class="modal-title" data-ar="إنشاء حساب جديد" data-en="Create New Account">إنشاء حساب جديد</div>
     <div class="modal-sub" data-ar="سجّل وابدأ موقعك خلال دقائق" data-en="Register and launch your site in minutes">سجّل وابدأ موقعك خلال دقائق</div>
-    <div class="fg"><label data-ar="الاسم" data-en="Name">الاسم</label><input type="text" class="fi" id="regName" placeholder="محمد أحمد"></div>
-    <div class="fg"><label data-ar="اسم المستخدم (رابطك)" data-en="Username (your link)">اسم المستخدم (رابطك)</label>
-      <input type="text" class="fi" id="regUsername" placeholder="mohammed" oninput="this.value=this.value.toLowerCase().replace(/[^a-z0-9]/g,'')">
-      <div style="font-size:.75rem;color:var(--muted);margin-top:.3rem">barberstor.com/book/<span id="usernamePreview" style="color:var(--p)">اسمك</span></div>
+    <div class="fg">
+      <label data-ar="الاسم" data-en="Name">الاسم</label>
+      <input type="text" class="fi" id="regName" placeholder="محمد أحمد">
     </div>
-    <div class="fg"><label data-ar="البريد الإلكتروني" data-en="Email">البريد الإلكتروني</label><input type="email" class="fi" id="regEmail" placeholder="you@example.com"></div>
-    <div class="fg"><label data-ar="كلمة المرور" data-en="Password">كلمة المرور</label><input type="password" class="fi" id="regPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doRegister()"></div>
+    <div class="fg">
+      <label data-ar="اسم المستخدم (رابطك)" data-en="Username (your link)">اسم المستخدم (رابطك)</label>
+      <input type="text" class="fi" id="regUsername" placeholder="mohammed" oninput="this.value=this.value.toLowerCase().replace(/[^a-z0-9]/g,'');document.getElementById('uPrev').textContent=this.value||'اسمك'">
+      <div style="font-size:.75rem;color:var(--muted);margin-top:.3rem">barberstor.com/booking.html?u=<span id="uPrev" style="color:var(--p)">اسمك</span></div>
+    </div>
+    <div class="fg">
+      <label data-ar="البريد الإلكتروني" data-en="Email">البريد الإلكتروني</label>
+      <input type="email" class="fi" id="regEmail" placeholder="you@example.com">
+    </div>
+    <div class="fg">
+      <label data-ar="كلمة المرور" data-en="Password">كلمة المرور</label>
+      <input type="password" class="fi" id="regPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doRegister()">
+    </div>
     <div class="err-msg" id="regErr"></div>
     <div class="ok-msg" id="regOk"></div>
-    <button class="btn btn-gold btn-full" onclick="doRegister()" data-ar="إنشاء الحساب ✦" data-en="Create Account ✦">إنشاء الحساب ✦</button>
+    <button class="btn btn-gold btn-full" onclick="doRegister()" data-ar="إنشاء الحساب" data-en="Create Account">إنشاء الحساب</button>
     <div class="divider" data-ar="أو" data-en="or">أو</div>
-    <button class="btn btn-full" onclick="doGoogleLogin()" style="background:var(--dark2);border:1.5px solid var(--dark5);color:var(--text);display:flex;align-items:center;justify-content:center;gap:.6rem;margin-bottom:.6rem">
+    <button class="google-btn" onclick="doGoogleLogin()">
       <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.2l6.8-6.8C35.8 2.5 30.2 0 24 0 14.6 0 6.5 5.4 2.5 13.3l7.9 6.1C12.3 13.1 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17z"/><path fill="#FBBC05" d="M10.4 28.6A14.5 14.5 0 0 1 9.5 24c0-1.6.3-3.1.8-4.6l-7.9-6.1A24 24 0 0 0 0 24c0 3.9.9 7.5 2.5 10.8l7.9-6.2z"/><path fill="#34A853" d="M24 48c6.2 0 11.4-2 15.2-5.5l-7.5-5.8c-2 1.4-4.6 2.2-7.7 2.2-6.3 0-11.6-4.2-13.5-10l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>
       <span data-ar="التسجيل بـ Google" data-en="Register with Google">التسجيل بـ Google</span>
     </button>
@@ -312,327 +302,233 @@ nav{padding:.75rem 1rem}
 <div id="loader"><div class="spin"></div></div>
 <div id="toast"></div>
 
-<!-- FIREBASE -->
-
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, setPersistence, browserLocalPersistence, browserSessionPersistence, RecaptchaVerifier, signInWithPhoneNumber, sendEmailVerification } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getFirestore, doc, setDoc, getDoc, query, collection, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-const firebaseConfig = {
+const app = initializeApp({
   apiKey: "AIzaSyAHSfjlmSyI8a5rJlR4Uep9Lc-HrHTEQAE",
   authDomain: "barber-stor.firebaseapp.com",
   projectId: "barber-stor",
   storageBucket: "barber-stor.firebasestorage.app",
   messagingSenderId: "219780488634",
   appId: "1:219780488634:web:650eb88e5b452e9cb2d183"
-};
-
-const app  = initializeApp(firebaseConfig);
+});
 const auth = getAuth(app);
-const db   = getFirestore(app);
+const db = getFirestore(app);
 
-// ── Auth State ──
 onAuthStateChanged(auth, async user => {
   if(user){
     document.getElementById('guestNav').style.display = 'none';
-    document.getElementById('userNav').style.display  = 'block';
+    document.getElementById('userNav').style.display = 'block';
     const snap = await getDoc(doc(db,'barbers',user.uid));
-    if(snap.exists()){
-      const d = snap.data();
-      document.getElementById('userAvatar').textContent = (d.name||'U')[0].toUpperCase();
-    }
+    if(snap.exists()) document.getElementById('userAvatar').textContent = (snap.data().name||'U')[0].toUpperCase();
   } else {
     document.getElementById('guestNav').style.display = 'flex';
-    document.getElementById('userNav').style.display  = 'none';
+    document.getElementById('userNav').style.display = 'none';
   }
 });
 
-// ── Register ──
-window.doRegister = async () => {
-  const name     = document.getElementById('regName').value.trim();
-  const username = document.getElementById('regUsername').value.trim().toLowerCase();
-  const email    = document.getElementById('regEmail').value.trim();
-  const pass     = document.getElementById('regPass').value;
-  const errEl    = document.getElementById('regErr');
-  const okEl     = document.getElementById('regOk');
-  errEl.textContent = ''; okEl.textContent = '';
+getRedirectResult(auth).then(async result => {
+  if(result && result.user){ loader(true); await handleGoogleUser(result.user); loader(false); }
+}).catch(e => console.error(e));
 
-  if(!name||!username||!email||!pass){ errEl.textContent = isAr?'يرجى ملء جميع الحقول':'Please fill all fields'; return; }
-  if(username.length < 3){ errEl.textContent = isAr?'اسم المستخدم ٣ أحرف على الأقل':'Username must be at least 3 characters'; return; }
-  if(pass.length < 6){ errEl.textContent = isAr?'كلمة المرور ٦ أحرف على الأقل':'Password must be at least 6 characters'; return; }
-
-  loader(true);
-  try {
-    // Check username not taken
-    const q = query(collection(db,'barbers'), where('username','==',username));
-    const snap = await getDocs(q);
-    if(!snap.empty){ errEl.textContent = isAr?'اسم المستخدم محجوز، جرب آخر':'Username taken, try another'; loader(false); return; }
-
-    const cred = await createUserWithEmailAndPassword(auth, email, pass);
-    await setDoc(doc(db,'barbers',cred.user.uid), {
-      name, username, email,
-      status: 'inactive', // يصبح active بعد الدفع
-      plan: 'pro',
-      createdAt: new Date().toISOString(),
-      theme: { primaryColor:'#C9A84C', darkMode: true },
-      settings: { shopName: name, sub: '', lang: 'ar' },
-      services: [
-        {id:1,name:'قصة شعر',price:50,dur:30,ico:'💈'},
-        {id:2,name:'حلاقة دقن',price:40,dur:20,ico:'🪒'},
-      ],
-      coupons: [],
-    });
-
-    // Send email verification
-    await sendEmailVerification(cred.user, {
-      url: 'https://barberstor.com/dashboard.html',
-      handleCodeInApp: false
-    });
-    okEl.style.color = 'var(--green)';
-    okEl.textContent = isAr ? '✅ تم إنشاء الحساب! تحقق من إيميلك وافتح رابط التفعيل' : '✅ Account created! Check your email and click the verification link';
-    toast(isAr ? 'مرحباً '+name+'! تحقق من إيميلك 📧' : 'Welcome '+name+'! Check your email 📧');
-    setTimeout(()=>{ closeModal('registerModal'); window.location.href='dashboard.html'; }, 2500);
-  } catch(e){
-    errEl.textContent = firebaseErr(e.code);
-  } finally { loader(false); }
-};
-
-// ── Login (Email) ──
-window.doLogin = async () => {
-  const email = document.getElementById('loginEmail').value.trim();
-  const pass  = document.getElementById('loginPass').value;
-  const errEl = document.getElementById('loginErr');
-  const remember = document.getElementById('rememberMe').checked;
-  errEl.textContent = '';
-  if(!email||!pass){ errEl.textContent = isAr?'يرجى ملء جميع الحقول':'Please fill all fields'; return; }
-  loader(true);
-  try {
-    const persistence = remember ? browserLocalPersistence : browserSessionPersistence;
-    await setPersistence(auth, persistence);
-    await signInWithEmailAndPassword(auth, email, pass);
-    closeModal('loginModal');
-    window.location.href = 'dashboard.html';
-  } catch(e){
-    errEl.textContent = firebaseErr(e.code);
-  } finally { loader(false); }
-};
-
-// ── Login/Register (Google) ──
 async function handleGoogleUser(user){
   const snap = await getDoc(doc(db,'barbers',user.uid));
   if(!snap.exists()){
     const name = user.displayName || 'حلاق';
-    const username = 'user'+Date.now().toString().slice(-6);
     await setDoc(doc(db,'barbers',user.uid),{
-      name, username, email: user.email||'',
-      status:'inactive', plan:'pro',
-      createdAt: new Date().toISOString(),
-      theme:{primaryColor:'#C9A84C'},
-      settings:{shopName:name, sub:'', lang:'ar'},
-      services:[
-        {id:1,name:'قصة شعر',price:50,dur:30,ico:'💈'},
-        {id:2,name:'حلاقة دقن',price:40,dur:20,ico:'🪒'},
-      ],
-      coupons:[],
+      name, username: 'user'+Date.now().toString().slice(-6), email: user.email||'',
+      status:'inactive', plan:'pro', createdAt: new Date().toISOString(),
+      theme:{primaryColor:'#C9A84C'}, settings:{shopName:name,sub:'',lang:'ar'},
+      services:[{id:1,name:'قصة شعر',price:50,dur:30,ico:'💈'},{id:2,name:'حلاقة دقن',price:40,dur:20,ico:'🪒'}],
+      coupons:[]
     });
   }
   window.location.href = 'dashboard.html';
 }
 
-// Check redirect result on page load
-getRedirectResult(auth).then(async result => {
-  if(result?.user){
-    loader(true);
-    await handleGoogleUser(result.user);
-    loader(false);
-  }
-}).catch(e => console.error('redirect error:', e));
+window.doRegister = async () => {
+  const name = document.getElementById('regName').value.trim();
+  const username = document.getElementById('regUsername').value.trim().toLowerCase();
+  const email = document.getElementById('regEmail').value.trim();
+  const pass = document.getElementById('regPass').value;
+  const errEl = document.getElementById('regErr');
+  const okEl = document.getElementById('regOk');
+  errEl.textContent = ''; okEl.textContent = '';
+  if(!name||!username||!email||!pass){ errEl.textContent = 'يرجى ملء جميع الحقول'; return; }
+  if(username.length < 3){ errEl.textContent = 'اسم المستخدم ٣ أحرف على الأقل'; return; }
+  if(pass.length < 6){ errEl.textContent = 'كلمة المرور ٦ أحرف على الأقل'; return; }
+  loader(true);
+  try {
+    const q = query(collection(db,'barbers'), where('username','==',username));
+    const snap = await getDocs(q);
+    if(!snap.empty){ errEl.textContent = 'اسم المستخدم محجوز، جرب آخر'; loader(false); return; }
+    const cred = await createUserWithEmailAndPassword(auth, email, pass);
+    await setDoc(doc(db,'barbers',cred.user.uid),{
+      name, username, email, status:'inactive', plan:'pro', createdAt: new Date().toISOString(),
+      theme:{primaryColor:'#C9A84C',darkMode:true}, settings:{shopName:name,sub:'',lang:'ar'},
+      services:[{id:1,name:'قصة شعر',price:50,dur:30,ico:'💈'},{id:2,name:'حلاقة دقن',price:40,dur:20,ico:'🪒'}],
+      coupons:[]
+    });
+    await sendEmailVerification(cred.user, {url:'https://barberstor.com/dashboard.html',handleCodeInApp:false});
+    okEl.style.color = 'var(--green)';
+    okEl.textContent = 'تم إنشاء الحساب! تحقق من إيميلك وافتح رابط التفعيل';
+    toast('مرحباً ' + name + '! تحقق من إيميلك');
+    setTimeout(()=>{ closeModal('registerModal'); window.location.href='dashboard.html'; }, 2500);
+  } catch(e){ errEl.textContent = firebaseErr(e.code); }
+  finally { loader(false); }
+};
+
+window.doLogin = async () => {
+  const email = document.getElementById('loginEmail').value.trim();
+  const pass = document.getElementById('loginPass').value;
+  const remember = document.getElementById('rememberMe').checked;
+  const errEl = document.getElementById('loginErr');
+  errEl.textContent = '';
+  if(!email||!pass){ errEl.textContent = 'يرجى ملء جميع الحقول'; return; }
+  loader(true);
+  try {
+    await setPersistence(auth, remember ? browserLocalPersistence : browserSessionPersistence);
+    await signInWithEmailAndPassword(auth, email, pass);
+    closeModal('loginModal');
+    window.location.href = 'dashboard.html';
+  } catch(e){ errEl.textContent = firebaseErr(e.code); }
+  finally { loader(false); }
+};
 
 window.doGoogleLogin = async () => {
   loader(true);
   try {
     await setPersistence(auth, browserLocalPersistence);
     const provider = new GoogleAuthProvider();
-    // Use redirect (works on Safari/iPhone) — fallback to popup on desktop
-    const isMobile = /iPhone|iPad|Android/i.test(navigator.userAgent);
-    if(isMobile){
+    if(/iPhone|iPad|Android/i.test(navigator.userAgent)){
       await signInWithRedirect(auth, provider);
-      // Page will reload — handled by getRedirectResult above
     } else {
       const result = await signInWithPopup(auth, provider);
       await handleGoogleUser(result.user);
     }
   } catch(e){
     console.error(e);
-    toast(isAr?'❌ فشل الدخول بـ Google':'❌ Google login failed');
+    toast('فشل الدخول بـ Google');
     loader(false);
   }
 };
 
-// ── Login (Phone/OTP) ──
-let confirmationResult = null;
-
-window.switchLoginTab = (tab) => {
-  const isEmail = tab === 'email';
-  document.getElementById('emailLoginForm').style.display = isEmail ? 'block' : 'none';
-  document.getElementById('phoneLoginForm').style.display = isEmail ? 'none'  : 'block';
-  document.getElementById('tabEmail').style.background = isEmail ? 'var(--p)' : 'transparent';
-  document.getElementById('tabEmail').style.color      = isEmail ? '#000'    : 'var(--muted)';
-  document.getElementById('tabPhone').style.background = isEmail ? 'transparent' : 'var(--p)';
-  document.getElementById('tabPhone').style.color      = isEmail ? 'var(--muted)' : '#000';
-};
+let confirmResult = null;
 
 window.sendOTP = async () => {
   const phone = document.getElementById('loginPhone').value.trim();
   const errEl = document.getElementById('phoneErr');
   errEl.textContent = '';
-  if(!phone || !phone.startsWith('+')){
-    errEl.textContent = isAr ? 'أدخل الرقم بالصيغة الدولية مثل: +966512345678' : 'Use international format: +966512345678';
-    return;
-  }
+  if(!phone.startsWith('+')){ errEl.textContent = 'أدخل الرقم بالصيغة الدولية: +966512345678'; return; }
   loader(true);
   try {
-    if(!window.recaptchaVerifier){
-      window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {size:'normal'});
-    }
-    confirmationResult = await signInWithPhoneNumber(auth, phone, window.recaptchaVerifier);
+    if(!window.rcv) window.rcv = new RecaptchaVerifier(auth,'recaptcha-container',{size:'normal'});
+    confirmResult = await signInWithPhoneNumber(auth, phone, window.rcv);
     document.getElementById('phoneStep1').style.display = 'none';
     document.getElementById('phoneStep2').style.display = 'block';
-    toast(isAr ? '📱 تم إرسال الرمز' : '📱 OTP sent');
+    toast('تم إرسال الرمز');
   } catch(e){
-    errEl.textContent = isAr ? '❌ تعذّر إرسال الرمز، تأكد من الرقم' : '❌ Failed to send OTP';
+    errEl.textContent = 'تعذّر إرسال الرمز، تأكد من الرقم';
+    if(window.rcv){ window.rcv.clear(); window.rcv=null; }
     console.error(e);
-    if(window.recaptchaVerifier){ window.recaptchaVerifier.clear(); window.recaptchaVerifier=null; }
-  } finally { loader(false); }
+  }
+  finally { loader(false); }
 };
 
 window.verifyOTP = async () => {
-  const code  = document.getElementById('otpCode').value.trim();
+  const code = document.getElementById('otpCode').value.trim();
   const errEl = document.getElementById('otpErr');
   errEl.textContent = '';
-  if(!code || code.length < 6){ errEl.textContent = isAr?'أدخل الرمز كاملاً':'Enter full OTP'; return; }
+  if(code.length < 6){ errEl.textContent = 'أدخل الرمز كاملاً'; return; }
   loader(true);
   try {
     await setPersistence(auth, browserLocalPersistence);
-    const result = await confirmationResult.confirm(code);
+    const result = await confirmResult.confirm(code);
     const user = result.user;
     const snap = await getDoc(doc(db,'barbers',user.uid));
     if(!snap.exists()){
-      const name = 'حلاق '+user.phoneNumber.slice(-4);
-      const username = 'user'+Date.now().toString().slice(-6);
+      const name = 'حلاق ' + user.phoneNumber.slice(-4);
       await setDoc(doc(db,'barbers',user.uid),{
-        name, username, phone: user.phoneNumber,
-        status:'inactive', plan:'pro',
-        createdAt: new Date().toISOString(),
-        theme:{primaryColor:'#C9A84C'},
-        settings:{shopName:name, sub:'', lang:'ar'},
-        services:[
-          {id:1,name:'قصة شعر',price:50,dur:30,ico:'💈'},
-          {id:2,name:'حلاقة دقن',price:40,dur:20,ico:'🪒'},
-        ],
-        coupons:[],
+        name, username:'user'+Date.now().toString().slice(-6), phone:user.phoneNumber,
+        status:'inactive', plan:'pro', createdAt:new Date().toISOString(),
+        theme:{primaryColor:'#C9A84C'}, settings:{shopName:name,sub:'',lang:'ar'},
+        services:[{id:1,name:'قصة شعر',price:50,dur:30,ico:'💈'},{id:2,name:'حلاقة دقن',price:40,dur:20,ico:'🪒'}],
+        coupons:[]
       });
     }
     closeModal('loginModal');
     window.location.href = 'dashboard.html';
-  } catch(e){
-    errEl.textContent = isAr?'❌ الرمز خاطئ':'❌ Wrong OTP';
-    console.error(e);
-  } finally { loader(false); }
+  } catch(e){ errEl.textContent = 'الرمز خاطئ'; console.error(e); }
+  finally { loader(false); }
 };
 
-// ── Logout ──
-window.logout = async () => {
-  await signOut(auth);
-  toast(isAr?'تم تسجيل الخروج':'Logged out');
-};
-
-window.gotoDashboard = () => window.location.href = 'dashboard.html';
+window.doLogout = async () => { await signOut(auth); toast('تم تسجيل الخروج'); };
 
 function firebaseErr(code){
-  const map = {
-    'auth/email-already-in-use': isAr?'البريد مستخدم مسبقاً':'Email already in use',
-    'auth/invalid-email': isAr?'بريد إلكتروني غير صالح':'Invalid email',
-    'auth/weak-password': isAr?'كلمة المرور ضعيفة':'Weak password',
-    'auth/user-not-found': isAr?'حساب غير موجود':'Account not found',
-    'auth/wrong-password': isAr?'كلمة المرور خاطئة':'Wrong password',
-    'auth/invalid-credential': isAr?'بيانات خاطئة':'Invalid credentials',
+  const m = {
+    'auth/email-already-in-use':'البريد مستخدم مسبقاً',
+    'auth/invalid-email':'بريد إلكتروني غير صالح',
+    'auth/weak-password':'كلمة المرور ضعيفة جداً',
+    'auth/user-not-found':'حساب غير موجود',
+    'auth/wrong-password':'كلمة المرور خاطئة',
+    'auth/invalid-credential':'بيانات خاطئة'
   };
-  return map[code] || (isAr?'حدث خطأ، حاول مرة ثانية':'An error occurred, try again');
+  return m[code] || 'حدث خطأ، حاول مرة ثانية';
 }
 </script>
 
 <script>
-// ── LANG ──
 let isAr = true;
 
-function toggleLang(){
+window.toggleLang = () => {
   isAr = !isAr;
-  const html = document.getElementById('htmlRoot');
-  html.lang = isAr?'ar':'en';
-  html.dir  = isAr?'rtl':'ltr';
+  document.getElementById('htmlRoot').lang = isAr?'ar':'en';
+  document.getElementById('htmlRoot').dir  = isAr?'rtl':'ltr';
   document.getElementById('langBtn').textContent = isAr?'EN':'ع';
   document.querySelectorAll('[data-ar]').forEach(el=>{
-    if(el.tagName==='INPUT') return;
-    el.innerHTML = isAr ? el.dataset.ar : el.dataset.en;
+    if(el.tagName==='INPUT'||el.tagName==='SELECT') return;
+    el.textContent = isAr ? el.dataset.ar : el.dataset.en;
   });
-  // Update hero title with line break
-  const ht = document.querySelector('.hero-title');
-  if(ht) ht.innerHTML = isAr ? 'موقع حجوزات احترافي<br>لكل حلاق' : 'Professional Booking Website<br>For Every Barber';
-}
+  document.getElementById('heroTitle').textContent = isAr ? 'موقع حجوزات احترافي لكل حلاق' : 'Professional Booking Website For Every Barber';
+};
 
-// ── USERNAME PREVIEW ──
-document.getElementById('regUsername').addEventListener('input', function(){
-  document.getElementById('usernamePreview').textContent = this.value || (isAr?'اسمك':'yourname');
-});
+window.openModal = (id) => { document.getElementById(id).classList.add('open'); document.body.style.overflow='hidden'; };
+window.closeModal = (id) => { document.getElementById(id).classList.remove('open'); document.body.style.overflow=''; };
+window.switchModal = (a,b) => { closeModal(a); openModal(b); };
 
-// ── MODALS ──
-function openModal(id){
-  document.getElementById(id).classList.add('open');
-  document.body.style.overflow='hidden';
-}
-function closeModal(id){
-  document.getElementById(id).classList.remove('open');
-  document.body.style.overflow='';
-}
-function switchModal(from,to){ closeModal(from); openModal(to); }
-
-// Close on overlay click
 document.querySelectorAll('.modal-overlay').forEach(o=>{
   o.addEventListener('click', e=>{ if(e.target===o) closeModal(o.id); });
 });
 
-// ── DROPDOWN ──
-function toggleDropdown(){
-  document.getElementById('userDropdown').classList.toggle('open');
-}
-document.addEventListener('click', e=>{
-  if(!e.target.closest('.user-menu')) document.getElementById('userDropdown')?.classList.remove('open');
-});
+window.toggleDropdown = () => document.getElementById('userDropdown').classList.toggle('open');
+document.addEventListener('click', e=>{ if(!e.target.closest('.user-menu')) document.getElementById('userDropdown')&&document.getElementById('userDropdown').classList.remove('open'); });
 
-// ── TOAST ──
-function toast(msg){
-  const el=document.getElementById('toast');
-  el.textContent=msg; el.classList.add('show');
-  setTimeout(()=>el.classList.remove('show'),2800);
-}
+window.switchTab = (tab) => {
+  const isEmail = tab==='email';
+  document.getElementById('emailForm').style.display = isEmail?'block':'none';
+  document.getElementById('phoneForm').style.display = isEmail?'none':'block';
+  document.getElementById('tabEmail').className = 'tab-btn '+(isEmail?'active':'inactive');
+  document.getElementById('tabPhone').className = 'tab-btn '+(isEmail?'inactive':'active');
+};
 
-// ── LOADER ──
-function loader(on){
-  document.getElementById('loader').className='loader'+(on?' on':'');
-  document.getElementById('loader').style.display=on?'flex':'none';
-}
+window.backToPhone = () => {
+  document.getElementById('phoneStep1').style.display = 'block';
+  document.getElementById('phoneStep2').style.display = 'none';
+};
 
-// Expose for module
-window.openModal=openModal;
-window.closeModal=closeModal;
-window.switchModal=switchModal;
-window.toggleDropdown=toggleDropdown;
-window.toggleLang=toggleLang;
-window.toast=toast;
-window.loader=loader;
-window.isAr=isAr;
+window.toast = (msg) => {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'), 2800);
+};
+
+window.loader = (on) => {
+  const el = document.getElementById('loader');
+  el.style.display = on?'flex':'none';
+};
 </script>
 
 </body>
