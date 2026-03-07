@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="ar" dir="rtl" id="htmlRoot">
 <head>
 <meta charset="UTF-8">
@@ -59,12 +60,14 @@ body::after{content:'';position:absolute;inset:0;background:radial-gradient(elli
   </div>
 
   <!-- TABS -->
+
   <div class="tab-bar" id="tabSection">
     <button class="tab-btn tab-active" id="tabLogin" onclick="showSection('login')">تسجيل الدخول</button>
     <button class="tab-btn tab-inactive" id="tabRegister" onclick="showSection('register')">إنشاء حساب</button>
   </div>
 
   <!-- LOGIN -->
+
   <div id="secLogin">
     <div class="fg"><label>البريد الإلكتروني</label><input type="email" class="fi" id="loginEmail" placeholder="you@example.com"></div>
     <div class="fg"><label>كلمة المرور</label><input type="password" class="fi" id="loginPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
@@ -82,6 +85,7 @@ body::after{content:'';position:absolute;inset:0;background:radial-gradient(elli
   </div>
 
   <!-- REGISTER -->
+
   <div id="secRegister" style="display:none">
     <div class="fg"><label>الاسم</label><input type="text" class="fi" id="regName" placeholder="محمد أحمد"></div>
     <div class="fg">
@@ -156,23 +160,33 @@ async function handleGoogleUser(user) {
   window.location.href = 'dashboard.html';
 }
 
-// Handle redirect on page load
-loader(true);
-getRedirectResult(auth).then(async result => {
-  if(result && result.user) {
-    await handleGoogleUser(result.user);
-  } else {
-    loader(false);
-  }
-}).catch(e => {
-  console.error(e);
-  loader(false);
-});
+// ── Auth Init: redirect MUST be checked before onAuthStateChanged ──
+let redirectChecked = false;
 
-// If already logged in → dashboard
-onAuthStateChanged(auth, user => {
-  if(user) window.location.href = 'dashboard.html';
-});
+async function initAuth() {
+  loader(true);
+  try {
+    const result = await getRedirectResult(auth);
+    if(result && result.user) {
+      // Google redirect completed successfully
+      await handleGoogleUser(result.user);
+      return; // will redirect to dashboard
+    }
+  } catch(e) {
+    console.error('redirect error:', e.code);
+  }
+  redirectChecked = true;
+  loader(false);
+
+  // Only listen to auth state after redirect check is done
+  onAuthStateChanged(auth, user => {
+    if(user && redirectChecked) {
+      window.location.href = 'dashboard.html';
+    }
+  });
+}
+
+initAuth();
 
 // ── Login ──
 window.doLogin = async () => {
@@ -249,5 +263,6 @@ function firebaseErr(code) {
   return m[code] || 'حدث خطأ، حاول مرة ثانية';
 }
 </script>
+
 </body>
 </html>
