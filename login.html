@@ -117,7 +117,7 @@ body::after{content:'';position:absolute;inset:0;background:radial-gradient(elli
 import { initializeApp }       from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut,
          createUserWithEmailAndPassword, signInWithEmailAndPassword,
-         GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult,
+         GoogleAuthProvider, signInWithPopup,
          setPersistence, browserLocalPersistence, browserSessionPersistence }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs }
@@ -160,33 +160,10 @@ async function handleGoogleUser(user) {
   window.location.href = 'dashboard.html';
 }
 
-// ── Auth Init: redirect MUST be checked before onAuthStateChanged ──
-let redirectChecked = false;
-
-async function initAuth() {
-  loader(true);
-  try {
-    const result = await getRedirectResult(auth);
-    if(result && result.user) {
-      // Google redirect completed successfully
-      await handleGoogleUser(result.user);
-      return; // will redirect to dashboard
-    }
-  } catch(e) {
-    console.error('redirect error:', e.code);
-  }
-  redirectChecked = true;
-  loader(false);
-
-  // Only listen to auth state after redirect check is done
-  onAuthStateChanged(auth, user => {
-    if(user && redirectChecked) {
-      window.location.href = 'dashboard.html';
-    }
-  });
-}
-
-initAuth();
+// ── Auth State ──
+onAuthStateChanged(auth, user => {
+  if(user) window.location.href = 'dashboard.html';
+});
 
 // ── Login ──
 window.doLogin = async () => {
@@ -246,15 +223,15 @@ window.doGoogleLogin = async () => {
     await setPersistence(auth, browserLocalPersistence);
     const provider = new GoogleAuthProvider();
     provider.setCustomParameters({prompt:'select_account'});
-    if(/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-      await signInWithRedirect(auth, provider);
-    } else {
-      const result = await signInWithPopup(auth, provider);
-      await handleGoogleUser(result.user);
-    }
+    const result = await signInWithPopup(auth, provider);
+    await handleGoogleUser(result.user);
   } catch(e) {
     loader(false);
-    if(e.code !== 'auth/popup-closed-by-user') toast('فشل الدخول بـ Google');
+    if(e.code === 'auth/popup-blocked') {
+      toast('⚠️ فعّل النوافذ المنبثقة من إعدادات Safari ثم حاول مرة ثانية');
+    } else if(e.code !== 'auth/popup-closed-by-user') {
+      toast('فشل الدخول بـ Google: ' + e.code);
+    }
   }
 };
 
