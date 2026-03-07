@@ -185,6 +185,54 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/fireba
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, setPersistence, browserLocalPersistence, browserSessionPersistence, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getFirestore, doc, setDoc, getDoc, query, collection, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
+
+// ── UI helpers (داخل نفس الـ module) ──
+window.openModal  = id => { document.getElementById(id).classList.add('open'); document.body.style.overflow='hidden'; };
+window.closeModal = id => { document.getElementById(id).classList.remove('open'); document.body.style.overflow=''; };
+window.switchModal = (a,b) => { window.closeModal(a); window.openModal(b); };
+window.toggleDropdown = () => document.getElementById('userDropdown').classList.toggle('open');
+window.switchTab = tab => {
+  const isE = tab==='email';
+  document.getElementById('emailForm').style.display = isE?'block':'none';
+  document.getElementById('phoneForm').style.display = isE?'none':'block';
+  document.getElementById('tabEmail').className = 'tab-btn '+(isE?'tab-active':'tab-inactive');
+  document.getElementById('tabPhone').className = 'tab-btn '+(isE?'tab-inactive':'tab-active');
+};
+window.backToPhone = () => {
+  document.getElementById('phoneStep1').style.display='block';
+  document.getElementById('phoneStep2').style.display='none';
+  document.getElementById('otpCode').value='';
+};
+window.toast = msg => {
+  const el=document.getElementById('toast');
+  el.textContent=msg; el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'),2800);
+};
+window.loader = on => { document.getElementById('loader').style.display=on?'flex':'none'; };
+window.toggleLang = () => {
+  const h = document.getElementById('htmlRoot');
+  const toEn = h.lang === 'ar';
+  h.lang = toEn ? 'en' : 'ar';
+  h.dir  = toEn ? 'ltr' : 'rtl';
+  document.getElementById('langBtn').textContent = toEn ? 'ع' : 'EN';
+  document.querySelectorAll('[data-ar]').forEach(el => {
+    if(el.tagName === 'INPUT') return;
+    el.textContent = toEn ? el.dataset.en : el.dataset.ar;
+  });
+};
+
+// ── Event listeners ──
+document.querySelectorAll('.modal-overlay').forEach(o =>
+  o.addEventListener('click', e => { if(e.target===o) window.closeModal(o.id); })
+);
+document.addEventListener('click', e => {
+  if(!e.target.closest('.user-menu')) {
+    const d=document.getElementById('userDropdown');
+    if(d) d.classList.remove('open');
+  }
+});
+
+
 const app = initializeApp({
   apiKey: "AIzaSyAHSfjlmSyI8a5rJlR4Uep9Lc-HrHTEQAE",
   authDomain: "barber-stor.firebaseapp.com",
@@ -231,7 +279,6 @@ async function handleGoogleUser(user) {
 window.doRegister = async () => {
   const name     = document.getElementById('regName').value.trim();
   const username = document.getElementById('regUsername').value.trim().toLowerCase();
-  const phone    = document.getElementById('regPhone').value.trim().replace(/\s/g,'');
   const email    = document.getElementById('regEmail').value.trim();
   const pass     = document.getElementById('regPass').value;
   const errEl    = document.getElementById('regErr');
@@ -373,51 +420,6 @@ function firebaseErr(code) {
   return m[code] || 'حدث خطأ، حاول مرة ثانية';
 }
 
-// ── UI helpers (داخل نفس الـ module) ──
-window.openModal  = id => { document.getElementById(id).classList.add('open'); document.body.style.overflow='hidden'; };
-window.closeModal = id => { document.getElementById(id).classList.remove('open'); document.body.style.overflow=''; };
-window.switchModal = (a,b) => { window.closeModal(a); window.openModal(b); };
-window.toggleDropdown = () => document.getElementById('userDropdown').classList.toggle('open');
-window.switchTab = tab => {
-  const isE = tab==='email';
-  document.getElementById('emailForm').style.display = isE?'block':'none';
-  document.getElementById('phoneForm').style.display = isE?'none':'block';
-  document.getElementById('tabEmail').className = 'tab-btn '+(isE?'tab-active':'tab-inactive');
-  document.getElementById('tabPhone').className = 'tab-btn '+(isE?'tab-inactive':'tab-active');
-};
-window.backToPhone = () => {
-  document.getElementById('phoneStep1').style.display='block';
-  document.getElementById('phoneStep2').style.display='none';
-  document.getElementById('otpCode').value='';
-};
-window.toast = msg => {
-  const el=document.getElementById('toast');
-  el.textContent=msg; el.classList.add('show');
-  setTimeout(()=>el.classList.remove('show'),2800);
-};
-window.loader = on => { document.getElementById('loader').style.display=on?'flex':'none'; };
-window.toggleLang = () => {
-  const h = document.getElementById('htmlRoot');
-  const toEn = h.lang === 'ar';
-  h.lang = toEn ? 'en' : 'ar';
-  h.dir  = toEn ? 'ltr' : 'rtl';
-  document.getElementById('langBtn').textContent = toEn ? 'ع' : 'EN';
-  document.querySelectorAll('[data-ar]').forEach(el => {
-    if(el.tagName === 'INPUT') return;
-    el.textContent = toEn ? el.dataset.en : el.dataset.ar;
-  });
-};
-
-// ── Event listeners ──
-document.querySelectorAll('.modal-overlay').forEach(o =>
-  o.addEventListener('click', e => { if(e.target===o) window.closeModal(o.id); })
-);
-document.addEventListener('click', e => {
-  if(!e.target.closest('.user-menu')) {
-    const d=document.getElementById('userDropdown');
-    if(d) d.classList.remove('open');
-  }
-});
 </script>
 
 </body>
