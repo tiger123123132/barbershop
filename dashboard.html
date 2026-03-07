@@ -85,7 +85,7 @@ select.fi option{background:var(--dark2)}
 #loader.on{display:flex}
 .spin{width:44px;height:44px;border-radius:50%;border:3px solid var(--dark5);border-top-color:var(--p);animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.mob-toggle{display:none;position:fixed;top:1rem;left:1rem;z-index:200;background:var(--dark3);border:1px solid var(--dark5);border-radius:10px;padding:.5rem .8rem;cursor:pointer;font-size:1.1rem;color:var(--text)}
+.mob-toggle{display:none;position:fixed;top:.75rem;right:1rem;z-index:200;background:var(--dark3);border:1px solid rgba(201,168,76,.4);border-radius:12px;padding:.55rem .9rem;cursor:pointer;font-size:1.3rem;color:var(--p);box-shadow:0 2px 12px rgba(0,0,0,.4)}
 .logo-upload-wrap{display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap;margin-bottom:1.2rem}
 .logo-preview{width:80px;height:80px;border-radius:14px;border:2px dashed var(--dark5);display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--dark2);cursor:pointer;transition:.2s;flex-shrink:0}
 .logo-preview:hover{border-color:var(--p)}
@@ -95,11 +95,11 @@ select.fi option{background:var(--dark2)}
 .logo-info p{color:var(--muted);font-size:.78rem;line-height:1.7;margin-top:.3rem}
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99;display:none}
 .overlay.on{display:block}
-@media(max-width:768px){.sidebar{transform:translateX(100%);width:260px}.sidebar.open{transform:translateX(0)}.main{margin-right:0;padding:1rem}.mob-toggle{display:block}}
+@media(max-width:768px){.sidebar{transform:translateX(100%);width:260px}.sidebar.open{transform:translateX(0)}.main{margin-right:0;padding:1rem;padding-top:4rem}.mob-toggle{display:flex;align-items:center;justify-content:center}}
 </style>
 </head>
 <body>
-<button class="mob-toggle" onclick="toggleSidebar()">☰</button>
+<button class="mob-toggle" onclick="toggleSidebar()" id="mobToggle">&#9776;</button>
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 
 <div class="layout">
@@ -268,7 +268,7 @@ select.fi option{background:var(--dark2)}
         </div>
         <div class="logo-info">
           <strong style="font-size:.85rem">اضغط لرفع الشعار</strong>
-          <p>PNG أو JPG — الحجم الأمثل ٢٠٠×٢٠٠<br>سيظهر في صفحة الحجز الخاصة بك</p>
+          <p>PNG أو JPG — الحجم الأمثل ٢٠٠×٢٠٠ — الحد الأقصى 10MB<br>سيظهر في صفحة الحجز الخاصة بك</p>
           <button class="btn btn-ghost btn-sm" onclick="document.getElementById('logoInput').click()" style="margin-top:.4rem">📁 اختر صورة</button>
           <button class="btn btn-danger btn-sm" id="logoDelBtn" onclick="deleteLogo()" style="margin-top:.4rem;display:none">🗑️ حذف</button>
         </div>
@@ -527,7 +527,7 @@ window.saveSettings=async()=>{
 window.handleLogoUpload = (e) => {
   const file = e.target.files[0];
   if(!file) return;
-  if(file.size > 500*1024){ toast('⚠️ الصورة كبيرة، الحد الأقصى 500KB'); return; }
+  if(file.size > 10*1024*1024){ toast('⚠️ الصورة كبيرة، الحد الأقصى 10MB'); return; }
   const reader = new FileReader();
   reader.onload = async (ev) => {
     const base64 = ev.target.result;
