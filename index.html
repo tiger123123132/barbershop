@@ -251,6 +251,9 @@ try {
     loader(true);
     await handleGoogleUser(redirectResult.user);
   }
+} catch(e) {
+  console.error('redirect error:', e);
+  loader(false);
 }
 
 onAuthStateChanged(auth, async user => {
@@ -264,11 +267,6 @@ onAuthStateChanged(auth, async user => {
     document.getElementById('userNav').style.display = 'none';
   }
 });
-
- catch(e) {
-  console.error('redirect error:', e);
-  loader(false);
-}
 
 async function handleGoogleUser(user) {
   const snap = await getDoc(doc(db,'barbers',user.uid));
