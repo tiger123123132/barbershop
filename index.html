@@ -181,56 +181,10 @@
 <div id="toast"></div>
 
 <script type="module">
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, setPersistence, browserLocalPersistence, browserSessionPersistence, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getFirestore, doc, setDoc, getDoc, query, collection, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-
-// ── UI helpers (داخل نفس الـ module) ──
-window.openModal  = id => { document.getElementById(id).classList.add('open'); document.body.style.overflow='hidden'; };
-window.closeModal = id => { document.getElementById(id).classList.remove('open'); document.body.style.overflow=''; };
-window.switchModal = (a,b) => { window.closeModal(a); window.openModal(b); };
-window.toggleDropdown = () => document.getElementById('userDropdown').classList.toggle('open');
-window.switchTab = tab => {
-  const isE = tab==='email';
-  document.getElementById('emailForm').style.display = isE?'block':'none';
-  document.getElementById('phoneForm').style.display = isE?'none':'block';
-  document.getElementById('tabEmail').className = 'tab-btn '+(isE?'tab-active':'tab-inactive');
-  document.getElementById('tabPhone').className = 'tab-btn '+(isE?'tab-inactive':'tab-active');
-};
-window.backToPhone = () => {
-  document.getElementById('phoneStep1').style.display='block';
-  document.getElementById('phoneStep2').style.display='none';
-  document.getElementById('otpCode').value='';
-};
-window.toast = msg => {
-  const el=document.getElementById('toast');
-  el.textContent=msg; el.classList.add('show');
-  setTimeout(()=>el.classList.remove('show'),2800);
-};
-window.loader = on => { document.getElementById('loader').style.display=on?'flex':'none'; };
-window.toggleLang = () => {
-  const h = document.getElementById('htmlRoot');
-  const toEn = h.lang === 'ar';
-  h.lang = toEn ? 'en' : 'ar';
-  h.dir  = toEn ? 'ltr' : 'rtl';
-  document.getElementById('langBtn').textContent = toEn ? 'ع' : 'EN';
-  document.querySelectorAll('[data-ar]').forEach(el => {
-    if(el.tagName === 'INPUT') return;
-    el.textContent = toEn ? el.dataset.en : el.dataset.ar;
-  });
-};
-
-// ── Event listeners ──
-document.querySelectorAll('.modal-overlay').forEach(o =>
-  o.addEventListener('click', e => { if(e.target===o) window.closeModal(o.id); })
-);
-document.addEventListener('click', e => {
-  if(!e.target.closest('.user-menu')) {
-    const d=document.getElementById('userDropdown');
-    if(d) d.classList.remove('open');
-  }
-});
 
 
 const app = initializeApp({
@@ -244,36 +198,7 @@ const app = initializeApp({
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// ── Init: handle redirect first, then auth state ──
-async function initAuth() {
-  // 1. Check for Google redirect result first
-  try {
-    const redirectResult = await getRedirectResult(auth);
-    if(redirectResult && redirectResult.user) {
-      loader(true);
-      await handleGoogleUser(redirectResult.user);
-      return; // handleGoogleUser will redirect to dashboard
-    }
-  } catch(e) {
-    console.error('redirect error:', e);
-    loader(false);
-  }
-
-  // 2. Normal auth state listener
-  onAuthStateChanged(auth, async user => {
-    if(user) {
-      document.getElementById('guestNav').style.display = 'none';
-      document.getElementById('userNav').style.display = 'block';
-      const snap = await getDoc(doc(db,'barbers',user.uid));
-      if(snap.exists()) document.getElementById('userAvatar').textContent = (snap.data().name||'U')[0].toUpperCase();
-    } else {
-      document.getElementById('guestNav').style.display = 'flex';
-      document.getElementById('userNav').style.display = 'none';
-    }
-  });
-}
-initAuth();
-
+// ── Handle Google User ──
 async function handleGoogleUser(user) {
   const snap = await getDoc(doc(db,'barbers',user.uid));
   if(!snap.exists()) {
@@ -290,6 +215,31 @@ async function handleGoogleUser(user) {
   window.location.href = 'dashboard.html';
 }
 
+// ── Init Auth (redirect first, then state) ──
+async function initAuth() {
+  try {
+    const redirectResult = await getRedirectResult(auth);
+    if(redirectResult && redirectResult.user) {
+      loader(true);
+      await handleGoogleUser(redirectResult.user);
+      return;
+    }
+  } catch(e) { console.error('redirect:', e); }
+
+  onAuthStateChanged(auth, async user => {
+    if(user) {
+      document.getElementById('guestNav').style.display = 'none';
+      document.getElementById('userNav').style.display = 'block';
+      const snap = await getDoc(doc(db,'barbers',user.uid));
+      if(snap.exists()) document.getElementById('userAvatar').textContent = (snap.data().name||'U')[0].toUpperCase();
+    } else {
+      document.getElementById('guestNav').style.display = 'flex';
+      document.getElementById('userNav').style.display = 'none';
+    }
+  });
+}
+
+// ── Actions ──
 window.doRegister = async () => {
   const name     = document.getElementById('regName').value.trim();
   const username = document.getElementById('regUsername').value.trim().toLowerCase();
@@ -432,13 +382,77 @@ window.verifyOTP = async () => {
   finally { loader(false); }
 };
 
-window.doLogout = async () => { await signOut(auth); toast('تم تسجيل الخروج'); };
 
-function firebaseErr(code) {
-  const m = {'auth/email-already-in-use':'البريد مستخدم مسبقاً','auth/invalid-email':'بريد غير صالح','auth/weak-password':'كلمة المرور ضعيفة','auth/user-not-found':'حساب غير موجود','auth/wrong-password':'كلمة المرور خاطئة','auth/invalid-credential':'بيانات خاطئة'};
-  return m[code] || 'حدث خطأ، حاول مرة ثانية';
+
+// ── UI Helpers ──
+// ── UI helpers (داخل نفس الـ module) ──
+window.openModal  = id => { document.getElementById(id).classList.add('open'); document.body.style.overflow='hidden'; };
+window.closeModal = id => { document.getElementById(id).classList.remove('open'); document.body.style.overflow=''; };
+window.switchModal = (a,b) => { window.closeModal(a); window.openModal(b); };
+window.toggleDropdown = () => document.getElementById('userDropdown').classList.toggle('open');
+window.switchTab = tab => {
+  const isE = tab==='email';
+  document.getElementById('emailForm').style.display = isE?'block':'none';
+  document.getElementById('phoneForm').style.display = isE?'none':'block';
+  document.getElementById('tabEmail').className = 'tab-btn '+(isE?'tab-active':'tab-inactive');
+  document.getElementById('tabPhone').className = 'tab-btn '+(isE?'tab-inactive':'tab-active');
+};
+window.backToPhone = () => {
+  document.getElementById('phoneStep1').style.display='block';
+  document.getElementById('phoneStep2').style.display='none';
+  document.getElementById('otpCode').value='';
+};
+window.toast = msg => {
+  const el=document.getElementById('toast');
+  el.textContent=msg; el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'),2800);
+};
+window.loader = on => { document.getElementById('loader').style.display=on?'flex':'none'; };
+function applyLang(toEn) {
+  const h = document.getElementById('htmlRoot');
+  h.lang = toEn ? 'en' : 'ar';
+  h.dir  = toEn ? 'ltr' : 'rtl';
+  const btn = document.getElementById('langBtn');
+  if(btn) btn.textContent = toEn ? 'ع' : 'EN';
+  document.querySelectorAll('[data-ar]').forEach(el => {
+    if(el.tagName === 'INPUT') return;
+    el.textContent = toEn ? el.dataset.en : el.dataset.ar;
+  });
+  try { localStorage.setItem('bs_lang', toEn ? 'en' : 'ar'); } catch(e){}
 }
+window.toggleLang = () => {
+  const toEn = document.getElementById('htmlRoot').lang === 'ar';
+  applyLang(toEn);
+};
+// Apply saved language on load
+try {
+  const saved = localStorage.getItem('bs_lang');
+  if(saved === 'en') applyLang(true);
+} catch(e){}
 
+// ── Event listeners ──
+document.querySelectorAll('.modal-overlay').forEach(o =>
+  o.addEventListener('click', e => { if(e.target===o) window.closeModal(o.id); })
+);
+document.addEventListener('click', e => {
+  if(!e.target.closest('.user-menu')) {
+    const d=document.getElementById('userDropdown');
+    if(d) d.classList.remove('open');
+  }
+});
+
+// ── Event Listeners ──
+document.querySelectorAll('.modal-overlay').forEach(o =>
+  o.addEventListener('click', e => { if(e.target===o) window.closeModal(o.id); })
+);
+document.addEventListener('click', e => {
+  if(!e.target.closest('.user-menu')) {
+    const d=document.getElementById('userDropdown');
+    if(d) d.classList.remove('open');
+  }
+});
+
+initAuth();
 </script>
 
 </body>
