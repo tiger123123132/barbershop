@@ -182,7 +182,7 @@
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, setPersistence, browserLocalPersistence, browserSessionPersistence, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup, setPersistence, browserLocalPersistence, browserSessionPersistence, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getFirestore, doc, setDoc, getDoc, query, collection, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 
@@ -256,9 +256,7 @@ onAuthStateChanged(auth, async user => {
   }
 });
 
-getRedirectResult(auth).then(async result => {
-  if(result && result.user) { loader(true); await handleGoogleUser(result.user); loader(false); }
-}).catch(e => { console.error(e); loader(false); });
+// popup only - no redirect needed
 
 async function handleGoogleUser(user) {
   const snap = await getDoc(doc(db,'barbers',user.uid));
@@ -330,16 +328,19 @@ window.doGoogleLogin = async () => {
   try {
     await setPersistence(auth, browserLocalPersistence);
     const provider = new GoogleAuthProvider();
-    if(/iPhone|iPad|Android/i.test(navigator.userAgent)) {
-      await signInWithRedirect(auth, provider);
-    } else {
-      const result = await signInWithPopup(auth, provider);
-      await handleGoogleUser(result.user);
-    }
+    provider.setCustomParameters({ prompt: 'select_account' });
+    const result = await signInWithPopup(auth, provider);
+    await handleGoogleUser(result.user);
   } catch(e) {
-    console.error(e);
-    toast('فشل الدخول بـ Google');
     loader(false);
+    if(e.code === 'auth/popup-blocked') {
+      toast('⚠️ افتح النوافذ المنبثقة في المتصفح وحاول مرة ثانية');
+    } else if(e.code === 'auth/popup-closed-by-user') {
+      // user closed - do nothing
+    } else {
+      console.error(e);
+      toast('فشل الدخول بـ Google');
+    }
   }
 };
 
