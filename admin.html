@@ -227,13 +227,13 @@ tr:hover td{background:rgba(255,255,255,.015)}
 <!-- FIREBASE -->
 
 <script type="module">
-// ── AUTH CHECK ──
-const isAuth = localStorage.getItem('bs_admin_auth') === 'true' || sessionStorage.getItem('bs_admin_auth') === 'true';
-if(!isAuth){ window.location.href = 'admin-login.html'; }
-
 // ── FIREBASE ──
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, collection, getDocs, doc, addDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+// ── AUTH CHECK ──
+const isAuth = localStorage.getItem('bs_admin_auth') === 'true' || sessionStorage.getItem('bs_admin_auth') === 'true';
+if(!isAuth){ window.location.href = 'admin-login.html'; }
 
 const app = initializeApp({
   apiKey: "AIzaSyAHSfjlmSyI8a5rJlR4Uep9Lc-HrHTEQAE",
