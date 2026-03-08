@@ -383,10 +383,13 @@ onAuthStateChanged(auth, async user => {
         const sd=sSnap.docs[0].data(); mainBarberId=sd.barberId;
         const bSnap=await getDoc(doc(db,'barbers',mainBarberId));
         barberData={...bSnap.data(),_role:sd.role,_isStaff:true};
-      } else { window.location.href='index.html'; return; }
+      } else { window.location.href='login.html'; return; }
     }
     await initDashboard();
-  }catch(e){ console.error(e); toast('❌ خطأ في التحميل'); }
+  }catch(e){ 
+    console.error(e); 
+    document.body.innerHTML='<div style="color:red;padding:2rem;font-size:1rem;direction:rtl">❌ خطأ: '+e.message+'</div>';
+  }
   loader(false);
 });
 
