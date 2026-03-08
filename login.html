@@ -143,7 +143,7 @@ window.showSection = sec => {
 if(new URLSearchParams(location.search).get('tab') === 'register') showSection('register');
 
 // ── Redirect result (mobile Google) ──
-async function handleGoogleUser(user) {
+async function handleGoogleUser = async (user) => {
   const snap = await getDoc(doc(db,'barbers',user.uid));
   if(!snap.exists()) {
     await setDoc(doc(db,'barbers',user.uid), {
@@ -161,9 +161,8 @@ async function handleGoogleUser(user) {
 }
 
 // ── Auth State ──
-onAuthStateChanged(auth, user => {
-  if(user) window.location.href = 'dashboard.html';
-});
+// Don't auto-redirect - let login functions handle it
+onAuthStateChanged(auth, user => { /* handled by login functions */ });
 
 // ── Login ──
 window.doLogin = async () => {
