@@ -445,9 +445,7 @@ window.removeAdmin = i => {
 
 // Expose globally
 window.loadAllData = loadAllData;
-</script>
 
-<script>
 window.checkPw = async () => {
   const email = document.getElementById('adminEmail').value.trim().toLowerCase();
   const pw    = document.getElementById('adminPw') ? document.getElementById('adminPw').value : document.getElementById('adminPwInput').value;
@@ -475,7 +473,9 @@ document.getElementById('adminLoginBtn').addEventListener('click', window.checkP
 document.getElementById('adminPwInput').addEventListener('keydown', e => {
   if(e.key === 'Enter') window.checkPw();
 });
+
 </script>
 
+<div style="text-align:center;padding:1rem;color:#555;font-size:.75rem;font-family:monospace">admin panel • v1.0.8 • 2026-03-08</div>
 </body>
 </html>
