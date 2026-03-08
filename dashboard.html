@@ -353,7 +353,7 @@ onAuthStateChanged(auth, async user => {
         barberData={...bSnap.data(),_role:sd.role,_isStaff:true};
       } else { window.location.href='index.html'; return; }
     }
-    initDashboard();
+    await initDashboard();
   }catch(e){ console.error(e); toast('❌ خطأ في التحميل'); }
   loader(false);
 });
@@ -667,24 +667,6 @@ function updateBookingBtn(){
 window.doLogout=async()=>{ await signOut(auth); window.location.href='index.html'; };
 window.copyLink=()=>{ navigator.clipboard.writeText(document.getElementById('myLink').textContent); toast('✅ تم نسخ الرابط'); };
 window.openSite=()=>window.open(document.getElementById('myLink').textContent,'_blank');
-</script>
-
-<script>
-function showPage(id,el){ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); document.querySelectorAll('.nav-it').forEach(n=>n.classList.remove('on')); document.getElementById(id).classList.add('active'); if(el) el.classList.add('on'); if(id==='pgBookings') window.renderBookings?.(); if(window.innerWidth<=768) toggleSidebar(); }
-function toggleForm(id){ document.getElementById(id).classList.toggle('on'); }
-function openModal(id){ document.getElementById(id).classList.add('open'); document.body.style.overflow='hidden'; }
-function closeModal(id){ document.getElementById(id).classList.remove('open'); document.body.style.overflow=''; }
-function toggleSidebar(){
-  const sb = document.getElementById('sidebar');
-  const ov = document.getElementById('overlay');
-  sb.classList.toggle('open');
-  ov.classList.toggle('on');
-  document.body.style.overflow = sb.classList.contains('open') ? 'hidden' : '';
-}
-function loader(on){ document.getElementById('loader').style.display=on?'flex':'none'; }
-function toast(msg){ const el=document.getElementById('toast'); el.textContent=msg; el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),2800); }
-document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{ if(e.target===o) closeModal(o.id); }));
-window.showPage=showPage; window.toggleForm=toggleForm; window.openModal=openModal; window.closeModal=closeModal; window.loader=loader; window.toast=toast;
 </script>
 
 </body>
