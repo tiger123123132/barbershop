@@ -366,11 +366,7 @@ window.showPage=showPage; window.toggleSidebar=toggleSidebar;
 window.toggleForm=toggleForm; window.openModal=openModal; window.closeModal=closeModal;
 
 // ── AUTH ──
-let authResolved = false;
-setTimeout(()=>{ if(!authResolved) window.location.href='index.html'; }, 5000);
-
 onAuthStateChanged(auth, async user => {
-  authResolved = true;
   if(!user){ window.location.href='index.html'; return; }
   currentUser=user; loader(true);
   try{
@@ -386,10 +382,7 @@ onAuthStateChanged(auth, async user => {
       } else { window.location.href='login.html'; return; }
     }
     await initDashboard();
-  }catch(e){ 
-    console.error(e); 
-    document.body.innerHTML='<div style="color:red;padding:2rem;font-size:1rem;direction:rtl">❌ خطأ: '+e.message+'</div>';
-  }
+  }catch(e){ console.error('Dashboard error:', e); toast('❌ خطأ: ' + e.message); }
   loader(false);
 });
 
