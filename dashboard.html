@@ -11,7 +11,7 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--dark);color:var(--text);font-family:'Cairo',sans-serif;min-height:100vh}
 .layout{display:flex;min-height:100vh}
-.sidebar{width:240px;background:var(--dark2);border-left:1px solid var(--dark4);padding:1.5rem 1rem;position:fixed;top:0;right:0;bottom:0;overflow-y:auto;z-index:100;transition:.3s}
+.sidebar{width:240px;background:var(--dark2);border-left:1px solid var(--dark4);padding:1.5rem 1rem;position:fixed;top:0;right:0;bottom:0;overflow-y:auto;z-index:200;transition:.3s}
 .main{margin-right:240px;flex:1;padding:2rem;min-width:0}
 .sb-logo{font-size:1.1rem;font-weight:900;background:linear-gradient(135deg,var(--p2),var(--p));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.3rem}
 .sb-user{font-size:.78rem;color:var(--muted);margin-bottom:1.5rem;padding-bottom:1.5rem;border-bottom:1px solid var(--dark4)}
@@ -93,7 +93,7 @@ select.fi option{background:var(--dark2)}
 .logo-preview .plus{font-size:1.8rem;color:var(--muted)}
 .logo-info{flex:1}
 .logo-info p{color:var(--muted);font-size:.78rem;line-height:1.7;margin-top:.3rem}
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99;display:none}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:150;display:none}
 .overlay.on{display:block}
 @media(max-width:768px){.sidebar{transform:translateX(100%);width:260px}.sidebar.open{transform:translateX(0)}.main{margin-right:0;padding:1rem;padding-top:4rem}.mob-toggle{display:flex;align-items:center;justify-content:center}}
 </style>
@@ -253,6 +253,11 @@ select.fi option{background:var(--dark2)}
     <div style="display:flex;gap:.6rem;max-width:350px;margin:0 auto">
       <input class="fi" id="actCode" placeholder="XXXX-XXXX-XXXX" style="text-align:center;letter-spacing:2px;text-transform:uppercase">
       <button class="btn btn-gold" onclick="activateAccount()">تفعيل</button>
+    </div>
+    <div id="planExpiryBox" style="display:none;margin-top:1.2rem;background:#1a1a1a;border-radius:12px;padding:1rem;max-width:350px;margin-left:auto;margin-right:auto;text-align:center">
+      <div style="font-size:.8rem;color:var(--muted);margin-bottom:.3rem">انتهاء الاشتراك</div>
+      <div id="planExpiryDate" style="color:var(--p);font-size:1.1rem;font-weight:700"></div>
+      <div id="planExpiryDays" style="font-size:.8rem;margin-top:.3rem"></div>
     </div>
   </div>
   <div class="card">
@@ -570,8 +575,12 @@ window.activateAccount=async()=>{
   try{
     const snap=await getDocs(query(collection(db,'activationCodes'),where('code','==',code),where('used','==',false)));
     if(snap.empty){ toast('❌ الرمز غير صحيح أو مستخدم'); loader(false); return; }
+    const codeData = snap.docs[0].data();
+    const months = codeData.months || 12;
+    const expiry = new Date();
+    expiry.setMonth(expiry.getMonth() + months);
     await updateDoc(doc(db,'activationCodes',snap.docs[0].id),{used:true,usedBy:currentUser.uid,usedAt:new Date().toISOString()});
-    await updateDoc(doc(db,'barbers',mainBarberId),{status:'active'});
+    await updateDoc(doc(db,'barbers',mainBarberId),{status:'active', planExpiry: expiry.toISOString(), planMonths: months});
     barberData.status='active';
     document.getElementById('inactiveBanner').style.display='none';
     document.getElementById('sbPlan').innerHTML='<span style="color:var(--green)">✅ مفعّل</span>';
