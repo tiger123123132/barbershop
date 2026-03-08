@@ -84,10 +84,12 @@ tr:hover td{background:rgba(255,255,255,.015)}
     <div style="font-size:3rem;margin-bottom:1rem">🔐</div>
     <h2>لوحة الإدارة العامة</h2>
     <p>هذه الصفحة للمدير فقط</p>
-    <div class="fg"><input type="password" class="fi" id="pwIn" placeholder="••••••••" onkeydown="if(event.key==='Enter')checkPw()"></div>
+    <div class="fg"><input type="email" class="fi" id="adminEmail" placeholder="admin@example.com"></div>
+    <div class="fg"><input type="password" class="fi" id="adminPw" placeholder="••••••••" onkeydown="if(event.key==='Enter')checkPw()"></div>
     <button class="btn btn-gold btn-full" onclick="checkPw()">دخول</button>
     <div class="pwerr" id="pwErr"></div>
   </div>
+</div>
 </div>
 
 <!-- DASHBOARD -->
@@ -256,6 +258,7 @@ let allCodes   = [];
 // ── LOAD ALL DATA ──
 window.loadAllData = async () => {
   loader(true);
+  try {
   // Barbers
   const bSnap = await getDocs(collection(db,'barbers'));
   allBarbers  = bSnap.docs.map(d=>({...d.data(),_id:d.id}));
@@ -445,41 +448,30 @@ window.loadAllData = loadAllData;
 </script>
 
 <script>
-const ADMIN_PW = '3536'; // ← غيّر هذا لكلمة مرور قوية
-
-function checkPw(){
-  const pw = document.getElementById('pwIn').value;
-  const admins = JSON.parse(localStorage.getItem('bs_admins')||'[]');
-  const isAdmin = admins.find(a=>a.pw===pw);
-  if(pw===ADMIN_PW || isAdmin){
+window.checkPw = async () => {
+  const email = document.getElementById('adminEmail').value.trim();
+  const pw    = document.getElementById('adminPw').value;
+  const err   = document.getElementById('pwErr');
+  err.textContent = '';
+  if(!email||!pw){ err.textContent='يرجى ملء جميع الحقول'; return; }
+  loader(true);
+  try {
+    const cred = await signInWithEmailAndPassword(auth, email, pw);
+    const snap = await getDoc(doc(db,'barbers',cred.user.uid));
+    if(!snap.exists() || snap.data().role !== 'admin'){
+      await signOut(auth);
+      err.textContent = 'ليس لديك صلاحية الدخول';
+      loader(false);
+      return;
+    }
     document.getElementById('pwScreen').style.display='none';
     document.getElementById('adminDash').style.display='block';
-    document.getElementById('pwIn').value='';
-    window.loadAllData();
-  } else {
-    document.getElementById('pwErr').textContent='❌ كلمة المرور خاطئة';
-    document.getElementById('pwIn').value='';
+    window.loadAllData().catch(e=>{ loader(false); });
+  } catch(e) {
+    err.textContent = e.code==='auth/invalid-credential'?'بيانات خاطئة':'حدث خطأ';
+    loader(false);
   }
-}
-
-function showPage(id,el){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-it').forEach(n=>n.classList.remove('on'));
-  document.getElementById(id).classList.add('active');
-  if(el) el.classList.add('on');
-}
-
-function loader(on){ document.getElementById('loader').style.display=on?'flex':'none'; }
-
-function toast(msg){
-  const el=document.getElementById('toast');
-  el.textContent=msg; el.classList.add('show');
-  setTimeout(()=>el.classList.remove('show'),2800);
-}
-
-window.showPage=showPage;
-window.loader=loader;
-window.toast=toast;
+};
 
 function toggleSidebar(){
   const sb = document.getElementById('adminSidebar');
