@@ -218,20 +218,26 @@ window.doRegister = async () => {
 
 // ── Google ──
 window.doGoogleLogin = async () => {
-  loader(true);
   try {
     await setPersistence(auth, browserLocalPersistence);
     const provider = new GoogleAuthProvider();
     provider.setCustomParameters({prompt:'select_account'});
+    loader(true);
     const result = await signInWithPopup(auth, provider);
     await handleGoogleUser(result.user);
   } catch(e) {
     loader(false);
     if(e.code === 'auth/popup-blocked') {
-      toast('⚠️ فعّل النوافذ المنبثقة من إعدادات Safari ثم حاول مرة ثانية');
-    } else if(e.code !== 'auth/popup-closed-by-user') {
+      toast('⚠️ افتح الإعدادات وفعّل النوافذ المنبثقة ثم حاول مرة ثانية');
+    } else if(e.code === 'auth/popup-closed-by-user') {
+      // do nothing
+    } else if(e.code === 'auth/cancelled-popup-request') {
+      // do nothing  
+    } else {
       toast('فشل الدخول بـ Google: ' + e.code);
     }
+  } finally {
+    loader(false);
   }
 };
 
