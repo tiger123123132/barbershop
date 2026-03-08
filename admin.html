@@ -79,22 +79,12 @@ tr:hover td{background:rgba(255,255,255,.015)}
 
 <!-- PASSWORD SCREEN -->
 
-<div id="pwScreen">
-  <div class="pwbox">
-    <div style="font-size:3rem;margin-bottom:1rem">🔐</div>
-    <h2>لوحة الإدارة العامة</h2>
-    <p>هذه الصفحة للمدير فقط</p>
-    <div class="fg"><input type="email" class="fi" id="adminEmail" placeholder="admin@example.com"></div>
-    <div class="fg"><input type="password" class="fi" id="adminPw" placeholder="••••••••" id="adminPwInput"></div>
-    <button class="btn btn-gold btn-full" id="adminLoginBtn">دخول</button>
-    <div class="pwerr" id="pwErr"></div>
-  </div>
 </div>
 </div>
 
 <!-- DASHBOARD -->
 
-<div id="adminDash" style="display:none">
+<div id="adminDash" style="display:none" id="adminDash">
 <button class="mob-toggle" onclick="toggleSidebar()">&#9776;</button>
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 <div class="layout">
@@ -237,6 +227,12 @@ tr:hover td{background:rgba(255,255,255,.015)}
 <!-- FIREBASE -->
 
 <script type="module">
+  // Auth check
+  const isAuth = localStorage.getItem('bs_admin_auth') === 'true' || sessionStorage.getItem('bs_admin_auth') === 'true';
+  if(!isAuth){ window.location.href = 'admin-login.html'; }
+  document.getElementById('adminDash').style.display = 'block';
+
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, collection, getDocs, getDoc, doc, addDoc, updateDoc, deleteDoc, query, where, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
@@ -446,19 +442,6 @@ window.removeAdmin = i => {
 // Expose globally
 window.loadAllData = loadAllData;
 
-window.checkPw = async () => {
-  const email = document.getElementById('adminEmail').value.trim().toLowerCase();
-  const pw    = document.getElementById('adminPw') ? document.getElementById('adminPw').value : document.getElementById('adminPwInput').value;
-  const err   = document.getElementById('pwErr');
-  err.textContent = '';
-  if(email === 'saadwedf@gmail.com' && pw === 'Saad.123123'){
-    document.getElementById('pwScreen').style.display='none';
-    document.getElementById('adminDash').style.display='block';
-    window.loadAllData().catch(e=>{ loader(false); });
-  } else {
-    err.textContent = 'بيانات خاطئة';
-  }
-};
 
 function toggleSidebar(){
   const sb = document.getElementById('adminSidebar');
@@ -469,13 +452,9 @@ function toggleSidebar(){
 }
 
 // Admin login button
-document.getElementById('adminLoginBtn').addEventListener('click', window.checkPw);
-document.getElementById('adminPwInput').addEventListener('keydown', e => {
-  if(e.key === 'Enter') window.checkPw();
-});
 
 </script>
 
-<div style="text-align:center;padding:1rem;color:#555;font-size:.75rem;font-family:monospace">admin panel • v1.0.8 • 2026-03-08</div>
+<div style="text-align:center;padding:1rem;color:#555;font-size:.75rem;font-family:monospace">admin panel • v1.0.9 • 2026-03-08</div>
 </body>
 </html>
