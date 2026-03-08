@@ -321,9 +321,9 @@ async function loadAllData(){
     renderAdminsTbl();
     loader(false);
   } catch(e){
-    console.error('loadAllData error:', e);
     loader(false);
-    toast('⚠️ خطأ في تحميل البيانات');
+    document.getElementById('overviewStats').innerHTML = `<div style='color:red;padding:1rem;font-size:.8rem'>خطأ: ${e.message}</div>`;
+    document.getElementById('codesTbl').innerHTML = `<tr><td colspan='5' style='color:red'>${e.message}</td></tr>`;
   }
 }
 
