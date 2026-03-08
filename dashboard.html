@@ -358,7 +358,7 @@ onAuthStateChanged(auth, async user => {
   loader(false);
 });
 
-function initDashboard(){
+async function initDashboard(){
   // Check plan expiry
   if(barberData.status==='active' && barberData.planExpiry){
     const expiry = new Date(barberData.planExpiry);
