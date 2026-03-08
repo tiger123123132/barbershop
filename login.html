@@ -114,9 +114,8 @@ body::after{content:'';position:absolute;inset:0;background:radial-gradient(elli
 <div id="toast"></div>
 
 <script type="module">
-import { initializeApp }       from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut,
-         createUserWithEmailAndPassword, signInWithEmailAndPassword,
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword,
          GoogleAuthProvider, signInWithPopup,
          setPersistence, browserLocalPersistence, browserSessionPersistence }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
@@ -128,22 +127,20 @@ const auth = getAuth(app);
 const db   = getFirestore(app);
 
 const $      = id => document.getElementById(id);
-const loader = on => $('loader').style.display = on ? 'flex' : 'none';
-const toast  = msg => { const el=$('toast'); el.textContent=msg; el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),2800); };
+const loader = on => { const el=$('loader'); if(el) el.style.display=on?'flex':'none'; };
+const toast  = msg => { const el=$('toast'); if(!el) return; el.textContent=msg; el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),2800); };
 
-// ── Show section ──
+// ── Tabs ──
 window.showSection = sec => {
   $('secLogin').style.display    = sec==='login'    ? 'block' : 'none';
   $('secRegister').style.display = sec==='register' ? 'block' : 'none';
   $('tabLogin').className    = 'tab-btn ' + (sec==='login'    ? 'tab-active' : 'tab-inactive');
   $('tabRegister').className = 'tab-btn ' + (sec==='register' ? 'tab-active' : 'tab-inactive');
 };
+if(new URLSearchParams(location.search).get('tab') === 'register') window.showSection('register');
 
-// ── Check section from URL ──
-if(new URLSearchParams(location.search).get('tab') === 'register') showSection('register');
-
-// ── Redirect result (mobile Google) ──
-async function handleGoogleUser = async (user) => {
+// ── Handle Google User ──
+async function handleGoogleUser(user) {
   const snap = await getDoc(doc(db,'barbers',user.uid));
   if(!snap.exists()) {
     await setDoc(doc(db,'barbers',user.uid), {
@@ -160,10 +157,6 @@ async function handleGoogleUser = async (user) => {
   window.location.href = 'dashboard.html';
 }
 
-// ── Auth State ──
-// Don't auto-redirect - let login functions handle it
-onAuthStateChanged(auth, user => { /* handled by login functions */ });
-
 // ── Login ──
 window.doLogin = async () => {
   const email = $('loginEmail').value.trim();
@@ -175,7 +168,7 @@ window.doLogin = async () => {
   try {
     await setPersistence(auth, $('rememberMe').checked ? browserLocalPersistence : browserSessionPersistence);
     await signInWithEmailAndPassword(auth, email, pass);
-    setTimeout(()=>{ window.location.href = 'dashboard.html'; }, 500);
+    window.location.href = 'dashboard.html';
   } catch(e) {
     err.textContent = firebaseErr(e.code);
     loader(false);
@@ -222,24 +215,25 @@ window.doGoogleLogin = async () => {
     provider.setCustomParameters({prompt:'select_account'});
     const result = await signInWithPopup(auth, provider);
     loader(true);
-    await setPersistence(auth, browserLocalPersistence);
     await handleGoogleUser(result.user);
   } catch(e) {
     loader(false);
     if(e.code === 'auth/popup-blocked') {
-      toast('⚠️ افتح الإعدادات وفعّل النوافذ المنبثقة ثم حاول مرة ثانية');
-    } else if(e.code === 'auth/popup-closed-by-user' || e.code === 'auth/cancelled-popup-request') {
-      // do nothing
-    } else {
+      toast('⚠️ افتح الإعدادات وفعّل النوافذ المنبثقة');
+    } else if(e.code !== 'auth/popup-closed-by-user' && e.code !== 'auth/cancelled-popup-request') {
       toast('فشل الدخول بـ Google: ' + e.code);
     }
-  } finally {
-    loader(false);
   }
 };
 
 function firebaseErr(code) {
-  const m = {'auth/email-already-in-use':'البريد مستخدم مسبقاً','auth/invalid-email':'بريد غير صالح','auth/weak-password':'كلمة المرور ضعيفة','auth/wrong-password':'كلمة المرور خاطئة','auth/invalid-credential':'بيانات خاطئة'};
+  const m = {
+    'auth/email-already-in-use':'البريد مستخدم مسبقاً',
+    'auth/invalid-email':'بريد غير صالح',
+    'auth/weak-password':'كلمة المرور ضعيفة',
+    'auth/wrong-password':'كلمة المرور خاطئة',
+    'auth/invalid-credential':'بيانات خاطئة'
+  };
   return m[code] || 'حدث خطأ، حاول مرة ثانية';
 }
 </script>
