@@ -359,6 +359,33 @@ onAuthStateChanged(auth, async user => {
 });
 
 function initDashboard(){
+  // Check plan expiry
+  if(barberData.status==='active' && barberData.planExpiry){
+    const expiry = new Date(barberData.planExpiry);
+    const now = new Date();
+    if(expiry < now){
+      await updateDoc(doc(db,'barbers',mainBarberId),{status:'inactive'});
+      barberData.status = 'inactive';
+    } else {
+      const days = Math.ceil((expiry - now) / (1000*60*60*24));
+      const box = document.getElementById('planExpiryBox');
+      if(box){
+        box.style.display = 'block';
+        document.getElementById('planExpiryDate').textContent = expiry.toLocaleDateString('ar-SA',{year:'numeric',month:'long',day:'numeric'});
+        const daysEl = document.getElementById('planExpiryDays');
+        if(days <= 7){
+          daysEl.textContent = '⚠️ متبقي ' + days + ' أيام فقط!';
+          daysEl.style.color = '#e55';
+        } else if(days <= 30){
+          daysEl.textContent = '⏳ متبقي ' + days + ' يوم';
+          daysEl.style.color = '#f0a500';
+        } else {
+          daysEl.textContent = '✅ متبقي ' + days + ' يوم';
+          daysEl.style.color = '#4caf50';
+        }
+      }
+    }
+  }
   document.getElementById('sbName').textContent=barberData.name||'';
   document.getElementById('sbPlan').innerHTML=barberData.status==='active'
     ?'<span style="color:var(--green)">✅ مفعّل</span>':'<span style="color:var(--red)">⛔ غير مفعّل</span>';
