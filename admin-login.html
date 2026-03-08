@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لوحة الإدارة</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#0e0e0e;color:#f0f0f0;font-family:'Segoe UI',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1rem}
+  .card{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:20px;padding:2.5rem 2rem;width:100%;max-width:400px;text-align:center;box-shadow:0 8px 40px rgba(0,0,0,.5)}
+  .icon{font-size:3rem;margin-bottom:1rem}
+  h1{color:#C9A84C;font-size:1.4rem;margin-bottom:.3rem}
+  p{color:#888;font-size:.85rem;margin-bottom:2rem}
+  .fg{margin-bottom:1rem;text-align:right}
+  label{display:block;font-size:.8rem;color:#aaa;margin-bottom:.4rem}
+  input{width:100%;background:#111;border:1px solid #333;border-radius:10px;padding:.75rem 1rem;color:#fff;font-size:.95rem;outline:none;transition:.2s}
+  input:focus{border-color:#C9A84C}
+  .remember{display:flex;align-items:center;gap:.5rem;margin-bottom:1.5rem;font-size:.85rem;color:#aaa;cursor:pointer}
+  .remember input{width:auto;cursor:pointer}
+  .btn{width:100%;background:#C9A84C;color:#000;border:none;border-radius:12px;padding:.85rem;font-size:1rem;font-weight:700;cursor:pointer;transition:.2s}
+  .btn:hover{background:#e0bb5a}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .err{color:#e55;font-size:.85rem;margin-top:1rem;min-height:1.2rem}
+  .version{margin-top:2rem;color:#444;font-size:.7rem;font-family:monospace}
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="icon">🔐</div>
+  <h1>لوحة الإدارة العامة</h1>
+  <p>هذه الصفحة للمدير فقط</p>
+
+  <div class="fg">
+    <label>الإيميل</label>
+    <input type="email" id="email" placeholder="admin@example.com" autocomplete="email">
+  </div>
+
+  <div class="fg">
+    <label>كلمة المرور</label>
+    <input type="password" id="password" placeholder="••••••••" autocomplete="current-password">
+  </div>
+
+  <label class="remember">
+    <input type="checkbox" id="remember"> تذكرني
+  </label>
+
+  <button class="btn" id="loginBtn">دخول</button>
+  <div class="err" id="errMsg"></div>
+</div>
+
+<div class="version">admin panel • v1.0.9 • 2026-03-08</div>
+
+<script>
+  const ADMIN_EMAIL = 'saadwedf@gmail.com';
+  const ADMIN_PW    = 'Saad.123123';
+
+  // Check if already remembered
+  window.addEventListener('load', () => {
+    const saved = localStorage.getItem('bs_admin_auth');
+    if(saved === 'true') {
+      window.location.href = 'admin.html';
+    }
+  });
+
+  function doLogin() {
+    const email    = document.getElementById('email').value.trim().toLowerCase();
+    const password = document.getElementById('password').value;
+    const remember = document.getElementById('remember').checked;
+    const err      = document.getElementById('errMsg');
+    const btn      = document.getElementById('loginBtn');
+
+    err.textContent = '';
+
+    if(!email || !password) {
+      err.textContent = 'يرجى ملء جميع الحقول';
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'جاري التحقق...';
+
+    setTimeout(() => {
+      if(email === ADMIN_EMAIL && password === ADMIN_PW) {
+        if(remember) localStorage.setItem('bs_admin_auth', 'true');
+        else sessionStorage.setItem('bs_admin_auth', 'true');
+        window.location.href = 'admin.html';
+      } else {
+        err.textContent = 'بيانات خاطئة';
+        btn.disabled = false;
+        btn.textContent = 'دخول';
+      }
+    }, 600);
+  }
+
+  document.getElementById('loginBtn').addEventListener('click', doLogin);
+  document.getElementById('password').addEventListener('keydown', e => {
+    if(e.key === 'Enter') doLogin();
+  });
+  document.getElementById('email').addEventListener('keydown', e => {
+    if(e.key === 'Enter') doLogin();
+  });
+</script>
+</body>
+</html>
