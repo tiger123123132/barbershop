@@ -148,9 +148,14 @@ tr:hover td{background:rgba(255,255,255,.015)}
   <div class="card">
     <div class="card-hd"><span class="card-title">توليد رمز تفعيل جديد</span></div>
     <p style="color:var(--muted);font-size:.85rem;margin-bottom:1rem">كل رمز يُستخدم مرة واحدة فقط لتفعيل حساب حلاق واحد</p>
-    <div style="display:flex;gap:.7rem;flex-wrap:wrap">
-      <input type="number" class="fi" id="codeCount" style="width:120px" value="1" min="1" max="50" placeholder="عدد">
-      <button class="btn btn-gold" onclick="generateCodes()">⚡ توليد رموز</button>
+    <div style="display:flex;gap:.7rem;flex-wrap:wrap;align-items:center">
+      <input type="number" class="fi" id="codeCount" style="width:90px" value="1" min="1" max="50" placeholder="عدد">
+      <select class="fi" id="codePlan" style="flex:1;min-width:140px">
+        <option value="1">شهر واحد</option>
+        <option value="3">٣ أشهر</option>
+        <option value="12" selected>سنة كاملة</option>
+      </select>
+      <button class="btn btn-gold" onclick="window.generateCodes()">⚡ توليد رموز</button>
     </div>
     <div class="code-box" id="codeResult">
       <div style="color:var(--muted);font-size:.8rem;margin-bottom:.5rem">الرموز المولّدة — انسخها وأرسلها للحلاقين</div>
@@ -382,12 +387,20 @@ function makeCode(){
 }
 
 window.generateCodes = async () => {
-  const count = parseInt(document.getElementById('codeCount').value)||1;
+  const count   = parseInt(document.getElementById('codeCount').value)||1;
+  const months  = parseInt(document.getElementById('codePlan').value)||12;
+  const planLabel = months===1?'شهر واحد':months===3?'٣ أشهر':'سنة كاملة';
   loader(true);
   const codes = [];
   for(let i=0;i<count;i++){
     const code = makeCode();
-    await addDoc(collection(db,'activationCodes'),{code, used:false, createdAt:new Date().toISOString()});
+    await addDoc(collection(db,'activationCodes'),{
+      code,
+      used: false,
+      createdAt: new Date().toISOString(),
+      months,
+      planLabel
+    });
     codes.push(code);
   }
   document.getElementById('generatedCodes').innerHTML = codes.map(c=>`
@@ -410,6 +423,7 @@ function renderCodesTbl(){
       <tr>
         <td style="font-family:monospace;letter-spacing:1px;color:var(--p)">${c.code}</td>
         <td><span class="badge ${c.used?'br':'bgr'}">${c.used?'مستخدم':'متاح'}</span></td>
+        <td style="color:var(--muted);font-size:.78rem">${c.planLabel||'سنة'}</td>
         <td style="color:var(--muted);font-size:.78rem">${c.usedBy||'-'}</td>
         <td style="color:var(--muted);font-size:.78rem">${c.usedAt?.split('T')[0]||'-'}</td>
         <td>${!c.used?`<button class="btn btn-danger btn-sm" onclick="window.deleteCode('${c._id}')">🗑️</button>`:'-'}</td>
