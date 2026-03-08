@@ -338,6 +338,34 @@ const db   = getFirestore(app);
 
 let currentUser=null, barberData=null, mainBarberId=null;
 
+// ── UI HELPERS ──
+function loader(on){ const el=document.getElementById('pageLoader'); if(el) el.style.display=on?'flex':'none'; }
+function toast(msg){ const t=document.getElementById('toastMsg'); if(!t) return; t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2800); }
+window.loader = loader;
+window.toast  = toast;
+
+function showPage(id,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-it').forEach(n=>n.classList.remove('on'));
+  const pg=document.getElementById(id); if(pg) pg.classList.add('active');
+  if(el) el.classList.add('on');
+  document.getElementById('sidebar').classList.remove('open');
+  const ov=document.getElementById('overlay'); if(ov){ ov.classList.remove('on'); }
+  document.body.style.overflow='';
+}
+function toggleSidebar(){
+  const sb=document.getElementById('sidebar'), ov=document.getElementById('overlay');
+  sb.classList.toggle('open');
+  if(ov) ov.classList.toggle('on');
+  document.body.style.overflow=sb.classList.contains('open')?'hidden':'';
+}
+function toggleForm(id){ const el=document.getElementById(id); if(el) el.classList.toggle('on'); }
+function openModal(id){ const el=document.getElementById(id); if(el) el.style.display='flex'; }
+function closeModal(id){ const el=document.getElementById(id); if(el) el.style.display='none'; }
+window.showPage=showPage; window.toggleSidebar=toggleSidebar;
+window.toggleForm=toggleForm; window.openModal=openModal; window.closeModal=closeModal;
+
+// ── AUTH ──
 onAuthStateChanged(auth, async user => {
   if(!user){ window.location.href='index.html'; return; }
   currentUser=user; loader(true);
@@ -358,31 +386,24 @@ onAuthStateChanged(auth, async user => {
   loader(false);
 });
 
+// ── INIT ──
 async function initDashboard(){
   // Check plan expiry
   if(barberData.status==='active' && barberData.planExpiry){
-    const expiry = new Date(barberData.planExpiry);
-    const now = new Date();
+    const expiry=new Date(barberData.planExpiry), now=new Date();
     if(expiry < now){
       await updateDoc(doc(db,'barbers',mainBarberId),{status:'inactive'});
-      barberData.status = 'inactive';
+      barberData.status='inactive';
     } else {
-      const days = Math.ceil((expiry - now) / (1000*60*60*24));
-      const box = document.getElementById('planExpiryBox');
+      const days=Math.ceil((expiry-now)/(1000*60*60*24));
+      const box=document.getElementById('planExpiryBox');
       if(box){
-        box.style.display = 'block';
-        document.getElementById('planExpiryDate').textContent = expiry.toLocaleDateString('ar-SA',{year:'numeric',month:'long',day:'numeric'});
-        const daysEl = document.getElementById('planExpiryDays');
-        if(days <= 7){
-          daysEl.textContent = '⚠️ متبقي ' + days + ' أيام فقط!';
-          daysEl.style.color = '#e55';
-        } else if(days <= 30){
-          daysEl.textContent = '⏳ متبقي ' + days + ' يوم';
-          daysEl.style.color = '#f0a500';
-        } else {
-          daysEl.textContent = '✅ متبقي ' + days + ' يوم';
-          daysEl.style.color = '#4caf50';
-        }
+        box.style.display='block';
+        document.getElementById('planExpiryDate').textContent=expiry.toLocaleDateString('ar-SA',{year:'numeric',month:'long',day:'numeric'});
+        const daysEl=document.getElementById('planExpiryDays');
+        if(days<=7){ daysEl.textContent='⚠️ متبقي '+days+' أيام فقط!'; daysEl.style.color='#e55'; }
+        else if(days<=30){ daysEl.textContent='⏳ متبقي '+days+' يوم'; daysEl.style.color='#f0a500'; }
+        else { daysEl.textContent='✅ متبقي '+days+' يوم'; daysEl.style.color='#4caf50'; }
       }
     }
   }
@@ -401,7 +422,6 @@ async function initDashboard(){
   document.getElementById('set_phone').value=barberData.settings?.phone||'';
   document.getElementById('set_city').value=barberData.settings?.city||'';
   document.getElementById('set_location').value=barberData.settings?.location||'';
-  // Load logo if exists
   if(barberData.logoBase64){
     document.getElementById('logoImg').src=barberData.logoBase64;
     document.getElementById('logoImg').style.display='block';
@@ -418,6 +438,7 @@ async function initDashboard(){
   loadStats(); renderSvcList(); renderCpnList(); renderEmpList();
 }
 
+// ── STATS ──
 async function loadStats(){
   try{
     const snap=await getDocs(query(collection(db,'bookings'),where('barberId','==',mainBarberId)));
@@ -435,6 +456,7 @@ async function loadStats(){
   }catch(e){ console.error(e); }
 }
 
+// ── BOOKINGS ──
 window.renderBookings=async()=>{
   const filter=document.getElementById('filterDate').value;
   try{
@@ -443,64 +465,50 @@ window.renderBookings=async()=>{
     if(filter) bks=bks.filter(b=>b.date===filter);
     bks.sort((a,b)=>a.ts>b.ts?-1:1);
     document.getElementById('bookTbl').innerHTML=bks.length
-      ?bks.map((b,i)=>`<tr><td>${i+1}</td><td>${b.name}</td><td>${b.phone||'-'}</td><td><span class="badge bg">${b.service}</span></td><td>${b.date}</td><td>${b.time}</td><td style="font-weight:700;color:var(--p)">${b.total} ر</td><td><span class="badge ${b.walkin?'bb':'bgr'}">${b.walkin?'بدون موعد':'أونلاين'}</span></td><td><button class="btn btn-danger btn-sm" onclick="deleteBooking('${b._id}')">🗑️</button></td></tr>`).join('')
+      ?bks.map((b,i)=>`<tr><td>${i+1}</td><td>${b.name}</td><td>${b.phone||'-'}</td><td><span class="badge bg">${b.service}</span></td><td>${b.date}</td><td>${b.time}</td><td style="font-weight:700;color:var(--p)">${b.total} ر</td><td><span class="badge ${b.walkin?'bb':'bgr'}">${b.walkin?'بدون موعد':'أونلاين'}</span></td><td><button class="btn btn-danger btn-sm" onclick="window.deleteBooking('${b._id}')">🗑️</button></td></tr>`).join('')
       :`<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:1.5rem">لا توجد حجوزات</td></tr>`;
   }catch(e){ console.error(e); }
 };
+window.deleteBooking=async id=>{ if(!confirm('حذف هذا الحجز؟')) return; await deleteDoc(doc(db,'bookings',id)); window.renderBookings(); loadStats(); toast('🗑️ تم الحذف'); };
 
-window.deleteBooking=async id=>{
-  if(!confirm('حذف هذا الحجز؟')) return;
-  await deleteDoc(doc(db,'bookings',id));
-  renderBookings(); loadStats(); toast('🗑️ تم الحذف');
-};
-
+// ── WALK-IN ──
 window.addWalkIn=async()=>{
-  const name=document.getElementById('wi_name').value.trim();
-  const phone=document.getElementById('wi_phone').value.trim();
-  const svcId=document.getElementById('wi_service').value;
-  const date=document.getElementById('wi_date').value;
-  const time=document.getElementById('wi_time').value;
-  const note=document.getElementById('wi_note').value.trim();
+  const name=document.getElementById('wi_name').value.trim(),phone=document.getElementById('wi_phone').value.trim(),svcId=document.getElementById('wi_service').value,date=document.getElementById('wi_date').value,time=document.getElementById('wi_time').value,note=document.getElementById('wi_note').value.trim();
   if(!name||!svcId||!date||!time){ toast('⚠️ أدخل الاسم والخدمة والوقت'); return; }
   const svc=barberData.services?.find(s=>String(s.id)===String(svcId));
   if(!svc){ toast('⚠️ اختر خدمة'); return; }
   loader(true);
   try{
     await addDoc(collection(db,'bookings'),{barberId:mainBarberId,name,phone,note,service:svc.name,serviceEn:svc.nameEn||'',date,time,price:svc.price,discount:0,total:svc.price,coupon:'',walkin:true,ts:new Date().toISOString()});
-    closeModal('walkInModal'); loadStats(); renderBookings(); toast('✅ تم إضافة الحجز');
+    closeModal('walkInModal'); loadStats(); window.renderBookings(); toast('✅ تم إضافة الحجز');
     ['wi_name','wi_phone','wi_note'].forEach(id=>document.getElementById(id).value='');
-  }catch(e){ toast('❌ حدث خطأ'); console.error(e); }
+  }catch(e){ toast('❌ حدث خطأ'); }
   loader(false);
 };
 
+// ── SERVICES ──
 function renderSvcList(){
   const svcs=barberData.services||[];
   document.getElementById('wi_service').innerHTML=svcs.map(s=>`<option value="${s.id}">${s.ico||'✂️'} ${s.name} — ${s.price} ريال</option>`).join('');
   const el=document.getElementById('svcList');
   if(!svcs.length){ el.innerHTML='<p style="color:var(--muted);text-align:center;padding:2rem">لا توجد خدمات</p>'; return; }
   el.innerHTML=svcs.map((s,i)=>`
-    <div class="irow"><div class="iico">${s.ico||'✂️'}</div><div class="iinfo"><div class="iname">${s.name}${s.nameEn?' / '+s.nameEn:''}</div><div class="imeta">${s.price} ريال · ${s.dur||30} دقيقة</div></div><div class="iacts"><button class="btn btn-ghost btn-sm" onclick="openEditSvc(${i})">✏️</button><button class="btn btn-danger btn-sm" onclick="delSvc(${i})">🗑️</button></div></div>
+    <div class="irow"><div class="iico">${s.ico||'✂️'}</div><div class="iinfo"><div class="iname">${s.name}${s.nameEn?' / '+s.nameEn:''}</div><div class="imeta">${s.price} ريال · ${s.dur||30} دقيقة</div></div><div class="iacts"><button class="btn btn-ghost btn-sm" onclick="window.openEditSvc(${i})">✏️</button><button class="btn btn-danger btn-sm" onclick="window.delSvc(${i})">🗑️</button></div></div>
     <div class="editrow" id="esvc${i}"><div class="fgrid">
       <div class="fg"><label>الاسم (عربي)</label><input class="fi" id="esn_${i}" value="${s.name}"></div>
       <div class="fg"><label>Name (English)</label><input class="fi" id="esne_${i}" value="${s.nameEn||''}"></div>
       <div class="fg"><label>السعر</label><input type="number" class="fi" id="esp_${i}" value="${s.price}"></div>
       <div class="fg"><label>المدة</label><input type="number" class="fi" id="esd_${i}" value="${s.dur||30}"></div>
       <div class="fg"><label>Emoji</label><input class="fi" id="esi_${i}" value="${s.ico||'✂️'}" maxlength="2"></div>
-    </div><div style="display:flex;gap:.6rem;margin-top:.7rem"><button class="btn btn-gold" onclick="saveSvc(${i})">💾 حفظ</button><button class="btn btn-ghost" onclick="openEditSvc(${i})">إلغاء</button></div></div>`).join('');
+    </div><div style="display:flex;gap:.6rem;margin-top:.7rem"><button class="btn btn-gold" onclick="window.saveSvc(${i})">💾 حفظ</button><button class="btn btn-ghost" onclick="window.openEditSvc(${i})">إلغاء</button></div></div>`).join('');
 }
-
 window.openEditSvc=i=>document.getElementById('esvc'+i).classList.toggle('on');
 window.saveSvc=async i=>{
   barberData.services[i]={...barberData.services[i],name:document.getElementById('esn_'+i).value.trim(),nameEn:document.getElementById('esne_'+i).value.trim(),price:parseFloat(document.getElementById('esp_'+i).value)||0,dur:parseInt(document.getElementById('esd_'+i).value)||30,ico:document.getElementById('esi_'+i).value||'✂️'};
   await updateDoc(doc(db,'barbers',mainBarberId),{services:barberData.services});
   renderSvcList(); toast('✅ تم حفظ الخدمة');
 };
-window.delSvc=async i=>{
-  if(!confirm('حذف؟')) return;
-  barberData.services.splice(i,1);
-  await updateDoc(doc(db,'barbers',mainBarberId),{services:barberData.services});
-  renderSvcList(); toast('🗑️ تم الحذف');
-};
+window.delSvc=async i=>{ if(!confirm('حذف؟')) return; barberData.services.splice(i,1); await updateDoc(doc(db,'barbers',mainBarberId),{services:barberData.services}); renderSvcList(); toast('🗑️ تم الحذف'); };
 window.addService=async()=>{
   const name=document.getElementById('ns_name').value.trim(),nameEn=document.getElementById('ns_nameEn').value.trim(),price=parseFloat(document.getElementById('ns_price').value)||0,dur=parseInt(document.getElementById('ns_dur').value)||30,ico=document.getElementById('ns_ico').value||'✂️';
   if(!name||!price){ toast('⚠️ أدخل الاسم والسعر'); return; }
@@ -511,11 +519,12 @@ window.addService=async()=>{
   toast('✅ تمت الإضافة');
 };
 
+// ── COUPONS ──
 function renderCpnList(){
   const cpns=barberData.coupons||[];
   const el=document.getElementById('cpnList');
   if(!cpns.length){ el.innerHTML='<p style="color:var(--muted);text-align:center;padding:2rem">لا توجد كوبونات</p>'; return; }
-  el.innerHTML=cpns.map((c,i)=>`<div class="irow"><div class="iico">🎁</div><div class="iinfo"><div class="iname"><span class="badge bb">${c.code}</span></div><div class="imeta">${c.type==='percent'?c.val+'% خصم':c.val+' ريال خصم'}</div></div><div class="iacts"><button class="btn btn-danger btn-sm" onclick="delCpn(${i})">🗑️</button></div></div>`).join('');
+  el.innerHTML=cpns.map((c,i)=>`<div class="irow"><div class="iico">🎁</div><div class="iinfo"><div class="iname"><span class="badge bb">${c.code}</span></div><div class="imeta">${c.type==='percent'?c.val+'% خصم':c.val+' ريال خصم'}</div></div><div class="iacts"><button class="btn btn-danger btn-sm" onclick="window.delCpn(${i})">🗑️</button></div></div>`).join('');
 }
 window.addCoupon=async()=>{
   const code=document.getElementById('nc_code').value.trim().toUpperCase(),type=document.getElementById('nc_type').value,val=parseFloat(document.getElementById('nc_val').value)||0;
@@ -528,73 +537,46 @@ window.addCoupon=async()=>{
   ['nc_code','nc_val'].forEach(id=>document.getElementById(id).value='');
   toast('✅ تمت الإضافة');
 };
-window.delCpn=async i=>{
-  if(!confirm('حذف؟')) return;
-  barberData.coupons.splice(i,1);
-  await updateDoc(doc(db,'barbers',mainBarberId),{coupons:barberData.coupons});
-  renderCpnList(); toast('🗑️ تم الحذف');
-};
+window.delCpn=async i=>{ if(!confirm('حذف؟')) return; barberData.coupons.splice(i,1); await updateDoc(doc(db,'barbers',mainBarberId),{coupons:barberData.coupons}); renderCpnList(); toast('🗑️ تم الحذف'); };
 
+// ── THEME ──
 window.selectedColor='#C9A84C';
 window.pickColor=(color,el)=>{ window.selectedColor=color; document.querySelectorAll('.color-opt').forEach(o=>o.classList.remove('sel')); if(el) el.classList.add('sel'); updatePreview(color); };
 window.updatePreview=color=>{ document.getElementById('previewBtn').style.background=color; document.getElementById('previewTitle').style.color=color; document.getElementById('previewTitle').textContent=barberData?.settings?.shopName||'اسم محلك'; document.getElementById('previewSub').textContent=barberData?.settings?.sub||'وصف محلك'; };
 window.saveTheme=async()=>{ barberData.theme={primaryColor:window.selectedColor}; await updateDoc(doc(db,'barbers',mainBarberId),{theme:barberData.theme}); toast('✅ تم حفظ الثيم'); };
 
+// ── SETTINGS ──
 window.saveSettings=async()=>{
-  const settings={
-    shopName:document.getElementById('set_name').value.trim(),
-    shopNameEn:document.getElementById('set_nameEn').value.trim(),
-    sub:document.getElementById('set_sub').value.trim(),
-    subEn:document.getElementById('set_subEn').value.trim(),
-    phone:document.getElementById('set_phone').value.trim(),
-    city:document.getElementById('set_city').value.trim(),
-    location:document.getElementById('set_location').value.trim()
-  };
+  const settings={shopName:document.getElementById('set_name').value.trim(),shopNameEn:document.getElementById('set_nameEn').value.trim(),sub:document.getElementById('set_sub').value.trim(),subEn:document.getElementById('set_subEn').value.trim(),phone:document.getElementById('set_phone').value.trim(),city:document.getElementById('set_city').value.trim(),location:document.getElementById('set_location').value.trim()};
   barberData.settings=settings;
   await updateDoc(doc(db,'barbers',mainBarberId),{settings});
   updatePreview(window.selectedColor);
   toast('✅ تم الحفظ');
 };
 
-window.handleLogoUpload = (e) => {
-  const file = e.target.files[0];
-  if(!file) return;
-  if(file.size > 10*1024*1024){ toast('⚠️ الصورة كبيرة، الحد الأقصى 10MB'); return; }
-  const reader = new FileReader();
-  reader.onload = async (ev) => {
-    const base64 = ev.target.result;
-    // Show preview
-    document.getElementById('logoImg').src = base64;
-    document.getElementById('logoImg').style.display = 'block';
-    document.getElementById('logoPlus').style.display = 'none';
-    document.getElementById('logoDelBtn').style.display = 'inline-block';
-    // Save to Firestore
+// ── LOGO ──
+window.handleLogoUpload=(e)=>{
+  const file=e.target.files[0]; if(!file) return;
+  if(file.size>10*1024*1024){ toast('⚠️ الصورة كبيرة، الحد الأقصى 10MB'); return; }
+  const reader=new FileReader();
+  reader.onload=async(ev)=>{
+    const base64=ev.target.result;
+    document.getElementById('logoImg').src=base64; document.getElementById('logoImg').style.display='block';
+    document.getElementById('logoPlus').style.display='none'; document.getElementById('logoDelBtn').style.display='inline-block';
     loader(true);
-    try {
-      await updateDoc(doc(db,'barbers',mainBarberId),{logoBase64: base64});
-      barberData.logoBase64 = base64;
-      toast('✅ تم رفع الشعار');
-    } catch(err){ toast('❌ فشل الرفع'); console.error(err); }
+    try{ await updateDoc(doc(db,'barbers',mainBarberId),{logoBase64:base64}); barberData.logoBase64=base64; toast('✅ تم رفع الشعار'); }
+    catch(err){ toast('❌ فشل الرفع'); }
     finally{ loader(false); }
   };
   reader.readAsDataURL(file);
 };
-
-window.deleteLogo = async () => {
-  if(!confirm('حذف الشعار؟')) return;
-  loader(true);
-  try{
-    await updateDoc(doc(db,'barbers',mainBarberId),{logoBase64:''});
-    barberData.logoBase64 = '';
-    document.getElementById('logoImg').src='';
-    document.getElementById('logoImg').style.display='none';
-    document.getElementById('logoPlus').style.display='block';
-    document.getElementById('logoDelBtn').style.display='none';
-    toast('🗑️ تم حذف الشعار');
-  }catch(err){toast('❌ خطأ'); console.error(err);}
-  finally{loader(false);}
+window.deleteLogo=async()=>{
+  if(!confirm('حذف الشعار؟')) return; loader(true);
+  try{ await updateDoc(doc(db,'barbers',mainBarberId),{logoBase64:''}); barberData.logoBase64=''; document.getElementById('logoImg').src=''; document.getElementById('logoImg').style.display='none'; document.getElementById('logoPlus').style.display='block'; document.getElementById('logoDelBtn').style.display='none'; toast('🗑️ تم حذف الشعار'); }
+  catch(err){ toast('❌ خطأ'); } finally{ loader(false); }
 };
 
+// ── ACTIVATION ──
 window.activateAccount=async()=>{
   const code=document.getElementById('actCode').value.trim().toUpperCase();
   if(!code){ toast('⚠️ أدخل الرمز'); return; }
@@ -602,12 +584,10 @@ window.activateAccount=async()=>{
   try{
     const snap=await getDocs(query(collection(db,'activationCodes'),where('code','==',code),where('used','==',false)));
     if(snap.empty){ toast('❌ الرمز غير صحيح أو مستخدم'); loader(false); return; }
-    const codeData = snap.docs[0].data();
-    const months = codeData.months || 12;
-    const expiry = new Date();
-    expiry.setMonth(expiry.getMonth() + months);
+    const codeData=snap.docs[0].data(), months=codeData.months||12;
+    const expiry=new Date(); expiry.setMonth(expiry.getMonth()+months);
     await updateDoc(doc(db,'activationCodes',snap.docs[0].id),{used:true,usedBy:currentUser.uid,usedAt:new Date().toISOString()});
-    await updateDoc(doc(db,'barbers',mainBarberId),{status:'active', planExpiry: expiry.toISOString(), planMonths: months});
+    await updateDoc(doc(db,'barbers',mainBarberId),{status:'active',planExpiry:expiry.toISOString(),planMonths:months});
     barberData.status='active';
     document.getElementById('inactiveBanner').style.display='none';
     document.getElementById('sbPlan').innerHTML='<span style="color:var(--green)">✅ مفعّل</span>';
@@ -617,16 +597,16 @@ window.activateAccount=async()=>{
   loader(false);
 };
 
+// ── EMPLOYEES ──
 async function renderEmpList(){
   try{
     const snap=await getDocs(query(collection(db,'staff'),where('barberId','==',mainBarberId)));
     const emps=snap.docs.map(d=>({...d.data(),_id:d.id}));
     const el=document.getElementById('empList');
     if(!emps.length){ el.innerHTML='<p style="color:var(--muted);text-align:center;padding:1.5rem">لا توجد حسابات إضافية</p>'; return; }
-    el.innerHTML=emps.map(e=>`<div class="irow"><div class="iico">👤</div><div class="iinfo"><div class="iname">${e.name}</div><div class="imeta">${e.email} · <span class="badge ${e.role==='manager'?'bg':'bb'}">${e.role==='manager'?'مدير':'موظف'}</span></div></div><div class="iacts"><button class="btn btn-danger btn-sm" onclick="deleteEmp('${e._id}')">🗑️</button></div></div>`).join('');
+    el.innerHTML=emps.map(e=>`<div class="irow"><div class="iico">👤</div><div class="iinfo"><div class="iname">${e.name}</div><div class="imeta">${e.email} · <span class="badge ${e.role==='manager'?'bg':'bb'}">${e.role==='manager'?'مدير':'موظف'}</span></div></div><div class="iacts"><button class="btn btn-danger btn-sm" onclick="window.deleteEmp('${e._id}')">🗑️</button></div></div>`).join('');
   }catch(e){ console.error(e); }
 }
-
 window.addEmployee=async()=>{
   const name=document.getElementById('emp_name').value.trim(),email=document.getElementById('emp_email').value.trim(),pass=document.getElementById('emp_pass').value,role=document.getElementById('emp_role').value;
   if(!name||!email||!pass){ toast('⚠️ أدخل جميع البيانات'); return; }
@@ -641,29 +621,25 @@ window.addEmployee=async()=>{
   loader(false);
 };
 window.deleteEmp=async id=>{ if(!confirm('حذف؟')) return; await deleteDoc(doc(db,'staff',id)); renderEmpList(); toast('🗑️ تم الحذف'); };
-window.toggleBooking = async () => {
-  const current = barberData.bookingEnabled !== false; // default true
-  const newVal  = !current;
+
+// ── BOOKING TOGGLE ──
+window.toggleBooking=async()=>{
+  const current=barberData.bookingEnabled!==false, newVal=!current;
   loader(true);
-  try {
-    await updateDoc(doc(db,'barbers',mainBarberId),{bookingEnabled: newVal});
-    barberData.bookingEnabled = newVal;
-    updateBookingBtn();
-    toast(newVal ? '✅ تم فتح استقبال الحجوزات' : '🔒 تم إيقاف استقبال الحجوزات');
-  } catch(e){ toast('❌ حدث خطأ'); }
+  try{ await updateDoc(doc(db,'barbers',mainBarberId),{bookingEnabled:newVal}); barberData.bookingEnabled=newVal; updateBookingBtn(); toast(newVal?'✅ تم فتح استقبال الحجوزات':'🔒 تم إيقاف استقبال الحجوزات'); }
+  catch(e){ toast('❌ حدث خطأ'); }
   loader(false);
 };
-
 function updateBookingBtn(){
-  const btn = document.getElementById('bookingToggleBtn');
-  if(!btn) return;
-  const isOpen = barberData.bookingEnabled !== false;
-  btn.textContent = isOpen ? '🟢 الحجوزات مفتوحة' : '🔴 الحجوزات مغلقة';
-  btn.style.background = isOpen ? 'rgba(46,204,113,.15)' : 'rgba(231,76,60,.15)';
-  btn.style.border = isOpen ? '1px solid rgba(46,204,113,.4)' : '1px solid rgba(231,76,60,.4)';
-  btn.style.color  = isOpen ? 'var(--green)' : 'var(--red)';
+  const btn=document.getElementById('bookingToggleBtn'); if(!btn) return;
+  const isOpen=barberData.bookingEnabled!==false;
+  btn.textContent=isOpen?'🟢 الحجوزات مفتوحة':'🔴 الحجوزات مغلقة';
+  btn.style.background=isOpen?'rgba(46,204,113,.15)':'rgba(231,76,60,.15)';
+  btn.style.border=isOpen?'1px solid rgba(46,204,113,.4)':'1px solid rgba(231,76,60,.4)';
+  btn.style.color=isOpen?'var(--green)':'var(--red)';
 }
 
+// ── MISC ──
 window.doLogout=async()=>{ await signOut(auth); window.location.href='index.html'; };
 window.copyLink=()=>{ navigator.clipboard.writeText(document.getElementById('myLink').textContent); toast('✅ تم نسخ الرابط'); };
 window.openSite=()=>window.open(document.getElementById('myLink').textContent,'_blank');
