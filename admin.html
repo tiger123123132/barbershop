@@ -85,8 +85,8 @@ tr:hover td{background:rgba(255,255,255,.015)}
     <h2>لوحة الإدارة العامة</h2>
     <p>هذه الصفحة للمدير فقط</p>
     <div class="fg"><input type="email" class="fi" id="adminEmail" placeholder="admin@example.com"></div>
-    <div class="fg"><input type="password" class="fi" id="adminPw" placeholder="••••••••" onkeydown="if(event.key==='Enter')checkPw()"></div>
-    <button class="btn btn-gold btn-full" onclick="checkPw()">دخول</button>
+    <div class="fg"><input type="password" class="fi" id="adminPw" placeholder="••••••••" id="adminPwInput"></div>
+    <button class="btn btn-gold btn-full" id="adminLoginBtn">دخول</button>
     <div class="pwerr" id="pwErr"></div>
   </div>
 </div>
@@ -480,6 +480,12 @@ function toggleSidebar(){
   ov.classList.toggle('on');
   document.body.style.overflow = sb.classList.contains('open') ? 'hidden' : '';
 }
+
+// Admin login button
+document.getElementById('adminLoginBtn').addEventListener('click', window.checkPw);
+document.getElementById('adminPwInput').addEventListener('keydown', e => {
+  if(e.key === 'Enter') window.checkPw();
+});
 </script>
 
 </body>
