@@ -168,7 +168,7 @@ tr:hover td{background:rgba(255,255,255,.015)}
     <div class="card-hd"><span class="card-title">جميع الرموز</span></div>
     <div class="twrap">
       <table>
-        <thead><tr><th>الرمز</th><th>الحالة</th><th>استُخدم بواسطة</th><th>تاريخ الاستخدام</th><th>حذف</th></tr></thead>
+        <thead><tr><th>الرمز</th><th>الحالة</th><th>الباقة</th><th>استُخدم بواسطة</th><th>تاريخ الاستخدام</th><th>حذف</th></tr></thead>
         <tbody id="codesTbl"></tbody>
       </table>
     </div>
@@ -424,8 +424,8 @@ function renderCodesTbl(){
         <td style="font-family:monospace;letter-spacing:1px;color:var(--p)">${c.code}</td>
         <td><span class="badge ${c.used?'br':'bgr'}">${c.used?'مستخدم':'متاح'}</span></td>
         <td style="color:var(--muted);font-size:.78rem">${c.planLabel||'سنة'}</td>
-        <td style="color:var(--muted);font-size:.78rem">${c.usedBy||'-'}</td>
-        <td style="color:var(--muted);font-size:.78rem">${c.usedAt?.split('T')[0]||'-'}</td>
+        <td style="color:var(--muted);font-size:.78rem;direction:ltr;text-align:right">${c.used&&c.usedBy ? c.usedBy.substring(0,10)+'...' : '-'}</td>
+        <td style="color:var(--muted);font-size:.78rem">${c.usedAt ? c.usedAt.split('T')[0] : '-'}</td>
         <td>${!c.used?`<button class="btn btn-danger btn-sm" onclick="window.deleteCode('${c._id}')">🗑️</button>`:'-'}</td>
       </tr>`).join('')
     : `<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:1.5rem">لا توجد رموز</td></tr>`;
