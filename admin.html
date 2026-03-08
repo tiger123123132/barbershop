@@ -84,7 +84,7 @@ tr:hover td{background:rgba(255,255,255,.015)}
 
 <!-- DASHBOARD -->
 
-<div id="adminDash" style="display:none" id="adminDash">
+<div id="adminDash" style="display:none">
 <button class="mob-toggle" onclick="toggleSidebar()">&#9776;</button>
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 <div class="layout">
@@ -229,7 +229,7 @@ tr:hover td{background:rgba(255,255,255,.015)}
 <script type="module">
   // Auth check
   const isAuth = localStorage.getItem('bs_admin_auth') === 'true' || sessionStorage.getItem('bs_admin_auth') === 'true';
-  if(!isAuth){ window.location.href = 'admin-login.html'; }
+  if(!isAuth){ window.location.href = 'admin-login.html'; throw new Error('redirect'); }
   document.getElementById('adminDash').style.display = 'block';
 
 
@@ -294,6 +294,10 @@ window.loadAllData = async () => {
   renderCodesTbl();
   renderAdminsTbl();
   loader(false);
+} catch(e) {
+  console.error("loadAllData error:", e);
+  loader(false);
+}
 };
 
 // ── BARBERS TABLE ──
