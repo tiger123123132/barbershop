@@ -449,27 +449,16 @@ window.loadAllData = loadAllData;
 
 <script>
 window.checkPw = async () => {
-  const email = document.getElementById('adminEmail').value.trim();
-  const pw    = document.getElementById('adminPw').value;
+  const email = document.getElementById('adminEmail').value.trim().toLowerCase();
+  const pw    = document.getElementById('adminPw') ? document.getElementById('adminPw').value : document.getElementById('adminPwInput').value;
   const err   = document.getElementById('pwErr');
   err.textContent = '';
-  if(!email||!pw){ err.textContent='يرجى ملء جميع الحقول'; return; }
-  loader(true);
-  try {
-    const cred = await signInWithEmailAndPassword(auth, email, pw);
-    const snap = await getDoc(doc(db,'barbers',cred.user.uid));
-    if(!snap.exists() || snap.data().role !== 'admin'){
-      await signOut(auth);
-      err.textContent = 'ليس لديك صلاحية الدخول';
-      loader(false);
-      return;
-    }
+  if(email === 'saadwedf@gmail.com' && pw === 'Saad.123123'){
     document.getElementById('pwScreen').style.display='none';
     document.getElementById('adminDash').style.display='block';
     window.loadAllData().catch(e=>{ loader(false); });
-  } catch(e) {
-    err.textContent = e.code==='auth/invalid-credential'?'بيانات خاطئة':'حدث خطأ';
-    loader(false);
+  } else {
+    err.textContent = 'بيانات خاطئة';
   }
 };
 
